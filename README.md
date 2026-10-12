@@ -62,6 +62,11 @@ start dashboard.html
 #   then open http://localhost:8787/dashboard.html
 ```
 
+Layout:
+- **Sidebar app** — pick a section from the left (Market, Chart & signals, Analysis, Invest,
+  Top movers, Data scanned); only that view shows (no long scroll). Live status, the FX rate,
+  the design palettes and the theme toggle live at the bottom of the sidebar.
+
 Currency & designs:
 - **Priced in Thai Baht (฿)** — all prices, the chart, movers and the calculator are converted
   live from USD using `frankfurter.dev` (jsdelivr currency-api fallback); the rate shows in the nav.
