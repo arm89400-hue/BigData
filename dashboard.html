@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ตลาดคริปโต·ทอง</title>
+<title>Gold Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Trirong:wght@500;600;700&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -178,7 +178,7 @@ th{font-weight:600;color:var(--muted);font-size:12.5px}
 </head>
 <body>
 <header class="top"><div class="in">
-  <div class="mark" data-t="brand">ตลาดคริปโต·ทอง</div>
+  <div class="mark" data-t="brand">Gold Market</div>
   <nav class="tabs" aria-label="sections">
     <button aria-current="page" data-v="ov"><i data-ic="dash"></i><span data-t="tab.ov">ภาพรวม</span></button>
     <button data-v="ch"><i data-ic="chart"></i><span data-t="tab.ch">กราฟ</span></button>
@@ -407,7 +407,7 @@ const vol=k=>annVol(hist(k).map(x=>x[1]),PER[k]);
 
 /* ===== i18n ===== */
 const L={th:{
-  brand:'ตลาดคริปโต·ทอง','tab.ov':'ภาพรวม','tab.ch':'กราฟ','tab.bt':'ย้อนทดสอบ','tab.rf':'ตารางอ้างอิง','tab.dt':'ข้อมูลโปรเจกต์',
+  brand:'Gold Market','tab.ov':'ภาพรวม','tab.ch':'กราฟ','tab.bt':'ย้อนทดสอบ','tab.rf':'ตารางอ้างอิง','tab.dt':'ข้อมูลโปรเจกต์',
   live:'สด',off:'ออฟไลน์',upd:'อัปเดต','board.title':'ราคาทองคำวันนี้',in24:'ใน 24 ชั่วโมง',
   buy:'รับซื้อ',est:'ค่าประเมินจากราคาทองคำโลก',live1:'ราคาทองคำโลกแบบสด',estnote:'ราคาทองแท่ง/รูปพรรณเป็นค่าประเมิน (โหลดประกาศสมาคมฯ ไม่ได้)',
   'cv.title':'แปลงค่า',showas:'แสดงเป็น',eq:'เท่ากับหน่วยอื่น (แตะเพื่อเลือก)',calc:'คำนวณ: ',
@@ -451,7 +451,7 @@ const L={th:{
   chips:[['1 บาททอง',1,'BW','THB'],['1 สลึง',1,'SL','THB'],['1 กรัม',1,'G','THB'],['1 ออนซ์',1,'OZ','THB'],['฿10,000',10000,'THB','BW'],['$100',100,'USD','THB']],
   fa:[['XAU','ทองคำแท่ง (บาท)'],['XAG','เงิน (ออนซ์)'],['USD','ดอลลาร์'],['BTC','บิตคอยน์']],
 },en:{
-  brand:'Crypto-Gold Market','tab.ov':'Overview','tab.ch':'Chart','tab.bt':'Back-test','tab.rf':'Reference','tab.dt':'Project data',
+  brand:'Gold Market','tab.ov':'Overview','tab.ch':'Chart','tab.bt':'Back-test','tab.rf':'Reference','tab.dt':'Project data',
   live:'Live',off:'Offline',upd:'Updated','board.title':"Today's gold prices",in24:'in 24 hours',
   buy:'Buy-back',est:'estimated from world gold',live1:'live world price',estnote:'bar/ornament prices are estimates (association board unavailable)',
   'cv.title':'Converter',showas:'Show as',eq:'Same amount in other units (tap to select)',calc:'Calculation: ',
