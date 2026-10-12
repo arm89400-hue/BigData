@@ -14,7 +14,9 @@
 :root{
   --bg:#f4f6fa; --surface:#ffffff; --surface-2:#eef1f7; --border:#e4e8f1;
   --fg:#141b2d; --muted:#5c6b86; --faint:#99a4bb;
-  --accent:#e0991a; --accent-soft:#fbf1dc; --accent-ink:#5a3d05;
+  --accent:#e3a21e;
+  --accent-soft:color-mix(in srgb,var(--accent) 15%,var(--surface));
+  --accent-ink:color-mix(in srgb,var(--accent) 60%,var(--fg));
   --up:#13b981; --down:#ef4d6b;
   --sh-sm:0 1px 2px rgba(20,27,45,.05);
   --sh:0 6px 20px rgba(20,27,45,.08);
@@ -27,7 +29,7 @@
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
   --bg:#0f141f; --surface:#161d2c; --surface-2:#1d2639; --border:#2a3450;
   --fg:#e9eef7; --muted:#95a2bb; --faint:#5f6d88;
-  --accent:#f4b740; --accent-soft:#2a2410; --accent-ink:#f4b740;
+  /* accent inherits from :root / data-palette; soft+ink derive via color-mix */
   --up:#3fcaa0; --down:#f8717f;
   --sh-sm:0 1px 2px rgba(0,0,0,.3);
   --sh:0 6px 20px rgba(0,0,0,.35);
@@ -37,13 +39,18 @@
 :root[data-theme="dark"]{
   --bg:#0f141f; --surface:#161d2c; --surface-2:#1d2639; --border:#2a3450;
   --fg:#e9eef7; --muted:#95a2bb; --faint:#5f6d88;
-  --accent:#f4b740; --accent-soft:#2a2410; --accent-ink:#f4b740;
+  /* accent inherits from :root / data-palette; soft+ink derive via color-mix */
   --up:#3fcaa0; --down:#f8717f;
   --sh-sm:0 1px 2px rgba(0,0,0,.3);
   --sh:0 6px 20px rgba(0,0,0,.35);
   --sh-lg:0 16px 40px rgba(0,0,0,.5);
   color-scheme:dark;
 }
+/* design palettes — each only sets the accent; soft/ink derive via color-mix for both themes */
+:root[data-palette="ocean"]{--accent:#1898ca}
+:root[data-palette="grape"]{--accent:#7c5cff}
+:root[data-palette="sunset"]{--accent:#ef6038}
+:root[data-palette="forest"]{--accent:#2fa36b}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html,body{margin:0}
@@ -64,7 +71,7 @@ a{color:inherit;text-decoration:none}
 .nav-in{max-width:1180px;margin:0 auto;height:var(--nav-h);padding:0 20px;display:flex;align-items:center;gap:18px}
 .brand{display:flex;align-items:center;gap:10px}
 .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;
-  background:linear-gradient(140deg,var(--accent),#c47f00);color:#20160a;font-weight:800;font-size:17px;
+  background:linear-gradient(140deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#000));color:#fff;font-weight:800;font-size:17px;
   box-shadow:var(--sh-sm)}
 .brand-txt b{display:block;font-size:15px;font-weight:700;line-height:1.1}
 .brand-txt em{font-style:normal;font-size:11px;color:var(--muted)}
@@ -83,6 +90,14 @@ a{color:inherit;text-decoration:none}
 .tbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);
   color:var(--fg);font-size:15px;cursor:pointer;box-shadow:var(--sh-sm);transition:transform .2s,border-color .2s}
 .tbtn:hover{border-color:var(--accent);transform:rotate(-18deg)}
+.palettes{display:inline-flex;gap:6px;align-items:center}
+.palettes button{width:18px;height:18px;border-radius:50%;background:var(--d);border:2px solid var(--surface);
+  box-shadow:0 0 0 1px var(--border);cursor:pointer;padding:0;transition:transform .15s}
+.palettes button:hover{transform:scale(1.18)}
+.palettes button.sel{box-shadow:0 0 0 2px var(--accent)}
+.fxpill{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--muted);padding:6px 11px;
+  border:1px solid var(--border);border-radius:999px;background:var(--surface);box-shadow:var(--sh-sm);white-space:nowrap}
+@media (max-width:640px){.fxpill{display:none}}
 
 /* ---- hero ---- */
 .hero{padding-block:52px 10px}
@@ -133,7 +148,7 @@ tbody tr:hover{background:var(--surface-2)}
 tbody tr:last-child td{border-bottom:none}
 td.num,th.num{text-align:right}
 .badge{font-family:var(--font-mono);font-size:11px;padding:3px 9px;border-radius:7px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
-.bar{height:6px;border-radius:4px;background:linear-gradient(90deg,var(--accent),#c47f00);min-width:4px}
+.bar{height:6px;border-radius:4px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#000));min-width:4px}
 
 /* ---- tiles (data scanned) ---- */
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -220,6 +235,14 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
       <a href="#analysis">Analysis</a><a href="#invest">Invest</a>
     </div>
     <div class="nav-right">
+      <div class="palettes" id="palettes" title="Pick a design">
+        <button data-p="" aria-label="Gold design" style="--d:#e3a21e"></button>
+        <button data-p="ocean" aria-label="Ocean design" style="--d:#1898ca"></button>
+        <button data-p="grape" aria-label="Grape design" style="--d:#7c5cff"></button>
+        <button data-p="sunset" aria-label="Sunset design" style="--d:#ef6038"></button>
+        <button data-p="forest" aria-label="Forest design" style="--d:#2fa36b"></button>
+      </div>
+      <span class="fxpill" id="fxpill">฿ —</span>
       <span class="status" id="status"><span class="dot"></span><span id="statusText">connecting…</span></span>
       <button class="tbtn" id="theme" aria-label="Toggle light or dark theme">◐</button>
     </div>
@@ -229,7 +252,7 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
 <header class="hero" id="top"><div class="wrap"><div class="hero-in">
   <span class="pill">Live market data</span>
   <h1>Your market, <span class="accent">live.</span></h1>
-  <p>Crypto, gold and fiat — streamed from Binance in real time, with indicators, a trend forecast, and a what-if calculator. Built on a 13.8-million-row big-data scan.</p>
+  <p>Crypto, gold and fiat — streamed from Binance in real time and priced in <b>Thai Baht (฿)</b>, with indicators, a trend forecast, and a what-if calculator. Built on a 13.8-million-row big-data scan.</p>
 </div></div></header>
 
 <main class="wrap">
@@ -284,7 +307,7 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
     <div class="sec-h"><span class="eyebrow">04 · Tool</span><h2>What if I had invested?</h2><span class="sub">backtest on live Binance daily closes</span></div>
     <div class="chartpanel">
       <div class="calc">
-        <label>Amount (USD)<input type="number" id="calcAmt" value="1000" min="1" step="100"></label>
+        <label>Amount (฿)<input type="number" id="calcAmt" value="30000" min="1" step="1000"></label>
         <label>Asset<select id="calcSym"></select></label>
         <label>Start date<input type="date" id="calcDate" value="2021-01-01"></label>
         <button class="go" id="calcGo">Calculate</button>
@@ -364,6 +387,21 @@ const fmtAbbr=n=>{n=+n;if(n>=1e9)return (n/1e9).toFixed(1)+'B';if(n>=1e6)return 
   if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toFixed(0);};
 async function getJSON(path){const r=await fetch(BASE+path,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json();}
 
+/* ---------- currency: everything is shown in Thai Baht, converted live from USD ---------- */
+let FX=33.6; // USD -> THB, updated by loadFX()
+function fmtBaht(usd){const v=(+usd)*FX;const d=v>=1000?0:v>=100?1:v>=1?2:v>=0.01?3:5;
+  return '฿'+v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+async function loadFX(){
+  const grab=async u=>{const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('fx');return r.json();};
+  try{const j=await grab('https://api.frankfurter.dev/v1/latest?base=USD&symbols=THB');
+    if(j&&j.rates&&j.rates.THB)FX=j.rates.THB;}
+  catch(e){try{const j=await grab('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json');
+    if(j&&j.usd&&j.usd.thb)FX=j.usd.thb;}catch(e2){}}
+  const fp=$('#fxpill');if(fp)fp.textContent='฿'+FX.toFixed(2)+' / $1';
+  if($('#board').children.length)refreshBoard();
+  if(CH.data.length)drawChart();
+}
+
 /* ---------- math (indicators, forecast, stats) ---------- */
 function sma(a,n){return a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((s,x)=>s+x,0)/n);}
 function rollStd(a,n){return a.map((_,i)=>{if(i<n-1)return null;const w=a.slice(i-n+1,i+1),m=w.reduce((s,x)=>s+x,0)/n;
@@ -439,13 +477,13 @@ async function refreshBoard(){
       const c=$('#c-'+d.symbol); if(!c)return;
       const price=+d.lastPrice, pct=+d.priceChangePercent, up=pct>=0;
       const pe=c.querySelector('.price');
-      pe.textContent='$'+fmtPrice(price); pe.classList.remove('skel');
+      pe.textContent=fmtBaht(price); pe.classList.remove('skel');
       if(prev[d.symbol]!==undefined && prev[d.symbol]!==price){pe.classList.remove('flash');void pe.offsetWidth;pe.classList.add('flash');}
       prev[d.symbol]=price;
       const ce=c.querySelector('.chg'); ce.classList.remove('skel');
       ce.className='chg '+(up?'up':'down'); ce.textContent=(up?'▲ ':'▼ ')+fmtPct(pct);
-      c.querySelector('.lo').textContent='L '+fmtPrice(d.lowPrice);
-      c.querySelector('.hi').textContent='H '+fmtPrice(d.highPrice);
+      c.querySelector('.lo').textContent='L '+fmtBaht(d.lowPrice);
+      c.querySelector('.hi').textContent='H '+fmtBaht(d.highPrice);
     });
     setStatus(true);
   }catch(e){setStatus(false);}
@@ -480,7 +518,7 @@ function drawChart(){
   const W=cv.clientWidth, H=cv.clientHeight;
   cv.width=W*dpr; cv.height=H*dpr;
   const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
-  const padL=62,padR=14,padT=10,padB=24, xs=W-padL-padR, ys=H-padT-padB;
+  const padL=82,padR=14,padT=10,padB=24, xs=W-padL-padR, ys=H-padT-padB;
   const n=d.length, closes=d.map(p=>p.c);
   const muted=cssvar('--muted'),border=cssvar('--border');
   const first=closes[0],last=closes[n-1],up=last>=first;
@@ -519,7 +557,7 @@ function drawChart(){
   g.font='11px "IBM Plex Mono",monospace'; g.textBaseline='middle';
   for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=Y(v);
     g.strokeStyle=border;g.globalAlpha=.6;g.beginPath();g.moveTo(padL,y);g.lineTo(W-padR,y);g.stroke();g.globalAlpha=1;
-    g.fillStyle=muted;g.textAlign='right';g.fillText(fmtPrice(v),padL-8,y);}
+    g.fillStyle=muted;g.textAlign='right';g.fillText(fmtBaht(v),padL-8,y);}
   // divider where forecast begins
   if(fN){const xd=X(n-1);g.strokeStyle=muted;g.globalAlpha=.4;g.setLineDash([3,3]);
     g.beginPath();g.moveTo(xd,padT);g.lineTo(xd,padT+ys);g.stroke();g.setLineDash([]);g.globalAlpha=1;}
@@ -560,11 +598,11 @@ function drawChart(){
   g.fillStyle=col;g.beginPath();g.arc(X(n-1),Y(last),3.5,0,7);g.fill();
 
   // head readout + signal
-  $('#cprice').textContent='$'+fmtPrice(last);
+  $('#cprice').textContent=fmtBaht(last);
   $('#cprice').className='big '+(up?'up':'down');
   const chg=(last-first)/first*100;
   $('#cmeta').innerHTML=`${CH.sym} · ${CH.int} · <span class="${up?'up':'down'}">${fmtPct(chg)}</span> over ${n} bars`;
-  $('#crange').textContent='range '+fmtPrice(Math.min(...d.map(p=>p.l)))+' – '+fmtPrice(Math.max(...d.map(p=>p.h)));
+  $('#crange').textContent='range '+fmtBaht(Math.min(...d.map(p=>p.l)))+' – '+fmtBaht(Math.max(...d.map(p=>p.h)));
   // RSI(14) signal
   const r=rsi(closes,14).filter(v=>v!=null), rv=r.length?r[r.length-1]:null;
   const sig=$('#csignal');
@@ -587,10 +625,10 @@ async function refreshMovers(){
     const gain=[...usdt].sort((a,b)=>b.priceChangePercent-a.priceChangePercent).slice(0,8);
     const vol=[...usdt].sort((a,b)=>b.quoteVolume-a.quoteVolume).slice(0,8);
     $('#gainers tbody').innerHTML=gain.map(d=>`<tr><td><span class="badge">${d.symbol.replace('USDT','')}</span></td>
-      <td class="num">${fmtPrice(d.lastPrice)}</td><td class="num up">${fmtPct(+d.priceChangePercent)}</td></tr>`).join('');
-    $('#volume tbody').innerHTML=vol.map(d=>{const up=+d.priceChangePercent>=0;
+      <td class="num">${fmtBaht(d.lastPrice)}</td><td class="num up">${fmtPct(+d.priceChangePercent)}</td></tr>`).join('');
+    $('#volume tbody').innerHTML=vol.map(d=>{
       return `<tr><td><span class="badge">${d.symbol.replace('USDT','')}</span></td>
-      <td class="num">${fmtPrice(d.lastPrice)}</td><td class="num">$${fmtAbbr(d.quoteVolume)}</td></tr>`;}).join('');
+      <td class="num">${fmtBaht(d.lastPrice)}</td><td class="num">฿${fmtAbbr(d.quoteVolume*FX)}</td></tr>`;}).join('');
     setStatus(true);
   }catch(e){setStatus(false);}
 }
@@ -686,18 +724,20 @@ async function calcRun(){
     if(!start.length){note.textContent='No data for that date (the pair may not have existed yet).';out.hidden=true;return;}
     const now=await getJSON(`/api/v3/ticker/price?symbol=${sym}`);
     const startClose=+start[0][4], startUsed=new Date(start[0][0]), nowPrice=+now.price;
-    const units=amt/startClose, worth=units*nowPrice, ret=(worth/amt-1)*100;
+    const ratio=nowPrice/startClose;              // currency-agnostic growth
+    const worth=amt*ratio, ret=(ratio-1)*100;     // amt is in Baht -> worth in Baht
+    const units=(amt/FX)/startClose;              // asset quantity bought
     const years=Math.max(0.01,(Date.now()-start[0][0])/(365*864e5));
-    const cagr=((worth/amt)**(1/years)-1)*100;
-    $('#coIn').textContent='$'+fmtInt(Math.round(amt));
-    $('#coNow').textContent='$'+fmtInt(Math.round(worth));
+    const cagr=(ratio**(1/years)-1)*100;
+    $('#coIn').textContent='฿'+fmtInt(Math.round(amt));
+    $('#coNow').textContent='฿'+fmtInt(Math.round(worth));
     $('#coNow').style.color=worth>=amt?'var(--up)':'var(--down)';
     $('#coRet').textContent=fmtPct(ret); $('#coRet').style.color=ret>=0?'var(--up)':'var(--down)';
     $('#coCagr').textContent=fmtPct(cagr); $('#coCagr').style.color=cagr>=0?'var(--up)':'var(--down)';
     out.hidden=false;
     note.innerHTML=`Bought <b>${units.toLocaleString('en-US',{maximumFractionDigits:6})}</b> `
-      +`${sym.replace('USDT','')} at $${fmtPrice(startClose)} on ${startUsed.toISOString().slice(0,10)}, `
-      +`now $${fmtPrice(nowPrice)}. Binance daily closes · not investment advice.`;
+      +`${sym.replace('USDT','')} at ${fmtBaht(startClose)} on ${startUsed.toISOString().slice(0,10)}, `
+      +`now ${fmtBaht(nowPrice)}. Binance daily closes, converted to ฿ · not investment advice.`;
     setStatus(true);
   }catch(e){note.textContent='Could not load that series. Try another asset or date.';}
 }
@@ -713,6 +753,22 @@ async function calcRun(){
     try{localStorage.setItem('bms-theme',next);}catch(e){}
     drawChart(); drawScatter();
   };
+})();
+
+/* ---------- design palette picker (multiple designs to choose from) ---------- */
+(function(){
+  try{const p=localStorage.getItem('bms-palette');if(p)document.documentElement.setAttribute('data-palette',p);}catch(e){}
+  const btns=[...document.querySelectorAll('#palettes button')];
+  const mark=()=>{const cur=document.documentElement.getAttribute('data-palette')||'';
+    btns.forEach(b=>b.classList.toggle('sel',(b.dataset.p||'')===cur));};
+  btns.forEach(b=>b.onclick=()=>{
+    const p=b.dataset.p;
+    if(p)document.documentElement.setAttribute('data-palette',p);
+    else document.documentElement.removeAttribute('data-palette');
+    try{localStorage.setItem('bms-palette',p);}catch(e){}
+    mark(); drawChart(); drawScatter();
+  });
+  mark();
 })();
 
 /* ---------- UX: count-up numbers, active-nav highlight ---------- */
@@ -747,7 +803,8 @@ renderAnalysis();   // first paint from embedded snapshot
 buildBoard();
 buildChartControls();
 buildCalc();
-refreshBoard(); loadChart(); refreshMovers(); loadAnalysisLive();
+loadFX(); refreshBoard(); loadChart(); refreshMovers(); loadAnalysisLive();
+setInterval(loadFX,3600000);
 setInterval(refreshBoard,5000);
 setInterval(loadChart,10000);
 setInterval(refreshMovers,60000);

@@ -62,6 +62,12 @@ start dashboard.html
 #   then open http://localhost:8787/dashboard.html
 ```
 
+Currency & designs:
+- **Priced in Thai Baht (฿)** — all prices, the chart, movers and the calculator are converted
+  live from USD using `frankfurter.dev` (jsdelivr currency-api fallback); the rate shows in the nav.
+- **Five design palettes** (Gold, Ocean, Grape, Sunset, Forest) picked from the nav dots, plus a
+  light/dark toggle — your choice is remembered.
+
 What's on the page:
 - **Live market board** — watchlist prices + 24h change, refreshing every 5s.
 - **Live chart with signals** — candles plus moving averages (7/25/99), Bollinger Bands, an
