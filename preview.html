@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chonburi&family=Trirong:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&family=Kanit:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* Interactive preview: one live mini-dashboard, re-skinnable into 3 directions.
+   Tokens change per [data-skin]; structure stays the same so you compare fairly. */
+:root{
+  --bg:#5e1210; --panel:#f4ead2; --panel2:#fffbf0; --ink:#2a1d0a; --soft:#7a6a4a;
+  --line:#d8c9a4; --accent:#b3862f; --accent2:#d8af4e; --up:#1f8a4d; --dn:#c0392b;
+  --font-head:'Chonburi',serif; --font-ui:'Kanit',sans-serif; --font-body:'Sarabun',sans-serif;
+  --font-num:'IBM Plex Mono',monospace; --rad:12px; --tile:transparent; --tileline:transparent;
+  color-scheme:light;
+}
+/* ---- skin 2: banknote ---- */
+:root[data-skin="note"]{
+  --bg:#d9cdae; --panel:#ece3cf; --panel2:#f3ecd9; --ink:#1b2a44; --soft:#3c6b52;
+  --line:#b9ad8c; --accent:#9c7a2d; --accent2:#27648a; --up:#2d6a4a; --dn:#b03a2e;
+  --font-head:'Trirong',serif; --font-ui:'Sarabun',sans-serif; --font-num:'Trirong',serif; --rad:3px;
+}
+/* ---- skin 3: split-flap ---- */
+:root[data-skin="flap"]{
+  --bg:#0c1511; --panel:#111b16; --panel2:#0a120f; --ink:#dfe8e0; --soft:#6f8277;
+  --line:#1e2a24; --accent:#f0b537; --accent2:#46c08a; --up:#46c08a; --dn:#e8637a;
+  --font-head:'Kanit',sans-serif; --font-ui:'Kanit',sans-serif; --font-num:'IBM Plex Mono',monospace;
+  --rad:4px; --tile:linear-gradient(#20302a,#162220); --tileline:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);min-height:100vh;
+  padding:18px;transition:background .3s,color .3s}
+.shell{max-width:1060px;margin:0 auto}
+
+/* top controls */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.bar .ttl{font-family:var(--font-head);font-size:clamp(20px,3.5vw,28px);color:var(--accent2);margin-right:auto;line-height:1}
+:root[data-skin="note"] .bar .ttl,:root[data-skin="flap"] .bar .ttl{color:var(--accent)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+.seg button{font:inherit;font-family:var(--font-ui);font-size:13px;font-weight:600;background:transparent;color:var(--soft);
+  border:none;padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.mini{font:inherit;font-family:var(--font-ui);font-weight:700;font-size:13px;background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer}
+.hint{font-family:var(--font-ui);font-size:12.5px;color:var(--panel);opacity:.85;margin:-6px 0 14px}
+:root[data-skin="note"] .hint{color:var(--soft);opacity:1}
+
+/* frame */
+.frame{background:var(--bg);border:2px solid var(--accent);border-radius:calc(var(--rad) + 2px);padding:16px;
+  box-shadow:inset 0 0 0 1px var(--panel2)}
+:root[data-skin="flap"] .frame{border-color:var(--line);box-shadow:none;background:#0a120f}
+:root[data-skin="note"] .frame{border-style:double;border-width:2px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--accent);
+  padding-bottom:10px;margin-bottom:12px}
+.head h2{font-family:var(--font-head);font-size:22px;color:var(--accent2);margin:0;line-height:1}
+:root[data-skin="note"] .head h2,:root[data-skin="flap"] .head h2{color:var(--accent)}
+.head .meta{font-family:var(--font-num);font-size:12px;color:var(--accent2);text-align:right}
+:root[data-skin="flap"] .head .meta{color:var(--up)}
+
+/* board rows */
+.board{display:grid;gap:6px}
+.row{display:grid;grid-template-columns:1.5fr 1.1fr .6fr;align-items:center;gap:10px;padding:11px 10px;
+  border-radius:var(--rad);cursor:pointer;border:1px solid transparent;transition:background .15s,border-color .15s}
+.row.colhdr{cursor:default;border-bottom:1px dashed var(--line);border-radius:0;padding-bottom:8px}
+.row.colhdr span{font-family:var(--font-ui);font-size:11px;letter-spacing:.5px;color:var(--soft);text-transform:uppercase}
+.row:not(.colhdr):hover{background:var(--panel)}
+.row.sel{background:var(--panel);border-color:var(--accent)}
+.nm{font-family:var(--font-ui);font-weight:600;font-size:15px;color:var(--ink)}
+.nm small{font-family:var(--font-num);font-size:10.5px;color:var(--soft);margin-left:7px;letter-spacing:.5px}
+.px{display:flex;justify-content:flex-end;gap:1px;align-items:center}
+.baht{font-family:'IBM Plex Mono','Noto Sans Thai',monospace;font-weight:600;font-size:19px;color:var(--accent);margin-right:2px}
+.digits{display:flex;gap:2px}
+.d{font-family:var(--font-num);font-weight:600;font-size:19px;color:var(--ink)}
+.chg{font-family:var(--font-num);font-size:13px;text-align:right}
+.chg.up{color:var(--up)} .chg.dn{color:var(--dn)}
+.skel{color:var(--soft)}
+/* flap tiles only in flap skin */
+:root[data-skin="flap"] .d{background:var(--tile);border-radius:3px;width:19px;height:28px;display:grid;place-items:center;
+  color:var(--accent);box-shadow:inset 0 0 0 1px #0a120f;position:relative}
+:root[data-skin="flap"] .d::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--tileline)}
+:root[data-skin="flap"] .d.sep{background:none;box-shadow:none;width:7px;color:var(--soft)}
+:root[data-skin="flap"] .d.sep::after{display:none}
+.flipping{animation:flip .4s ease}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(-90deg)}100%{transform:rotateX(0)}}
+
+/* chart */
+.chart{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--rad);padding:14px}
+:root[data-skin="flap"] .chart{background:#0e1713}
+.chart .ch-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.chart .ch-h b{font-family:var(--font-ui);font-size:15px}
+.chart .ch-h .p{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:20px;color:var(--accent)}
+canvas{width:100%;height:220px;display:block}
+.foot{margin-top:16px;text-align:center;font-family:var(--font-ui);font-size:13px;color:var(--panel);opacity:.9}
+:root[data-skin="note"] .foot{color:var(--soft);opacity:1}
+.foot b{color:var(--accent2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="bar">
+    <div class="ttl" id="ttl">ตัวอย่างแดชบอร์ด</div>
+    <div class="seg" id="skins">
+      <button data-s="gold" aria-pressed="true">ร้านทอง</button>
+      <button data-s="note">ธนบัตร</button>
+      <button data-s="flap">กระดานพลิก</button>
+    </div>
+    <button class="mini" id="lang">EN</button>
+  </div>
+  <div class="hint" id="hint">แตะที่สินทรัพย์เพื่อดูกราฟ · สลับดีไซน์และภาษาด้านบน · ราคาอัปเดตสด</div>
+
+  <div class="frame">
+    <div class="head">
+      <h2 id="boardTitle">ราคาสด · คริปโตและทองคำ</h2>
+      <div class="meta" id="fx">฿ —</div>
+    </div>
+    <div class="board" id="board">
+      <div class="row colhdr"><span id="hAsset">สินทรัพย์</span><span style="text-align:right" id="hPrice">ราคา · บาท</span><span style="text-align:right" id="h24">24 ชม.</span></div>
+    </div>
+    <div class="chart">
+      <div class="ch-h"><b id="chName">—</b><span class="p" id="chPrice">—</span></div>
+      <canvas id="cv"></canvas>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">ชอบแบบไหน บอกเลข — เช่น <b>"ใช้ดีไซน์ 1"</b> แล้วผมจะสร้างแดชบอร์ดเต็มรูปแบบให้</div>
+</div>
+
+<script>
+const BASE='https://data-api.binance.vision';
+let FX=33.6, LANG='th', SKIN='gold', SEL='PAXGUSDT';
+const WATCH=[
+  {s:'PAXGUSDT',th:'ทองคำ',en:'Gold'},{s:'BTCUSDT',th:'บิตคอยน์',en:'Bitcoin'},
+  {s:'ETHUSDT',th:'อีเธอเรียม',en:'Ethereum'},{s:'BNBUSDT',th:'บีเอ็นบี',en:'BNB'},
+  {s:'SOLUSDT',th:'โซลานา',en:'Solana'},{s:'XRPUSDT',th:'เอกซ์อาร์พี',en:'XRP'},
+  {s:'EURUSDT',th:'ยูโร',en:'Euro'},{s:'GBPUSDT',th:'ปอนด์',en:'Pound'},
+];
+const T={
+  ttl:{th:'ตัวอย่างแดชบอร์ด',en:'Dashboard preview'},
+  board:{th:'ราคาสด · คริปโตและทองคำ',en:'Live prices · Crypto & Gold'},
+  asset:{th:'สินทรัพย์',en:'Asset'}, price:{th:'ราคา · บาท',en:'Price · Baht'}, h24:{th:'24 ชม.',en:'24h'},
+  hint:{th:'แตะที่สินทรัพย์เพื่อดูกราฟ · สลับดีไซน์และภาษาด้านบน · ราคาอัปเดตสด',
+        en:'Tap an asset to see its chart · switch design & language above · prices update live'},
+  foot:{th:'ชอบแบบไหน บอกเลข — เช่น <b>"ใช้ดีไซน์ 1"</b> แล้วผมจะสร้างแดชบอร์ดเต็มรูปแบบให้',
+        en:'Like one? Tell me the number — e.g. <b>"use design 1"</b> — and I will build the full dashboard'},
+};
+const $=s=>document.querySelector(s);
+const nm=w=>LANG==='th'?w.th:w.en;
+async function getJSON(p){const r=await fetch(BASE+p,{cache:'no-store'});if(!r.ok)throw 0;return r.json();}
+function fmtNum(usd){const v=usd*FX,d=v>=1000?0:v>=100?1:v>=1?2:4;
+  return v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+
+async function loadFX(){
+  try{const r=await fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=THB');const j=await r.json();
+    if(j.rates&&j.rates.THB)FX=j.rates.THB;}catch(e){}
+  $('#fx').textContent='฿'+FX.toFixed(2)+' / $1';
+  refresh();drawChart();}
+
+function digits(str){return [...str].map(c=>{const sep=(c===','||c==='.');
+  return `<span class="d${sep?' sep':''}">${c}</span>`;}).join('');}
+const prev={};
+function buildBoard(){
+  const hdr=$('.row.colhdr').outerHTML;
+  $('#board').innerHTML=hdr+WATCH.map(w=>`
+    <div class="row${w.s===SEL?' sel':''}" data-s="${w.s}">
+      <span class="nm">${nm(w)}<small>${w.s.replace('USDT','')}</small></span>
+      <span class="px"><span class="baht">฿</span><span class="digits skel" data-k="${w.s}">—</span></span>
+      <span class="chg skel" data-c="${w.s}">·····</span>
+    </div>`).join('');
+  $('#board').querySelectorAll('.row[data-s]').forEach(r=>r.onclick=()=>{SEL=r.dataset.s;markSel();loadChart();});
+}
+function markSel(){$('#board').querySelectorAll('.row[data-s]').forEach(r=>r.classList.toggle('sel',r.dataset.s===SEL));}
+async function refresh(){
+  try{
+    const syms=JSON.stringify(WATCH.map(w=>w.s));
+    const data=await getJSON('/api/v3/ticker/24hr?symbols='+encodeURIComponent(syms));
+    data.forEach(d=>{
+      const el=$(`.digits[data-k="${d.symbol}"]`);if(!el)return;
+      const price=+d.lastPrice, pct=+d.priceChangePercent, up=pct>=0;
+      el.classList.remove('skel');el.innerHTML=digits(fmtNum(price));
+      if(SKIN==='flap'&&prev[d.symbol]!==undefined&&prev[d.symbol]!==price){
+        el.querySelectorAll('.d').forEach(x=>{x.classList.remove('flipping');void x.offsetWidth;x.classList.add('flipping');});}
+      prev[d.symbol]=price;
+      const c=$(`.chg[data-c="${d.symbol}"]`);c.classList.remove('skel');
+      c.className='chg '+(up?'up':'dn');c.textContent=(up?'▲':'▼')+' '+Math.abs(pct).toFixed(2)+'%';
+    });
+  }catch(e){}
+}
+let CH=[];
+async function loadChart(){
+  const w=WATCH.find(x=>x.s===SEL);$('#chName').textContent=nm(w)+' · '+SEL.replace('USDT','');
+  try{const k=await getJSON(`/api/v3/klines?symbol=${SEL}&interval=1h&limit=100`);
+    CH=k.map(r=>({t:r[0],c:+r[4]}));drawChart();}catch(e){}
+}
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function drawChart(){
+  const cv=$('#cv'),d=CH;if(!d.length)return;
+  const dpr=Math.max(1,devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;
+  cv.width=W*dpr;cv.height=H*dpr;const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const padL=70,padR=10,padT=10,padB=8,xs=W-padL-padR,ys=H-padT-padB;
+  const cl=d.map(p=>p.c);let lo=Math.min(...cl),hi=Math.max(...cl);const pd=(hi-lo)*.1||hi*.01;lo-=pd;hi+=pd;
+  const X=i=>padL+xs*i/(d.length-1),Y=v=>padT+ys*(1-(v-lo)/(hi-lo));
+  const acc=cssv('--accent'),soft=cssv('--soft'),line=cssv('--line');
+  g.font='11px "IBM Plex Mono",monospace';g.textBaseline='middle';g.textAlign='right';
+  for(let i=0;i<=3;i++){const v=lo+(hi-lo)*i/3,y=Y(v);g.strokeStyle=line;g.globalAlpha=.6;
+    g.beginPath();g.moveTo(padL,y);g.lineTo(W-padR,y);g.stroke();g.globalAlpha=1;g.fillStyle=soft;g.fillText('฿'+fmtNum(v),padL-6,y);}
+  const grad=g.createLinearGradient(0,padT,0,padT+ys);grad.addColorStop(0,acc+'55');grad.addColorStop(1,acc+'00');
+  g.beginPath();g.moveTo(X(0),Y(cl[0]));d.forEach((p,i)=>g.lineTo(X(i),Y(p.c)));
+  g.lineTo(X(d.length-1),padT+ys);g.lineTo(X(0),padT+ys);g.closePath();g.fillStyle=grad;g.fill();
+  g.beginPath();g.moveTo(X(0),Y(cl[0]));d.forEach((p,i)=>g.lineTo(X(i),Y(p.c)));
+  g.strokeStyle=acc;g.lineWidth=2;g.lineJoin='round';g.stroke();
+  g.fillStyle=acc;g.beginPath();g.arc(X(d.length-1),Y(cl[cl.length-1]),3.5,0,7);g.fill();
+  $('#chPrice').textContent='฿'+fmtNum(cl[cl.length-1]);
+}
+function applyLang(){
+  document.documentElement.lang=LANG;
+  $('#ttl').textContent=T.ttl[LANG];$('#boardTitle').textContent=T.board[LANG];
+  $('#hAsset').textContent=T.asset[LANG];$('#hPrice').textContent=T.price[LANG];$('#h24').textContent=T.h24[LANG];
+  $('#hint').textContent=T.hint[LANG];$('#foot').innerHTML=T.foot[LANG];
+  $('#lang').textContent=LANG==='th'?'EN':'ไทย';
+  buildBoard();markSel();refresh();loadChart();
+}
+/* controls */
+$('#skins').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  SKIN=b.dataset.s;document.documentElement.setAttribute('data-skin',SKIN);
+  $('#skins').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  buildBoard();markSel();refresh();drawChart();});
+$('#lang').onclick=()=>{LANG=LANG==='th'?'en':'th';applyLang();};
+
+/* boot */
+document.documentElement.setAttribute('data-skin','gold');
+buildBoard();loadFX();refresh();loadChart();
+setInterval(refresh,5000);
+addEventListener('resize',()=>{clearTimeout(window._r);window._r=setTimeout(drawChart,120);});
+</script>
+</body>
+</html>
