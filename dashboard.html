@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Binance Market Scan</title>
+<title>ตลาดคริปโต·ทอง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* Clean fintech, light-first. Sticky nav + hero, then Market → Chart → Analysis → Invest →
    Movers → Data. Soft rounded cards with hover-lift; staggered fade-in; number count-ups.
@@ -21,7 +21,7 @@
   --sh-sm:0 1px 2px rgba(20,27,45,.05);
   --sh:0 6px 20px rgba(20,27,45,.08);
   --sh-lg:0 16px 40px rgba(20,27,45,.14);
-  --font-sans:'Plus Jakarta Sans',system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-sans:'Plus Jakarta Sans','Noto Sans Thai',system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-mono:'IBM Plex Mono',ui-monospace,"SF Mono",Menlo,monospace;
   --nav-h:60px;
   color-scheme:light;
@@ -129,6 +129,7 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 0 0 1px var(--border);cursor:pointer;padding:0;transition:transform .15s}
 .palettes button:hover{transform:scale(1.18)}
 .palettes button.sel{box-shadow:0 0 0 2px var(--accent)}
+.langbtn{width:auto!important;padding:0 11px;font-size:12.5px;font-weight:700;font-family:var(--font-mono)}
 .fxpill{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--muted);padding:6px 11px;
   border:1px solid var(--border);border-radius:999px;background:var(--surface);box-shadow:var(--sh-sm);white-space:nowrap}
 @media (max-width:640px){.fxpill{display:none}}
@@ -263,40 +264,41 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
 <div class="app">
   <aside class="sidebar">
     <div class="brand"><span class="logo">₿</span>
-      <span class="brand-txt"><b>Binance Scan</b><em>Crypto · Gold · FX · ฿</em></span></div>
+      <span class="brand-txt"><b data-i18n="brand.name">ตลาดคริปโต·ทอง</b><em data-i18n="brand.tag">คริปโต · ทองคำ · เงินตรา · ฿</em></span></div>
     <nav class="side-nav">
-      <button data-v="market" class="active"><span class="ic">◧</span>Market</button>
-      <button data-v="chartsec"><span class="ic">▤</span>Chart &amp; signals</button>
-      <button data-v="analysis"><span class="ic">◴</span>Analysis</button>
-      <button data-v="invest"><span class="ic">◇</span>Invest</button>
-      <button data-v="movers"><span class="ic">↕</span>Top movers</button>
-      <button data-v="data"><span class="ic">▦</span>Data scanned</button>
+      <button data-v="market" class="active"><span class="ic">◧</span><span data-i18n="nav.market">ตลาด</span></button>
+      <button data-v="chartsec"><span class="ic">▤</span><span data-i18n="nav.chart">กราฟและสัญญาณ</span></button>
+      <button data-v="analysis"><span class="ic">◴</span><span data-i18n="nav.analysis">การวิเคราะห์</span></button>
+      <button data-v="invest"><span class="ic">◇</span><span data-i18n="nav.invest">การลงทุน</span></button>
+      <button data-v="movers"><span class="ic">↕</span><span data-i18n="nav.movers">ความเคลื่อนไหวเด่น</span></button>
+      <button data-v="data"><span class="ic">▦</span><span data-i18n="nav.data">ข้อมูลที่สแกน</span></button>
     </nav>
     <div class="side-foot">
-      <span class="status" id="status"><span class="dot"></span><span id="statusText">connecting…</span></span>
+      <span class="status" id="status"><span class="dot"></span><span id="statusText">กำลังเชื่อมต่อ…</span></span>
       <span class="fxpill" id="fxpill">฿ —</span>
       <div class="side-controls">
-        <div class="palettes" id="palettes" title="Pick a design">
+        <div class="palettes" id="palettes" title="เลือกดีไซน์">
           <button data-p="" aria-label="Gold design" style="--d:#e3a21e"></button>
           <button data-p="ocean" aria-label="Ocean design" style="--d:#1898ca"></button>
           <button data-p="grape" aria-label="Grape design" style="--d:#7c5cff"></button>
           <button data-p="sunset" aria-label="Sunset design" style="--d:#ef6038"></button>
           <button data-p="forest" aria-label="Forest design" style="--d:#2fa36b"></button>
         </div>
-        <button class="tbtn" id="theme" aria-label="Toggle light or dark theme">◐</button>
+        <button class="tbtn langbtn" id="lang" aria-label="สลับภาษา">EN</button>
+        <button class="tbtn" id="theme" aria-label="สลับธีมสว่าง/มืด">◐</button>
       </div>
     </div>
   </aside>
   <main class="main"><div class="main-inner">
   <!-- MARKET -->
   <section class="sec view active" id="market">
-    <div class="sec-h"><span class="eyebrow">01 · Live</span><h2>Market board</h2><span class="sub">your watchlist · updates every 5s</span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.market">01 · สด</span><h2 data-i18n="t.market">กระดานตลาด</h2><span class="sub" data-i18n="s.market">รายการเฝ้าดู · อัปเดตทุก 5 วินาที</span></div>
     <div class="board" id="board"></div>
   </section>
 
   <!-- CHART -->
   <section class="sec view" id="chartsec">
-    <div class="sec-h"><span class="eyebrow">02 · Live</span><h2>Price &amp; signals</h2><span class="sub">candles + indicators · redraws every 10s</span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.chart">02 · สด</span><h2 data-i18n="t.chart">ราคาและสัญญาณ</h2><span class="sub" data-i18n="s.chart">แท่งเทียน + อินดิเคเตอร์ · วาดใหม่ทุก 10 วินาที</span></div>
     <div class="chartpanel">
       <div class="ctrls">
         <select id="csym"></select>
@@ -305,9 +307,9 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
           <button data-i="4h">4h</button><button data-i="1d">1d</button><button data-i="1w">1w</button>
         </div>
         <span class="ind" style="margin-left:auto">
-          <label><input type="checkbox" id="iMA" checked> MA</label>
-          <label><input type="checkbox" id="iBB"> Bollinger</label>
-          <label><input type="checkbox" id="iFC" checked> Forecast</label>
+          <label><input type="checkbox" id="iMA" checked> <span data-i18n="ind.ma">เส้นเฉลี่ย</span></label>
+          <label><input type="checkbox" id="iBB"> <span data-i18n="ind.boll">Bollinger</span></label>
+          <label><input type="checkbox" id="iFC" checked> <span data-i18n="ind.fc">พยากรณ์</span></label>
         </span>
       </div>
       <div class="chart-head">
@@ -321,34 +323,34 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
 
   <!-- ANALYSIS -->
   <section class="sec view" id="analysis">
-    <div class="sec-h"><span class="eyebrow">03 · Analysis</span><h2>Risk vs reward</h2><span class="sub" id="asub"></span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.analysis">03 · วิเคราะห์</span><h2 data-i18n="t.analysis">ความเสี่ยงเทียบผลตอบแทน</h2><span class="sub" id="asub"></span></div>
     <div class="two">
       <div class="chartpanel">
-        <div class="sub" style="margin-bottom:8px">Annualised return vs volatility, from daily closes. Up-left is better — more return, less risk.</div>
+        <div class="sub" style="margin-bottom:8px" data-i18n="s.scatter">ผลตอบแทนต่อปีเทียบความผันผวน จากราคาปิดรายวัน · ซ้ายบนดีกว่า — ผลตอบแทนสูง ความเสี่ยงต่ำ</div>
         <canvas id="scatter" style="height:320px"></canvas>
       </div>
       <div class="panel"><div class="tblwrap"><table id="perf">
-        <thead><tr><th>Asset</th><th class="num">Ann. return</th><th class="num">Volatility</th><th class="num">Max drawdown</th></tr></thead><tbody></tbody>
+        <thead><tr><th data-i18n="th.asset">สินทรัพย์</th><th class="num" data-i18n="th.ret">ผลตอบแทน/ปี</th><th class="num" data-i18n="th.vol">ความผันผวน</th><th class="num" data-i18n="th.dd">ขาดทุนสูงสุด</th></tr></thead><tbody></tbody>
       </table></div></div>
     </div>
-    <div class="note" style="margin-top:14px"><span class="tag">FINDING</span><p id="finding"></p></div>
+    <div class="note" style="margin-top:14px"><span class="tag" data-i18n="tag.finding">ข้อค้นพบ</span><p id="finding"></p></div>
   </section>
 
   <!-- INVEST -->
   <section class="sec view" id="invest">
-    <div class="sec-h"><span class="eyebrow">04 · Tool</span><h2>What if I had invested?</h2><span class="sub">backtest on live Binance daily closes</span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.invest">04 · เครื่องมือ</span><h2 data-i18n="t.invest">ถ้าลงทุนไปแล้วจะเป็นอย่างไร?</h2><span class="sub" data-i18n="s.invest">ย้อนทดสอบจากราคาปิดรายวันสดของ Binance</span></div>
     <div class="chartpanel">
       <div class="calc">
-        <label>Amount (฿)<input type="number" id="calcAmt" value="30000" min="1" step="1000"></label>
-        <label>Asset<select id="calcSym"></select></label>
-        <label>Start date<input type="date" id="calcDate" value="2021-01-01"></label>
-        <button class="go" id="calcGo">Calculate</button>
+        <label><span data-i18n="inv.amount">จำนวนเงิน (฿)</span><input type="number" id="calcAmt" value="30000" min="1" step="1000"></label>
+        <label><span data-i18n="inv.asset">สินทรัพย์</span><select id="calcSym"></select></label>
+        <label><span data-i18n="inv.date">วันที่เริ่ม</span><input type="date" id="calcDate" value="2021-01-01"></label>
+        <button class="go" id="calcGo" data-i18n="inv.calc">คำนวณ</button>
       </div>
       <div class="calc-out" id="calcOut" hidden>
-        <div class="co"><span class="k">Invested</span><span class="v mono" id="coIn">—</span></div>
-        <div class="co"><span class="k">Worth today</span><span class="v mono" id="coNow">—</span></div>
-        <div class="co"><span class="k">Total return</span><span class="v mono" id="coRet">—</span></div>
-        <div class="co"><span class="k">Per year</span><span class="v mono" id="coCagr">—</span></div>
+        <div class="co"><span class="k" data-i18n="inv.in">เงินลงทุน</span><span class="v mono" id="coIn">—</span></div>
+        <div class="co"><span class="k" data-i18n="inv.now">มูลค่าวันนี้</span><span class="v mono" id="coNow">—</span></div>
+        <div class="co"><span class="k" data-i18n="inv.ret">ผลตอบแทนรวม</span><span class="v mono" id="coRet">—</span></div>
+        <div class="co"><span class="k" data-i18n="inv.cagr">ต่อปี</span><span class="v mono" id="coCagr">—</span></div>
       </div>
       <div class="sub" id="calcNote" style="margin-top:12px"></div>
     </div>
@@ -356,32 +358,31 @@ footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6
 
   <!-- MOVERS -->
   <section class="sec view" id="movers">
-    <div class="sec-h"><span class="eyebrow">05 · Live</span><h2>Across all USDT markets</h2><span class="sub">refreshes every 60s</span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.movers">05 · สด</span><h2 data-i18n="t.movers">ทั่วทุกตลาด USDT</h2><span class="sub" data-i18n="s.movers">รีเฟรชทุก 60 วินาที</span></div>
     <div class="two">
       <div class="panel"><div class="tblwrap"><table id="gainers">
-        <thead><tr><th>Top 24h gainers</th><th class="num">Price</th><th class="num">24h</th></tr></thead><tbody></tbody>
+        <thead><tr><th data-i18n="th.gainers">ผู้ทำกำไรสูงสุด 24 ชม.</th><th class="num" data-i18n="th.price">ราคา</th><th class="num" data-i18n="th.24h">24 ชม.</th></tr></thead><tbody></tbody>
       </table></div></div>
       <div class="panel"><div class="tblwrap"><table id="volume">
-        <thead><tr><th>Most traded (24h)</th><th class="num">Price</th><th class="num">Volume</th></tr></thead><tbody></tbody>
+        <thead><tr><th data-i18n="th.traded">ซื้อขายมากสุด (24 ชม.)</th><th class="num" data-i18n="th.price">ราคา</th><th class="num" data-i18n="th.vol2">ปริมาณ</th></tr></thead><tbody></tbody>
       </table></div></div>
     </div>
   </section>
 
   <!-- DATA SCANNED -->
   <section class="sec view" id="data" data-count>
-    <div class="sec-h"><span class="eyebrow">06 · Pipeline</span><h2>What we scanned</h2><span class="sub" id="asof"></span></div>
+    <div class="sec-h"><span class="eyebrow" data-i18n="eye.data">06 · ไปป์ไลน์</span><h2 data-i18n="t.data">สิ่งที่เราสแกน</h2><span class="sub" id="asof"></span></div>
     <div class="tiles" id="tiles"></div>
     <div class="panel" style="margin-top:16px"><div class="tblwrap">
       <table id="ledger">
-        <thead><tr><th>Dataset</th><th>Contents</th><th class="num">Rows</th><th class="num">Size</th><th style="width:130px">Share</th></tr></thead>
+        <thead><tr><th data-i18n="th.dataset">ชุดข้อมูล</th><th data-i18n="th.contents">เนื้อหา</th><th class="num" data-i18n="th.rows">แถว</th><th class="num" data-i18n="th.size">ขนาด</th><th style="width:130px" data-i18n="th.share">สัดส่วน</th></tr></thead>
         <tbody></tbody>
       </table>
     </div></div>
   </section>
 
   <footer>
-    Data source: <a href="https://binance-docs.github.io/apidocs/spot/en/" target="_blank" rel="noopener">Binance public API</a> via <code>data-api.binance.vision</code> — no API key needed, market data only.
-    Snapshot figures are from this project's <code>data/raw/</code> Parquet store. Education project; not trading advice.
+    <span data-i18n="foot.src">แหล่งข้อมูล:</span> <a href="https://binance-docs.github.io/apidocs/spot/en/" target="_blank" rel="noopener">Binance public API</a> <span data-i18n="foot.via">ผ่าน</span> <code>data-api.binance.vision</code> <span data-i18n="foot.note">— ไม่ต้องใช้คีย์ API, เฉพาะข้อมูลตลาด · ตัวเลขสแนปช็อตมาจาก data/raw/ · โปรเจกต์เพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน</span>
   </footer>
   </div></main>
 </div>
@@ -419,6 +420,80 @@ const fmtPct=x=>(x>=0?'+':'')+x.toFixed(2)+'%';
 const fmtAbbr=n=>{n=+n;if(n>=1e9)return (n/1e9).toFixed(1)+'B';if(n>=1e6)return (n/1e6).toFixed(1)+'M';
   if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toFixed(0);};
 async function getJSON(path){const r=await fetch(BASE+path,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json();}
+
+/* ---------- i18n: Thai default, English toggle ---------- */
+let LANG='th';
+const ANAME={
+  PAXGUSDT:{th:'ทองคำ',en:'Gold'},BTCUSDT:{th:'บิตคอยน์',en:'Bitcoin'},ETHUSDT:{th:'อีเธอเรียม',en:'Ethereum'},
+  BNBUSDT:{th:'บีเอ็นบี',en:'BNB'},SOLUSDT:{th:'โซลานา',en:'Solana'},XRPUSDT:{th:'เอกซ์อาร์พี',en:'XRP'},
+  ADAUSDT:{th:'คาร์ดาโน',en:'Cardano'},DOGEUSDT:{th:'ดอจคอยน์',en:'Dogecoin'},TRXUSDT:{th:'ทรอน',en:'TRON'},
+  LTCUSDT:{th:'ไลต์คอยน์',en:'Litecoin'},LINKUSDT:{th:'เชนลิงก์',en:'Chainlink'},
+  EURUSDT:{th:'ยูโร',en:'Euro'},GBPUSDT:{th:'ปอนด์',en:'Pound'},
+  ETHEUR:{th:'ETH/EUR',en:'ETH/EUR'},BTCEUR:{th:'BTC/EUR',en:'BTC/EUR'},
+};
+const assetName=s=>ANAME[s]?ANAME[s][LANG]:s;
+const I18N={th:{
+  'brand.name':'ตลาดคริปโต·ทอง','brand.tag':'คริปโต · ทองคำ · เงินตรา · ฿',
+  'nav.market':'ตลาด','nav.chart':'กราฟและสัญญาณ','nav.analysis':'การวิเคราะห์','nav.invest':'การลงทุน','nav.movers':'ความเคลื่อนไหวเด่น','nav.data':'ข้อมูลที่สแกน',
+  'eye.market':'01 · สด','t.market':'กระดานตลาด','s.market':'รายการเฝ้าดู · อัปเดตทุก 5 วินาที',
+  'eye.chart':'02 · สด','t.chart':'ราคาและสัญญาณ','s.chart':'แท่งเทียน + อินดิเคเตอร์ · วาดใหม่ทุก 10 วินาที',
+  'ind.ma':'เส้นเฉลี่ย','ind.boll':'Bollinger','ind.fc':'พยากรณ์',
+  'eye.analysis':'03 · วิเคราะห์','t.analysis':'ความเสี่ยงเทียบผลตอบแทน','s.scatter':'ผลตอบแทนต่อปีเทียบความผันผวน จากราคาปิดรายวัน · ซ้ายบนดีกว่า — ผลตอบแทนสูง ความเสี่ยงต่ำ',
+  'th.asset':'สินทรัพย์','th.ret':'ผลตอบแทน/ปี','th.vol':'ความผันผวน','th.dd':'ขาดทุนสูงสุด','tag.finding':'ข้อค้นพบ',
+  'eye.invest':'04 · เครื่องมือ','t.invest':'ถ้าลงทุนไปแล้วจะเป็นอย่างไร?','s.invest':'ย้อนทดสอบจากราคาปิดรายวันสดของ Binance',
+  'inv.amount':'จำนวนเงิน (฿)','inv.asset':'สินทรัพย์','inv.date':'วันที่เริ่ม','inv.calc':'คำนวณ','inv.in':'เงินลงทุน','inv.now':'มูลค่าวันนี้','inv.ret':'ผลตอบแทนรวม','inv.cagr':'ต่อปี',
+  'eye.movers':'05 · สด','t.movers':'ทั่วทุกตลาด USDT','s.movers':'รีเฟรชทุก 60 วินาที','th.gainers':'ผู้ทำกำไรสูงสุด 24 ชม.','th.price':'ราคา','th.24h':'24 ชม.','th.traded':'ซื้อขายมากสุด (24 ชม.)','th.vol2':'ปริมาณ',
+  'eye.data':'06 · ไปป์ไลน์','t.data':'สิ่งที่เราสแกน','th.dataset':'ชุดข้อมูล','th.contents':'เนื้อหา','th.rows':'แถว','th.size':'ขนาด','th.share':'สัดส่วน',
+  'foot.src':'แหล่งข้อมูล:','foot.via':'ผ่าน','foot.note':'— ไม่ต้องใช้คีย์ API, เฉพาะข้อมูลตลาด · ตัวเลขสแนปช็อตมาจาก data/raw/ · โปรเจกต์เพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน',
+  'st.live':'สด','st.reconnect':'กำลังเชื่อมต่อใหม่…',
+  'tile.rows':'แถวทั้งหมด','u.million':'ล้าน','tile.disk':'บนดิสก์','u.mb':'MB Parquet','tile.datasets':'ชุดข้อมูล','u.tables':'ตาราง','tile.pairs':'คู่ที่พบ','u.markets':'ตลาด',
+  'ds.prices_1h':'OHLCV รายชั่วโมง — ครบ 506 คู่ USDT','ds.prices_daily':'OHLCV รายวัน — ทอง + คริปโต + เงินตรา','ds.ticker_24h':'สแนปช็อตตลาด 24 ชม. (ทุกตลาด)','ds.symbols':'จักรวาลคู่ที่ซื้อขายได้','ds.orderbook':'สแนปช็อตความลึกออเดอร์บุ๊ก','ds.prices_intraday':'แท่ง 1 นาทีแบบสด',
+  'asof':'สแกนเมื่อ 2026-10-12 ถึง ~05:34 UTC',
+  'rsi.ob':'ซื้อมากเกินไป','rsi.os':'ขายมากเกินไป','rsi.neu':'เป็นกลาง','trend.up':'↑ ขึ้น','trend.dn':'↓ ลง','chart.trend':'แนวโน้ม','chart.range':'ช่วง',
+  'chart.over':'· {n} แท่ง','leg.forecast':'พยากรณ์ ({n} แท่ง, แถบ 95%)',
+  'asub.live':'สด · คำนวณใหม่ {t} · จากราคาปิดรายวัน','asub.snap':'ประมวลผล {m} ล้านแถวรายชั่วโมง · {p} คู่',
+  'find':'<b>ทองคำ (PAXG)</b> ให้ผลตอบแทน <b>{ret}%/ปี</b> ที่ความผันผวนเพียง <b>{vol}%</b> (ขาดทุนสูงสุด {dd}%) — {calm} ผลตอบแทนรายวันสัมพันธ์กับบิตคอยน์เพียง <b>{corr}</b> จึงเคลื่อนไหวเป็นอิสระจากคริปโตเป็นส่วนใหญ่ เป็นตัวช่วยกระจายความเสี่ยงที่แท้จริง',
+  'find.calm':'ความผันผวนต่ำที่สุดในบรรดาสินทรัพย์เสี่ยงที่นี่','find.calm2':'สงบกว่าคริปโตมาก',
+  'calc.enter':'กรอกจำนวนเงินและวันที่เริ่ม','calc.fetch':'กำลังดึงข้อมูล…','calc.nodate':'ไม่มีข้อมูลสำหรับวันที่นั้น (คู่อาจยังไม่มีในตอนนั้น)','calc.err':'โหลดข้อมูลไม่ได้ ลองสินทรัพย์หรือวันที่อื่น',
+  'calc.note':'ซื้อ <b>{u}</b> {sym} ที่ {start} เมื่อ {date} ตอนนี้ {now} · ราคาปิดรายวัน Binance แปลงเป็น ฿ · ไม่ใช่คำแนะนำการลงทุน',
+  'chip.gold':'ทอง','chip.crypto':'คริปโต','chip.fiat':'เงินตรา',
+},en:{
+  'brand.name':'Crypto-Gold Market','brand.tag':'Crypto · Gold · FX · ฿',
+  'nav.market':'Market','nav.chart':'Chart & signals','nav.analysis':'Analysis','nav.invest':'Invest','nav.movers':'Top movers','nav.data':'Data scanned',
+  'eye.market':'01 · LIVE','t.market':'Market board','s.market':'your watchlist · updates every 5s',
+  'eye.chart':'02 · LIVE','t.chart':'Price & signals','s.chart':'candles + indicators · redraws every 10s',
+  'ind.ma':'MA','ind.boll':'Bollinger','ind.fc':'Forecast',
+  'eye.analysis':'03 · ANALYSIS','t.analysis':'Risk vs reward','s.scatter':'Annualised return vs volatility, from daily closes. Up-left is better — more return, less risk.',
+  'th.asset':'Asset','th.ret':'Ann. return','th.vol':'Volatility','th.dd':'Max drawdown','tag.finding':'FINDING',
+  'eye.invest':'04 · TOOL','t.invest':'What if I had invested?','s.invest':'backtest on live Binance daily closes',
+  'inv.amount':'Amount (฿)','inv.asset':'Asset','inv.date':'Start date','inv.calc':'Calculate','inv.in':'Invested','inv.now':'Worth today','inv.ret':'Total return','inv.cagr':'Per year',
+  'eye.movers':'05 · LIVE','t.movers':'Across all USDT markets','s.movers':'refreshes every 60s','th.gainers':'Top 24h gainers','th.price':'Price','th.24h':'24h','th.traded':'Most traded (24h)','th.vol2':'Volume',
+  'eye.data':'06 · PIPELINE','t.data':'What we scanned','th.dataset':'Dataset','th.contents':'Contents','th.rows':'Rows','th.size':'Size','th.share':'Share',
+  'foot.src':'Data source:','foot.via':'via','foot.note':'— no API key needed, market data only · snapshot figures from data/raw/ · education project, not trading advice',
+  'st.live':'LIVE','st.reconnect':'reconnecting…',
+  'tile.rows':'Total rows','u.million':'million','tile.disk':'On disk','u.mb':'MB Parquet','tile.datasets':'Datasets','u.tables':'tables','tile.pairs':'Pairs seen','u.markets':'markets',
+  'ds.prices_1h':'Hourly OHLCV — all 506 USDT pairs','ds.prices_daily':'Daily OHLCV — gold + crypto + fiat','ds.ticker_24h':'24h market snapshot (all markets)','ds.symbols':'Tradable pair universe','ds.orderbook':'Order-book depth snapshot','ds.prices_intraday':'Live 1-minute bars',
+  'asof':'scanned 2026-10-12, up to ~05:34 UTC',
+  'rsi.ob':'overbought','rsi.os':'oversold','rsi.neu':'neutral','trend.up':'↑ up','trend.dn':'↓ down','chart.trend':'trend','chart.range':'range',
+  'chart.over':'over {n} bars','leg.forecast':'Forecast ({n} bars, 95% band)',
+  'asub.live':'live · recomputed {t} · from daily closes','asub.snap':'{m}M hourly rows · {p} pairs processed',
+  'find':'<b>Gold (PAXG)</b> returned <b>{ret}%/yr</b> at just <b>{vol}%</b> volatility (worst drawdown {dd}%) — {calm}. Its daily returns correlate only <b>{corr}</b> with Bitcoin, so gold moves largely independently of crypto: a genuine diversifier.',
+  'find.calm':'the lowest volatility of any risk asset here','find.calm2':'far calmer than crypto',
+  'calc.enter':'Enter an amount and a start date.','calc.fetch':'Fetching…','calc.nodate':'No data for that date (the pair may not have existed yet).','calc.err':'Could not load that series. Try another asset or date.',
+  'calc.note':'Bought <b>{u}</b> {sym} at {start} on {date}, now {now}. Binance daily closes, converted to ฿ · not investment advice.',
+  'chip.gold':'gold','chip.crypto':'crypto','chip.fiat':'fiat',
+}};
+function t(k){const d=I18N[LANG]||I18N.th;return d[k]!=null?d[k]:k;}
+function tf(k,o){let s=t(k);for(const p in o)s=s.split('{'+p+'}').join(o[p]);return s;}
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
+  const lb=$('#lang');if(lb)lb.textContent=LANG==='th'?'EN':'ไทย';
+  renderScan(); buildBoard(); buildChartControls(); buildCalc(); renderAnalysis();
+  if(CH.data.length)drawChart();
+  refreshBoard(); refreshMovers();
+  setStatus(Date.now()-lastOk<15000);
+}
 
 /* ---------- currency: everything is shown in Thai Baht, converted live from USD ---------- */
 let FX=33.6; // USD -> THB, updated by loadFX()
@@ -467,25 +542,25 @@ const CHIND={ma:true,bb:false,fc:true};
 let lastOk=0;
 function setStatus(ok){
   const el=$('#status');
-  if(ok){lastOk=Date.now();el.className='status live';$('#statusText').textContent='LIVE';}
-  else{el.className='status down';$('#statusText').textContent='reconnecting…';}
+  if(ok){lastOk=Date.now();el.className='status live';$('#statusText').textContent=t('st.live');}
+  else{el.className='status down';$('#statusText').textContent=t('st.reconnect');}
 }
 
 /* ---------- scan summary (static) ---------- */
 function renderScan(){
-  $('#asof').textContent=SCAN.asof;
-  const t=SCAN.totals;
+  $('#asof').textContent=t('asof');
+  const tot=SCAN.totals;
   const tiles=[
-    {k:'Total rows',v:(t.rows/1e6).toFixed(2),u:'million'},
-    {k:'On disk',v:t.mb.toFixed(0),u:'MB Parquet'},
-    {k:'Datasets',v:t.datasets,u:'tables'},
-    {k:'Pairs seen',v:fmtInt(t.pairs),u:'markets'},
+    {k:t('tile.rows'),v:(tot.rows/1e6).toFixed(2),u:t('u.million')},
+    {k:t('tile.disk'),v:tot.mb.toFixed(0),u:t('u.mb')},
+    {k:t('tile.datasets'),v:tot.datasets,u:t('u.tables')},
+    {k:t('tile.pairs'),v:fmtInt(tot.pairs),u:t('u.markets')},
   ];
-  $('#tiles').innerHTML=tiles.map(x=>`<div class="tile"><div class="k">${x.k}</div><div class="v"><span class="cup" data-to="${x.v}">0</span> <small>${x.u}</small></div></div>`).join('');
+  $('#tiles').innerHTML=tiles.map(x=>`<div class="tile"><div class="k">${x.k}</div><div class="v"><span class="cup" data-to="${x.v}">${x.v}</span> <small>${x.u}</small></div></div>`).join('');
   const max=Math.max(...SCAN.datasets.map(d=>d.rows));
   $('#ledger tbody').innerHTML=SCAN.datasets.map(d=>`<tr>
     <td><span class="badge">${d.name}</span></td>
-    <td style="white-space:normal">${d.label}</td>
+    <td style="white-space:normal">${t('ds.'+d.name)}</td>
     <td class="num">${fmtInt(d.rows)}</td>
     <td class="num">${d.mb<0.1?'<0.1':d.mb.toFixed(1)} MB</td>
     <td><div class="bar" style="width:${Math.max(3,d.rows/max*100)}%"></div></td></tr>`).join('');
@@ -496,8 +571,8 @@ const prev={};
 function buildBoard(){
   $('#board').innerHTML=SCAN.watchlist.map(w=>`
     <div class="card ${w.t==='gold'?'gold':''}" id="c-${w.s}">
-      <div class="sym"><div><div class="name">${w.n}</div><div class="ticker">${w.s}</div></div>
-        <span class="chip ${w.t==='gold'?'gold':''}">${w.t}</span></div>
+      <div class="sym"><div><div class="name">${assetName(w.s)}</div><div class="ticker">${w.s}</div></div>
+        <span class="chip ${w.t==='gold'?'gold':''}">${t('chip.'+w.t)}</span></div>
       <div class="price skel">—</div><div class="chg skel">·····</div>
       <div class="meta"><span class="lo">—</span><span class="hi">—</span></div>
     </div>`).join('');
@@ -525,7 +600,7 @@ async function refreshBoard(){
 /* ---------- live chart ---------- */
 let CH={sym:'PAXGUSDT',int:'1h',data:[]};
 function buildChartControls(){
-  $('#csym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${w.n} · ${w.s}</option>`).join('');
+  $('#csym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${assetName(w.s)} · ${w.s}</option>`).join('');
   $('#csym').value=CH.sym;
   $('#csym').onchange=e=>{CH.sym=e.target.value;loadChart();};
   $('#cint').querySelectorAll('button').forEach(b=>b.onclick=()=>{
@@ -634,19 +709,19 @@ function drawChart(){
   $('#cprice').textContent=fmtBaht(last);
   $('#cprice').className='big '+(up?'up':'down');
   const chg=(last-first)/first*100;
-  $('#cmeta').innerHTML=`${CH.sym} · ${CH.int} · <span class="${up?'up':'down'}">${fmtPct(chg)}</span> over ${n} bars`;
-  $('#crange').textContent='range '+fmtBaht(Math.min(...d.map(p=>p.l)))+' – '+fmtBaht(Math.max(...d.map(p=>p.h)));
+  $('#cmeta').innerHTML=`${CH.sym} · ${CH.int} · <span class="${up?'up':'down'}">${fmtPct(chg)}</span> ${tf('chart.over',{n})}`;
+  $('#crange').textContent=t('chart.range')+' '+fmtBaht(Math.min(...d.map(p=>p.l)))+' – '+fmtBaht(Math.max(...d.map(p=>p.h)));
   // RSI(14) signal
   const r=rsi(closes,14).filter(v=>v!=null), rv=r.length?r[r.length-1]:null;
   const sig=$('#csignal');
-  if(rv!=null){const z=rv>70?['overbought','var(--down)']:rv<30?['oversold','var(--up)']:['neutral','var(--muted)'];
-    const trend=CHIND.fc&&fpts?(fpts[fN-1]>=last?'↑ up':'↓ down'):'';
-    sig.innerHTML=`RSI ${rv.toFixed(0)} · <span style="color:${z[1]}">${z[0]}</span>`+(trend?` · trend <b>${trend}</b>`:'');}
+  if(rv!=null){const z=rv>70?[t('rsi.ob'),'var(--down)']:rv<30?[t('rsi.os'),'var(--up)']:[t('rsi.neu'),'var(--muted)'];
+    const trend=CHIND.fc&&fpts?(fpts[fN-1]>=last?t('trend.up'):t('trend.dn')):'';
+    sig.innerHTML=`RSI ${rv.toFixed(0)} · <span style="color:${z[1]}">${z[0]}</span>`+(trend?` · ${t('chart.trend')} <b>${trend}</b>`:'');}
   else sig.textContent='';
   // legend
   const lg=[];if(ma){[7,25,99].forEach(k=>closes.length>=k&&lg.push(`<span><i style="background:${MACOL[k]}"></i>MA${k}</span>`));}
   if(CHIND.bb)lg.push(`<span><i style="background:${muted}"></i>Bollinger 20,2</span>`);
-  if(fpts)lg.push(`<span><i style="background:${cssvar('--accent')}"></i>Forecast (${fN} bars, 95% band)</span>`);
+  if(fpts)lg.push(`<span><i style="background:${cssvar('--accent')}"></i>${tf('leg.forecast',{n:fN})}</span>`);
   $('#clegend').innerHTML=lg.join('');
 }
 
@@ -669,21 +744,18 @@ async function refreshMovers(){
 /* ---------- analysis ---------- */
 function renderAnalysis(){
   const a=ANALYSIS;
-  $('#asub').textContent=`${(a.totalBars/1e6).toFixed(1)}M hourly rows · ${a.pairs} pairs processed`;
+  $('#asub').textContent=tf('asub.snap',{m:(a.totalBars/1e6).toFixed(1),p:a.pairs});
   $('#perf tbody').innerHTML=a.perf.map(r=>`<tr>
-    <td>${r.sym==='PAXGUSDT'?'★ ':''}${r.name}</td>
+    <td>${r.sym==='PAXGUSDT'?'★ ':''}${assetName(r.sym)}</td>
     <td class="num" style="color:${r.ret>=0?'var(--up)':'var(--down)'}">${r.ret>=0?'+':''}${r.ret}%</td>
     <td class="num">${r.vol}%</td><td class="num down">${r.dd}%</td></tr>`).join('');
   const gold=a.perf.find(r=>r.sym==='PAXGUSDT');
   const others=a.perf.filter(r=>r.sym!=='PAXGUSDT'&&r.sym!=='EURUSDT'&&r.sym!=='GBPUSDT');
   const calmest=gold&&others.every(r=>gold.vol<r.vol);
-  const gtxt=gold
-    ? `<b>Gold (PAXG)</b> returned <b>${gold.ret>=0?'+':''}${gold.ret}%/yr</b> at just <b>${gold.vol}%</b> volatility `
-      +`(worst drawdown ${gold.dd}%) — ${calmest?'the lowest volatility of any risk asset here':'far calmer than crypto'}. `
+  $('#finding').innerHTML=gold
+    ? tf('find',{ret:(gold.ret>=0?'+':'')+gold.ret,vol:gold.vol,dd:gold.dd,corr:a.goldBtcCorr,
+        calm:calmest?t('find.calm'):t('find.calm2')})
     : '';
-  $('#finding').innerHTML=gtxt
-    +`Its daily returns correlate only <b>${a.goldBtcCorr}</b> with Bitcoin, so gold moves largely `
-    +`independently of crypto: a genuine diversifier.`;
   drawScatter();
 }
 function drawScatter(){
@@ -727,7 +799,7 @@ async function loadAnalysisLive(){
     const res=await Promise.all(wl.map(w=>getJSON(`/api/v3/klines?symbol=${w.s}&interval=1d&limit=1000`).catch(()=>null)));
     const perf=[], retMap={};
     res.forEach((kl,i)=>{ if(!kl||kl.length<30)return; const w=wl[i], mt=dailyMetrics(kl);
-      perf.push({name:w.n,sym:w.s,ret:+(mt.ret*100).toFixed(1),vol:+(mt.vol*100).toFixed(1),dd:+(mt.dd*100).toFixed(1)});
+      perf.push({sym:w.s,ret:+(mt.ret*100).toFixed(1),vol:+(mt.vol*100).toFixed(1),dd:+(mt.dd*100).toFixed(1)});
       retMap[w.s]=Object.fromEntries(mt.byDate.filter(x=>x[1]!=null)); });
     if(perf.length<5)throw new Error('thin');
     perf.sort((a,b)=>b.ret-a.ret);
@@ -736,25 +808,25 @@ async function loadAnalysisLive(){
     if(keys.length>30){ANALYSIS.goldBtcCorr=+pearson(keys.map(k=>g[k]),keys.map(k=>b[k])).toFixed(2);}
     ANALYSIS.perf=perf; ANALYSIS.live=true;
     renderAnalysis();
-    $('#asub').textContent=`live · recomputed ${new Date().toLocaleTimeString()} · from daily closes`;
+    $('#asub').textContent=tf('asub.live',{t:new Date().toLocaleTimeString()});
     setStatus(true);
   }catch(e){ /* keep the embedded snapshot numbers */ }
 }
 
 /* ---------- "what if I invested" calculator ---------- */
 function buildCalc(){
-  $('#calcSym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${w.n} · ${w.s}</option>`).join('');
+  $('#calcSym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${assetName(w.s)} · ${w.s}</option>`).join('');
   $('#calcSym').value='BTCUSDT';
   $('#calcGo').onclick=calcRun;
 }
 async function calcRun(){
   const amt=+$('#calcAmt').value, sym=$('#calcSym').value, date=$('#calcDate').value;
   const note=$('#calcNote'), out=$('#calcOut');
-  if(!(amt>0)||!date){note.textContent='Enter an amount and a start date.';return;}
-  note.textContent='Fetching…';
+  if(!(amt>0)||!date){note.textContent=t('calc.enter');return;}
+  note.textContent=t('calc.fetch');
   try{
     const start=await getJSON(`/api/v3/klines?symbol=${sym}&interval=1d&startTime=${Date.parse(date)}&limit=1`);
-    if(!start.length){note.textContent='No data for that date (the pair may not have existed yet).';out.hidden=true;return;}
+    if(!start.length){note.textContent=t('calc.nodate');out.hidden=true;return;}
     const now=await getJSON(`/api/v3/ticker/price?symbol=${sym}`);
     const startClose=+start[0][4], startUsed=new Date(start[0][0]), nowPrice=+now.price;
     const ratio=nowPrice/startClose;              // currency-agnostic growth
@@ -768,11 +840,10 @@ async function calcRun(){
     $('#coRet').textContent=fmtPct(ret); $('#coRet').style.color=ret>=0?'var(--up)':'var(--down)';
     $('#coCagr').textContent=fmtPct(cagr); $('#coCagr').style.color=cagr>=0?'var(--up)':'var(--down)';
     out.hidden=false;
-    note.innerHTML=`Bought <b>${units.toLocaleString('en-US',{maximumFractionDigits:6})}</b> `
-      +`${sym.replace('USDT','')} at ${fmtBaht(startClose)} on ${startUsed.toISOString().slice(0,10)}, `
-      +`now ${fmtBaht(nowPrice)}. Binance daily closes, converted to ฿ · not investment advice.`;
+    note.innerHTML=tf('calc.note',{u:units.toLocaleString('en-US',{maximumFractionDigits:6}),
+      sym:sym.replace('USDT',''),start:fmtBaht(startClose),date:startUsed.toISOString().slice(0,10),now:fmtBaht(nowPrice)});
     setStatus(true);
-  }catch(e){note.textContent='Could not load that series. Try another asset or date.';}
+  }catch(e){note.textContent=t('calc.err');}
 }
 
 /* ---------- theme ---------- */
@@ -834,13 +905,11 @@ document.querySelectorAll('.side-nav button').forEach(b=>b.onclick=()=>showView(
 (function(){let v='market';try{v=localStorage.getItem('bms-view')||'market';}catch(e){}
   if(!document.getElementById(v))v='market'; showView(v);})();
 
-/* ---------- boot ---------- */
-renderScan();
-renderAnalysis();   // first paint from embedded snapshot
-buildBoard();
-buildChartControls();
-buildCalc();
-loadFX(); refreshBoard(); loadChart(); refreshMovers(); loadAnalysisLive();
+/* ---------- language toggle + boot ---------- */
+(function(){try{const l=localStorage.getItem('bms-lang');if(l==='en'||l==='th')LANG=l;}catch(e){}})();
+$('#lang').onclick=()=>{LANG=LANG==='th'?'en':'th';try{localStorage.setItem('bms-lang',LANG);}catch(e){}applyLang();};
+applyLang();   // renders scan / board / chart controls / calc / analysis in the current language
+loadFX(); loadChart(); loadAnalysisLive();
 setInterval(loadFX,3600000);
 setInterval(refreshBoard,5000);
 setInterval(loadChart,10000);
