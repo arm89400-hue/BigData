@@ -50,8 +50,9 @@ python -m venv .venv
 
 ## Dashboard (live)
 
-`dashboard.html` is a self-contained web page: a summary of everything in `data/raw/` plus a
-**live** market board and price chart that poll Binance's public API directly in the browser.
+`dashboard.html` is a self-contained, **gold-first** web page in Thai (EN toggle), priced in
+Thai Baht. It **only displays data and runs calculations** — it takes no payments, does no
+trading and collects no personal data; numbers typed into calculators stay in the browser.
 
 ```powershell
 # Option A - just open the file
@@ -62,33 +63,33 @@ start dashboard.html
 #   then open http://localhost:8787/dashboard.html
 ```
 
-Layout:
-- **Sidebar app** — pick a section from the left (Market, Chart & signals, Analysis, Invest,
-  Top movers, Data scanned); only that view shows (no long scroll). Live status, the FX rate,
-  the design palettes and the theme toggle live at the bottom of the sidebar.
+Tabs:
+- **ภาพรวม / Overview** — the **gold price board**: 96.5% gold bar and ornament **sell / buy-back**
+  prices from the Thai Gold Traders Association, 99.99% gold per gram and world gold (XAU) per
+  ounce from live spot. Below it: a **converter** (บาททอง, สลึง, grams, ounces, silver, ฿, USD,
+  EUR, GBP, JPY, CNY, BTC, ETH — one input shows every unit), a **price-range outlook** (7/30
+  days, 68% and 95% bands from 1-year real volatility), and other assets (silver, currencies, crypto).
+- **กราฟ / Chart** — 90 days of history (silver: ~6 months weekly) with the 30-day outlook range.
+- **ย้อนทดสอบ / Back-test** — "what would ฿X invested on a date be worth today", using that day's
+  real closing price and exchange rate (hypothetical calculation only).
+- **ตารางอ้างอิง / Reference** — gold weights (1 สลึง … 10 บาท) with grams and prices.
+- **ข้อมูลโปรเจกต์ / Project data** — live 1-year return / volatility / drawdown for gold, BTC,
+  ETH, the gold-BTC correlation, the scanned-dataset summary and the data sources.
 
-Currency & designs:
-- **Priced in Thai Baht (฿)** — all prices, the chart, movers and the calculator are converted
-  live from USD using `frankfurter.dev` (jsdelivr currency-api fallback); the rate shows in the nav.
-- **Five design palettes** (Gold, Ocean, Grape, Sunset, Forest) picked from the nav dots, plus a
-  light/dark toggle — your choice is remembered.
+Data sources (all free, no API key):
 
-What's on the page:
-- **Live market board** — watchlist prices + 24h change, refreshing every 5s.
-- **Live chart with signals** — candles plus moving averages (7/25/99), Bollinger Bands, an
-  RSI(14) read-out, and a least-squares **trend forecast** with a 95% band (a statistical
-  projection, not advice).
-- **Live risk/reward analysis** — return, volatility, drawdown and the gold-vs-Bitcoin
-  correlation, recomputed in the browser from fresh daily closes (auto-refresh every 5 min).
-- **"What if I invested" backtester** — $amount + asset + date → value today, total return
-  and per-year return, from live Binance daily closes.
-- **Across all USDT markets** — top gainers and most-traded, refreshing every 60s.
+| Data | Source | Freshness |
+|---|---|---|
+| 96.5% gold bar / ornament prices | Thai Gold Traders Association via `api.chnwt.dev` (unofficial mirror of goldtraders.or.th) | each announcement, polled every 10 min |
+| World gold & silver spot (XAU, XAG) | `api.gold-api.com` | live, polled every 60 s |
+| Gold history (charts, outlook, back-test) | PAXG daily closes on Binance (token backed 1:1 by gold), anchored to the current real price | daily |
+| BTC, ETH | Binance public API | live, every 15 s |
+| THB vs USD/EUR/GBP/JPY/CNY | `api.frankfurter.dev` (ECB reference) | daily |
+| Silver history | jsdelivr currency-api | daily / weekly |
 
-Realtime notes:
-- The **scan summary** (row counts, sizes) is a *snapshot* baked into the page.
-- **Everything else is realtime** while the page is open and you're online.
-- A published Claude artifact can't do the live part (its sandbox blocks outbound requests),
-  so the dashboard is a local file you open yourself.
+If the association feed is down, bar/ornament prices fall back to an estimate from world spot
+gold and the page says so. A published Claude artifact can't make these live calls (its sandbox
+blocks outbound requests), so the dashboard is a local file you open yourself.
 
 ## Analysis
 

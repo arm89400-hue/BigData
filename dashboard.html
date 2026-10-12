@@ -6,917 +6,725 @@
 <title>ตลาดคริปโต·ทอง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Trirong:wght@500;600;700&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Clean fintech, light-first. Sticky nav + hero, then Market → Chart → Analysis → Invest →
-   Movers → Data. Soft rounded cards with hover-lift; staggered fade-in; number count-ups.
-   Warm-gold accent (the gold theme), teal/coral for up/down. Dark theme mirrors it. */
+/* Formal, gold-first. Trirong (serif) for the name and headline figures, Sarabun for text,
+   IBM Plex Mono for aligned numbers. One accent: gold. Display and calculation only. */
 :root{
-  --bg:#f4f6fa; --surface:#ffffff; --surface-2:#eef1f7; --border:#e4e8f1;
-  --fg:#141b2d; --muted:#5c6b86; --faint:#99a4bb;
-  --accent:#e3a21e;
-  --accent-soft:color-mix(in srgb,var(--accent) 15%,var(--surface));
-  --accent-ink:color-mix(in srgb,var(--accent) 60%,var(--fg));
-  --up:#13b981; --down:#ef4d6b;
-  --sh-sm:0 1px 2px rgba(20,27,45,.05);
-  --sh:0 6px 20px rgba(20,27,45,.08);
-  --sh-lg:0 16px 40px rgba(20,27,45,.14);
-  --font-sans:'Plus Jakarta Sans','Noto Sans Thai',system-ui,-apple-system,"Segoe UI",sans-serif;
-  --font-mono:'IBM Plex Mono',ui-monospace,"SF Mono",Menlo,monospace;
-  --nav-h:60px;
+  --bg:#ffffff; --surface:#ffffff; --sunk:#f5f5f3; --line:#e4e3de;
+  --ink:#16171b; --muted:#666a72; --gold:#8c6409; --gold-2:#c4931f; --gold-soft:#f6eedb;
+  --up:#14775a; --down:#bc3a2f;
+  --f-ui:'Sarabun',system-ui,sans-serif; --f-num:'IBM Plex Mono',ui-monospace,monospace; --f-mark:'Trirong',serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --bg:#0f141f; --surface:#161d2c; --surface-2:#1d2639; --border:#2a3450;
-  --fg:#e9eef7; --muted:#95a2bb; --faint:#5f6d88;
-  /* accent inherits from :root / data-palette; soft+ink derive via color-mix */
-  --up:#3fcaa0; --down:#f8717f;
-  --sh-sm:0 1px 2px rgba(0,0,0,.3);
-  --sh:0 6px 20px rgba(0,0,0,.35);
-  --sh-lg:0 16px 40px rgba(0,0,0,.5);
-  color-scheme:dark;
-}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121316; --surface:#18191d; --sunk:#1f2025; --line:#2c2d33;
+  --ink:#ecebe5; --muted:#9b9fa8; --gold:#dbad46; --gold-2:#e6bf61; --gold-soft:#2a2414;
+  --up:#45bf8d; --down:#ee7266; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f141f; --surface:#161d2c; --surface-2:#1d2639; --border:#2a3450;
-  --fg:#e9eef7; --muted:#95a2bb; --faint:#5f6d88;
-  /* accent inherits from :root / data-palette; soft+ink derive via color-mix */
-  --up:#3fcaa0; --down:#f8717f;
-  --sh-sm:0 1px 2px rgba(0,0,0,.3);
-  --sh:0 6px 20px rgba(0,0,0,.35);
-  --sh-lg:0 16px 40px rgba(0,0,0,.5);
-  color-scheme:dark;
-}
-/* design palettes — each only sets the accent; soft/ink derive via color-mix for both themes */
-:root[data-palette="ocean"]{--accent:#1898ca}
-:root[data-palette="grape"]{--accent:#7c5cff}
-:root[data-palette="sunset"]{--accent:#ef6038}
-:root[data-palette="forest"]{--accent:#2fa36b}
+  --bg:#121316; --surface:#18191d; --sunk:#1f2025; --line:#2c2d33;
+  --ink:#ecebe5; --muted:#9b9fa8; --gold:#dbad46; --gold-2:#e6bf61; --gold-soft:#2a2414;
+  --up:#45bf8d; --down:#ee7266; color-scheme:dark}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:15px;line-height:1.55;
-  -webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15.5px;line-height:1.6;padding-top:env(safe-area-inset-top,0px)}
 [hidden]{display:none!important}
-.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
-.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .up{color:var(--up)} .down{color:var(--down)}
-h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+.bsym{font-family:var(--f-num);font-weight:500}
 
-/* ---- app shell: sidebar + main ---- */
-.app{display:flex;min-height:100vh}
-.sidebar{width:246px;flex:none;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;
-  padding:20px 16px;border-right:1px solid var(--border);background:var(--surface);z-index:30}
-.sidebar .brand{margin:4px 6px 18px}
-.side-nav{display:flex;flex-direction:column;gap:4px}
-.side-nav button{display:flex;align-items:center;gap:12px;font:inherit;font-size:14.5px;font-weight:600;
-  color:var(--muted);background:transparent;border:none;border-radius:12px;padding:11px 14px;cursor:pointer;
-  text-align:left;transition:background .18s,color .18s}
-.side-nav button:hover{background:var(--surface-2);color:var(--fg)}
-.side-nav button.active{background:var(--accent-soft);color:var(--accent-ink)}
-.side-nav .ic{width:18px;text-align:center;font-size:15px;flex:none}
-.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-top:14px;border-top:1px solid var(--border)}
-.side-foot .status,.side-foot .fxpill{width:100%;justify-content:center}
-.side-controls{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.main{flex:1;min-width:0;padding:26px 28px 48px}
-.main-inner{max-width:1080px;margin:0 auto}
-.view{display:none}
-.view.active{display:block}
-@media (max-width:860px){
-  .app{flex-direction:column}
-  .sidebar{width:auto;height:auto;position:sticky;top:0;flex-direction:row;align-items:center;gap:10px;
-    padding:9px 14px;border-right:none;border-bottom:1px solid var(--border);overflow-x:auto;
-    background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px)}
-  .sidebar .brand{margin:0 6px 0 0}
-  .side-nav{flex-direction:row;gap:2px}
-  .side-nav button{padding:8px 11px;font-size:13px;white-space:nowrap}
-  .side-nav .ic{display:none}
-  .side-foot{margin:0 0 0 auto;flex-direction:row;align-items:center;border-top:none;padding-top:0;gap:8px}
-  .side-foot .status{width:auto} .side-foot .fxpill{width:auto}
-  .main{padding:18px 16px 40px}
-}
-@media (max-width:560px){ .side-foot .fxpill{display:none} }
+/* icons */
+.ic{width:17px;height:17px;flex:none;vertical-align:-3px}
+.arr{width:13px;height:13px;vertical-align:-2px}
 
-/* ---- nav ---- */
-.nav{position:sticky;top:0;z-index:30;height:var(--nav-h);
-  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px) saturate(1.3);
-  border-bottom:1px solid var(--border)}
-.nav-in{max-width:1180px;margin:0 auto;height:var(--nav-h);padding:0 20px;display:flex;align-items:center;gap:18px}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;
-  background:linear-gradient(140deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#000));color:#fff;font-weight:800;font-size:17px;
-  box-shadow:var(--sh-sm)}
-.brand-txt b{display:block;font-size:15px;font-weight:700;line-height:1.1}
-.brand-txt em{font-style:normal;font-size:11px;color:var(--muted)}
-.nav-links{display:flex;gap:4px;margin-left:8px}
-.nav-links a{font-size:13.5px;font-weight:600;color:var(--muted);padding:7px 13px;border-radius:9px;
-  transition:color .2s,background .2s}
-.nav-links a:hover{color:var(--fg);background:var(--surface-2)}
-.nav-links a.active{color:var(--accent-ink);background:var(--accent-soft)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.status{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:12px;font-weight:500;
-  padding:6px 11px;border-radius:999px;border:1px solid var(--border);background:var(--surface);box-shadow:var(--sh-sm)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--faint)}
-.status.live{color:var(--up)} .status.live .dot{background:var(--up);animation:pulse 2s infinite}
-.status.down{color:var(--down)} .status.down .dot{background:var(--down)}
-@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--up) 55%,transparent)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.tbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);
-  color:var(--fg);font-size:15px;cursor:pointer;box-shadow:var(--sh-sm);transition:transform .2s,border-color .2s}
-.tbtn:hover{border-color:var(--accent);transform:rotate(-18deg)}
-.palettes{display:inline-flex;gap:6px;align-items:center}
-.palettes button{width:18px;height:18px;border-radius:50%;background:var(--d);border:2px solid var(--surface);
-  box-shadow:0 0 0 1px var(--border);cursor:pointer;padding:0;transition:transform .15s}
-.palettes button:hover{transform:scale(1.18)}
-.palettes button.sel{box-shadow:0 0 0 2px var(--accent)}
-.langbtn{width:auto!important;padding:0 11px;font-size:12.5px;font-weight:700;font-family:var(--font-mono)}
-.fxpill{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--muted);padding:6px 11px;
-  border:1px solid var(--border);border-radius:999px;background:var(--surface);box-shadow:var(--sh-sm);white-space:nowrap}
-@media (max-width:640px){.fxpill{display:none}}
+/* top bar */
+.top{position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px)}
+.top .in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.mark{font-family:var(--f-mark);font-weight:600;font-size:21px;color:var(--gold);line-height:1;white-space:nowrap}
+.tabs{display:flex;gap:4px;overflow-x:auto;min-width:0}
+.tabs button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:8px 10px;color:var(--muted);font-weight:500;cursor:pointer;white-space:nowrap;box-shadow:inset 0 -2px 0 transparent}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--gold-2)}
+.meta{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--muted)}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.live.ok::before{background:var(--up)} .live.bad::before{background:var(--down)}
+.lang{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 10px;font-weight:600;font-size:12.5px;cursor:pointer}
 
-/* ---- hero ---- */
-.hero{padding-block:52px 10px}
-.pill{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:12px;font-weight:500;
-  color:var(--accent-ink);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border));
-  padding:6px 13px;border-radius:999px}
-.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up);animation:pulse 2s infinite}
-.hero h1{font-size:clamp(32px,6vw,54px);font-weight:800;margin:18px 0 0;line-height:1.02}
-.hero p{color:var(--muted);font-size:clamp(15px,2.2vw,18px);max-width:60ch;margin:16px 0 0}
-.hero .accent{color:var(--accent-ink)}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:22px 48px}
+.view{display:none} .view.on{display:block;animation:in .2s ease}
+@keyframes in{from{opacity:0}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px;min-width:0}
+.cardhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+h2{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;margin:0}
+h2 .ic{color:var(--gold);width:19px;height:19px}
+h3{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--muted);margin:16px 0 4px}
+h3 .ic{width:15px;height:15px}
+h3:first-child{margin-top:0}
+.note{font-size:12.5px;color:var(--muted)}
+.notice{display:flex;gap:9px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.notice .ic{color:var(--up);margin-top:1px}
+.notice.soft{border:0;padding:0}
+.notice.soft .ic{color:var(--muted)}
 
-/* ---- sections ---- */
-.sec{padding-block:30px;scroll-margin-top:calc(var(--nav-h) + 12px)}
-.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-ink);font-weight:600}
-.sec-h h2{font-size:clamp(20px,3vw,26px);font-weight:700}
-.sec-h .sub{color:var(--muted);font-size:13px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* gold board */
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.gcell{padding:16px 16px 4px;border-right:1px solid var(--line);min-width:0}
+.gcell:last-child{border-right:0}
+.gic{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--gold-soft);color:var(--gold);margin-bottom:10px}
+.gic .ic{width:20px;height:20px}
+.gcell .k{font-size:13.5px;font-weight:600}
+.gcell .w{font-size:12px;color:var(--muted)}
+.gcell .v{font-family:var(--f-mark);font-weight:600;font-size:clamp(24px,3.2vw,34px);line-height:1.1;margin-top:10px;overflow-wrap:anywhere}
+.gcell .v .bsym{font-size:.55em;color:var(--gold);margin-right:5px;vertical-align:.25em}
+.gcell .s{font-size:12px;color:var(--muted);margin-top:4px}
+.gcell.main .v{color:var(--gold)}
+.spark{width:100%;height:44px;display:block;margin-top:12px}
 
-/* ---- cards / panels ---- */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--sh-sm);overflow:hidden}
-.card,.chartpanel{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--sh-sm)}
-.chartpanel{padding:20px}
-.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.card{padding:18px;transition:transform .25s cubic-bezier(.2,.7,.3,1),box-shadow .25s,border-color .25s;will-change:transform}
-.card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:color-mix(in srgb,var(--accent) 35%,var(--border))}
-.card.gold{background:linear-gradient(160deg,var(--accent-soft),var(--surface) 60%);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
-.card .sym{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.card .name{font-weight:700;font-size:15px}
-.card .ticker{font-family:var(--font-mono);font-size:11px;color:var(--faint)}
-.chip{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px;border-radius:7px;
-  border:1px solid var(--border);color:var(--muted);background:var(--surface-2)}
-.chip.gold{color:var(--accent-ink);border-color:color-mix(in srgb,var(--accent) 35%,var(--border));background:var(--accent-soft)}
-.card .price{font-family:var(--font-mono);font-size:25px;font-weight:600;margin-top:14px;letter-spacing:-.5px}
-.card .chg{font-family:var(--font-mono);font-size:13.5px;margin-top:4px;font-weight:600}
-.card .meta{display:flex;justify-content:space-between;margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--faint)}
-.skel{color:var(--faint)}
-.flash{animation:flash .7s ease-out}
-@keyframes flash{0%{background:color-mix(in srgb,var(--accent) 22%,transparent);border-radius:8px}100%{background:transparent}}
+/* converter */
+.mid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;margin-top:18px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.chips>.ic{color:var(--gold)}
+.chips button{border:1px solid var(--line);background:var(--sunk);border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
+.chips button:hover{border-color:var(--gold-2);color:var(--gold)}
+.inrow{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:8px}
+.inrow input,.inrow select,.sel,.field input,.field select{background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0;width:100%}
+.inrow input{font-family:var(--f-num);font-size:19px}
+.answer{margin-top:18px;padding:16px 18px;border-radius:8px;background:var(--gold-soft)}
+.answer .q{font-size:14px;color:var(--muted)}
+.answer .a{font-family:var(--f-mark);font-weight:600;font-size:clamp(28px,4.5vw,40px);line-height:1.15;overflow-wrap:anywhere;margin-top:2px}
+.answer .a .bsym{font-size:.55em;color:var(--gold);vertical-align:.3em;margin-right:6px}
+.answer .a .u{font-family:var(--f-ui);font-size:.42em;font-weight:500;color:var(--muted);margin-left:8px}
+.answer .how{font-size:12.5px;color:var(--muted);margin-top:6px}
+.answer .how b{font-family:var(--f-num);font-weight:500;color:var(--ink)}
+.answer .how .ic{width:14px;height:14px;vertical-align:-2px;margin-right:5px}
+.torow{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--muted)}
+.sel{width:auto;padding:6px 10px;font-size:13.5px}
+.eqhead{font-size:13px;color:var(--muted);margin:16px 0 4px}
+.eq{display:grid}
+.eq button{display:flex;justify-content:space-between;gap:12px;align-items:baseline;background:none;border:0;border-top:1px solid var(--line);padding:9px 2px;cursor:pointer;text-align:left}
+.eq button:hover{color:var(--gold)}
+.eq .lab{display:inline-flex;align-items:center;gap:9px} .eq .ic{color:var(--muted)}
+.eq .val{font-family:var(--f-num);white-space:nowrap}
 
-/* ---- tables ---- */
-.tblwrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:480px}
-th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--border);white-space:nowrap}
-th{font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:500}
-tbody tr{transition:background .15s}
-tbody tr:hover{background:var(--surface-2)}
-tbody tr:last-child td{border-bottom:none}
-td.num,th.num{text-align:right}
-.badge{font-family:var(--font-mono);font-size:11px;padding:3px 9px;border-radius:7px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
-.bar{height:6px;border-radius:4px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#000));min-width:4px}
+/* outlook */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;flex-wrap:wrap}
+.seg button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--gold-soft);color:var(--gold);font-weight:600}
+.seg .ic{width:15px;height:15px}
+.fc-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.track{position:relative;height:30px;margin:30px 0 8px}
+.track .b95{position:absolute;top:11px;height:8px;border-radius:4px;background:color-mix(in srgb,var(--gold-2) 24%,transparent)}
+.track .b68{position:absolute;top:11px;height:8px;border-radius:4px;background:color-mix(in srgb,var(--gold-2) 80%,transparent)}
+.track .now{position:absolute;top:3px;width:2px;height:24px;background:var(--ink)}
+.track .now>span{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:12px;white-space:nowrap}
+.ends{display:flex;justify-content:space-between;font-size:13px}
+.ends span{display:grid} .ends span:last-child{text-align:right}
+.ends small{color:var(--muted);font-size:11.5px}
+.say{margin-top:14px;font-size:14.5px}
+.say b{color:var(--gold);font-weight:600}
 
-/* ---- tiles (data scanned) ---- */
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.tile{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--sh-sm);
-  transition:transform .25s,box-shadow .25s}
-.tile:hover{transform:translateY(-3px);box-shadow:var(--sh)}
-.tile .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
-.tile .v{font-family:var(--font-mono);font-size:clamp(24px,3.6vw,32px);font-weight:600;margin-top:8px;letter-spacing:-.5px}
-.tile .v small{font-size:13px;color:var(--muted);font-weight:500}
+/* other assets */
+.others{margin-top:18px}
+.ogrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}
+.orow{display:grid;grid-template-columns:minmax(0,1fr) auto 76px;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.orow .p{text-align:right} .orow .c{text-align:right;font-size:12.5px}
+.orow small{color:var(--muted);font-size:11.5px;margin-left:5px}
 
-/* ---- chart ---- */
-.ctrls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-select{font:inherit;font-family:var(--font-mono);font-size:13px;background:var(--surface-2);color:var(--fg);
-  border:1px solid var(--border);border-radius:10px;padding:9px 12px;cursor:pointer}
-.seg{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface-2)}
-.seg button{font:inherit;font-family:var(--font-mono);font-size:12.5px;background:transparent;color:var(--muted);
-  border:none;padding:9px 13px;cursor:pointer;transition:background .2s,color .2s}
-.seg button:hover{color:var(--fg)}
-.seg button[aria-pressed="true"]{background:var(--accent);color:#20160a;font-weight:600}
-.ind{display:inline-flex;gap:14px;align-items:center;flex-wrap:wrap}
-.ind label{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);display:inline-flex;gap:6px;align-items:center;cursor:pointer}
-.ind input{accent-color:var(--accent);cursor:pointer;width:15px;height:15px}
-.chart-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:10px}
-.chart-head .big{font-family:var(--font-mono);font-size:30px;font-weight:600;letter-spacing:-.5px}
-.chart-head .sub{font-family:var(--font-mono);font-size:12.5px;color:var(--muted)}
-.signal{font-family:var(--font-mono);font-size:12.5px;margin-top:4px;font-weight:600}
-canvas{width:100%;height:320px;display:block}
-.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:var(--font-mono);font-size:11.5px;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:7px}
-.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
-.sub{color:var(--muted);font-size:13px}
+/* chart */
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+.pills button[aria-pressed="true"]{border-color:var(--gold-2);color:var(--gold);background:var(--gold-soft);font-weight:600}
+.pills .ic{width:15px;height:15px}
+#cv{width:100%;height:340px;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
 
-/* ---- note ---- */
-.note{display:flex;gap:14px;align-items:flex-start;background:var(--accent-soft);
-  border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));border-radius:14px;padding:15px 17px}
-.note .tag{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent-ink);flex:none;margin-top:2px;letter-spacing:.5px}
-.note p{margin:0;color:var(--fg);font-size:13.5px}
+/* back-test */
+.btform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;align-items:end}
+.field{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
+.field input{font-family:var(--f-num)}
+.go{background:var(--gold-2);color:#1d1503;border:0;border-radius:6px;padding:10px 20px;font-weight:600;cursor:pointer}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.tile{border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.tile .k{font-size:12.5px;color:var(--muted)}
+.tile .v{font-family:var(--f-mark);font-weight:600;font-size:clamp(20px,2.6vw,26px);margin-top:4px;overflow-wrap:anywhere}
+.tile .v .bsym{font-size:.6em;color:var(--gold);margin-right:4px;vertical-align:.2em}
+.btsay{margin-top:14px;font-size:14.5px}
 
-/* ---- calculator ---- */
-.calc{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
-.calc label{display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
-.calc input,.calc select{font:inherit;font-family:var(--font-mono);font-size:15px;background:var(--surface-2);color:var(--fg);
-  border:1px solid var(--border);border-radius:11px;padding:11px 13px;min-width:150px;transition:border-color .2s}
-.calc input:focus,.calc select:focus{outline:none;border-color:var(--accent)}
-.calc .go{text-transform:none;letter-spacing:0;background:var(--accent);color:#20160a;font-weight:700;border:none;
-  border-radius:11px;padding:12px 24px;cursor:pointer;font-size:15px;box-shadow:var(--sh-sm);transition:transform .15s,filter .15s}
-.calc .go:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.calc .go:active{transform:translateY(0)}
-.calc-out{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.calc-out .co{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:15px 17px;animation:fadeUp .5s ease both}
-.calc-out .k{display:block;font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.calc-out .v{display:block;font-size:24px;font-weight:600;margin-top:7px;letter-spacing:-.5px}
+/* tables */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{text-align:right;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12.5px}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.srcs{display:grid;gap:8px;font-size:14px}
+.srcs div{display:flex;gap:9px;align-items:flex-start}
+.srcs .ic{color:var(--gold);margin-top:2px}
 
-footer{margin-top:44px;padding:24px 0 48px;border-top:1px solid var(--border);color:var(--faint);font-size:12.5px}
-footer a{color:var(--accent-ink);font-weight:600}
-footer code{font-family:var(--font-mono);background:var(--surface);padding:1px 6px;border-radius:5px;border:1px solid var(--border)}
+.foot{display:flex;gap:8px;align-items:flex-start;margin-top:28px;font-size:12px;color:var(--muted)}
+.foot .ic{color:var(--up);margin-top:1px}
 
-/* ---- motion ---- */
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
-.hero-in>*{animation:fadeUp .7s cubic-bezier(.2,.7,.3,1) both}
-.hero-in>h1{animation-delay:.06s} .hero-in>p{animation-delay:.12s}
-.sec{animation:fadeUp .7s cubic-bezier(.2,.7,.3,1) both}
-.card{animation:pop .5s cubic-bezier(.2,.7,.3,1) both}
-.board .card:nth-child(2){animation-delay:.04s} .board .card:nth-child(3){animation-delay:.08s}
-.board .card:nth-child(4){animation-delay:.12s} .board .card:nth-child(5){animation-delay:.16s}
-.board .card:nth-child(6){animation-delay:.2s} .board .card:nth-child(7){animation-delay:.24s}
-.board .card:nth-child(8){animation-delay:.28s} .board .card:nth-child(n+9){animation-delay:.32s}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-
-/* ---- responsive ---- */
-@media (max-width:860px){ .nav-links{display:none} }
-@media (max-width:760px){ .two{grid-template-columns:1fr} .tiles{grid-template-columns:repeat(2,1fr)} }
-@media (max-width:560px){ .calc-out{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:900px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}.gcell:nth-child(2){border-right:0}
+  .gcell:nth-child(-n+2){border-bottom:1px solid var(--line)}.mid,.twocol{grid-template-columns:1fr}.ogrid{grid-template-columns:1fr}
+  .btform{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:1fr 1fr}}
+@media (max-width:460px){.board{grid-template-columns:1fr}.gcell{border-right:0;border-bottom:1px solid var(--line)}.btform{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand"><span class="logo">₿</span>
-      <span class="brand-txt"><b data-i18n="brand.name">ตลาดคริปโต·ทอง</b><em data-i18n="brand.tag">คริปโต · ทองคำ · เงินตรา · ฿</em></span></div>
-    <nav class="side-nav">
-      <button data-v="market" class="active"><span class="ic">◧</span><span data-i18n="nav.market">ตลาด</span></button>
-      <button data-v="chartsec"><span class="ic">▤</span><span data-i18n="nav.chart">กราฟและสัญญาณ</span></button>
-      <button data-v="analysis"><span class="ic">◴</span><span data-i18n="nav.analysis">การวิเคราะห์</span></button>
-      <button data-v="invest"><span class="ic">◇</span><span data-i18n="nav.invest">การลงทุน</span></button>
-      <button data-v="movers"><span class="ic">↕</span><span data-i18n="nav.movers">ความเคลื่อนไหวเด่น</span></button>
-      <button data-v="data"><span class="ic">▦</span><span data-i18n="nav.data">ข้อมูลที่สแกน</span></button>
-    </nav>
-    <div class="side-foot">
-      <span class="status" id="status"><span class="dot"></span><span id="statusText">กำลังเชื่อมต่อ…</span></span>
-      <span class="fxpill" id="fxpill">฿ —</span>
-      <div class="side-controls">
-        <div class="palettes" id="palettes" title="เลือกดีไซน์">
-          <button data-p="" aria-label="Gold design" style="--d:#e3a21e"></button>
-          <button data-p="ocean" aria-label="Ocean design" style="--d:#1898ca"></button>
-          <button data-p="grape" aria-label="Grape design" style="--d:#7c5cff"></button>
-          <button data-p="sunset" aria-label="Sunset design" style="--d:#ef6038"></button>
-          <button data-p="forest" aria-label="Forest design" style="--d:#2fa36b"></button>
-        </div>
-        <button class="tbtn langbtn" id="lang" aria-label="สลับภาษา">EN</button>
-        <button class="tbtn" id="theme" aria-label="สลับธีมสว่าง/มืด">◐</button>
+<header class="top"><div class="in">
+  <div class="mark" data-t="brand">ตลาดคริปโต·ทอง</div>
+  <nav class="tabs" aria-label="sections">
+    <button aria-current="page" data-v="ov"><i data-ic="dash"></i><span data-t="tab.ov">ภาพรวม</span></button>
+    <button data-v="ch"><i data-ic="chart"></i><span data-t="tab.ch">กราฟ</span></button>
+    <button data-v="bt"><i data-ic="history"></i><span data-t="tab.bt">ย้อนทดสอบ</span></button>
+    <button data-v="rf"><i data-ic="table"></i><span data-t="tab.rf">ตารางอ้างอิง</span></button>
+    <button data-v="dt"><i data-ic="db"></i><span data-t="tab.dt">ข้อมูลโปรเจกต์</span></button>
+  </nav>
+  <div class="meta">
+    <span class="live" id="live">…</span>
+    <span id="upd"></span>
+    <button class="lang" id="lang"><i data-ic="globe"></i><span id="langT">EN</span></button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <!-- OVERVIEW -->
+  <section class="view on" id="ov">
+    <div class="card">
+      <div class="cardhead"><h2><i data-ic="coins"></i><span data-t="board.title">ราคาทองคำวันนี้ (ประเมิน)</span></h2><span class="note" id="gchg"></span></div>
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="mid">
+      <div class="card">
+        <div class="cardhead"><h2><i data-ic="swap"></i><span data-t="cv.title">แปลงค่า</span></h2></div>
+        <div class="chips" id="chips"></div>
+        <div class="inrow"><input id="amt" type="number" value="1" min="0" step="any" aria-label="amount"><select id="from" aria-label="from unit"></select></div>
+        <div class="answer"><div class="q" id="q"></div><div class="a" id="a">—</div><div class="how" id="how"></div></div>
+        <div class="torow"><span data-t="showas">แสดงเป็น</span><select class="sel" id="to" aria-label="to unit"></select></div>
+        <div class="eqhead" data-t="eq">เท่ากับหน่วยอื่น (แตะเพื่อเลือก)</div>
+        <div class="eq" id="eq"></div>
+        <div class="notice"><i data-ic="shield"></i><span data-t="calconly">ใช้คำนวณเท่านั้น</span></div>
+      </div>
+      <div class="card">
+        <div class="cardhead"><h2><i data-ic="trend"></i><span data-t="fc.title">คาดการณ์ช่วงราคา</span></h2></div>
+        <div class="fc-ctrl"><div class="seg" id="fcA"></div><div class="seg" id="fcH"><button data-h="7" aria-pressed="true" data-t="h7">7 วัน</button><button data-h="30" aria-pressed="false" data-t="h30">30 วัน</button></div></div>
+        <div class="track" id="trk"><div class="b95"></div><div class="b68"></div><div class="now"><span id="nowl"></span></div></div>
+        <div class="ends"><span><small data-t="low">ต่ำสุดที่น่าจะเป็น</small><b class="num" id="lo">—</b></span><span><small data-t="high">สูงสุดที่น่าจะเป็น</small><b class="num" id="hi">—</b></span></div>
+        <div class="say" id="say"></div>
+        <div class="notice soft"><i data-ic="info"></i><span id="method"></span></div>
       </div>
     </div>
-  </aside>
-  <main class="main"><div class="main-inner">
-  <!-- MARKET -->
-  <section class="sec view active" id="market">
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.market">01 · สด</span><h2 data-i18n="t.market">กระดานตลาด</h2><span class="sub" data-i18n="s.market">รายการเฝ้าดู · อัปเดตทุก 5 วินาที</span></div>
-    <div class="board" id="board"></div>
+
+    <div class="card others">
+      <div class="cardhead"><h2><i data-ic="layers"></i><span data-t="oth.title">สินทรัพย์อื่น (บาท)</span></h2><span class="note" id="othnote"></span></div>
+      <div class="ogrid" id="others"></div>
+    </div>
   </section>
 
   <!-- CHART -->
-  <section class="sec view" id="chartsec">
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.chart">02 · สด</span><h2 data-i18n="t.chart">ราคาและสัญญาณ</h2><span class="sub" data-i18n="s.chart">แท่งเทียน + อินดิเคเตอร์ · วาดใหม่ทุก 10 วินาที</span></div>
-    <div class="chartpanel">
-      <div class="ctrls">
-        <select id="csym"></select>
-        <div class="seg" id="cint">
-          <button data-i="1m">1m</button><button data-i="1h" aria-pressed="true">1h</button>
-          <button data-i="4h">4h</button><button data-i="1d">1d</button><button data-i="1w">1w</button>
-        </div>
-        <span class="ind" style="margin-left:auto">
-          <label><input type="checkbox" id="iMA" checked> <span data-i18n="ind.ma">เส้นเฉลี่ย</span></label>
-          <label><input type="checkbox" id="iBB"> <span data-i18n="ind.boll">Bollinger</span></label>
-          <label><input type="checkbox" id="iFC" checked> <span data-i18n="ind.fc">พยากรณ์</span></label>
-        </span>
-      </div>
-      <div class="chart-head">
-        <div><div class="big" id="cprice">—</div><div class="sub" id="cmeta"></div></div>
-        <div style="text-align:right"><div class="sub" id="crange"></div><div id="csignal" class="signal"></div></div>
-      </div>
-      <canvas id="chart"></canvas>
-      <div class="legend" id="clegend"></div>
+  <section class="view" id="ch">
+    <div class="card">
+      <div class="pills" id="chA"></div>
+      <canvas id="cv"></canvas>
+      <div class="legend"><span><i style="background:var(--ink)"></i><span id="lgP"></span></span><span><i style="background:var(--gold-2)"></i><span data-t="lg.fc">ช่วงคาดการณ์ 30 วัน (95%)</span></span></div>
+      <div class="notice soft" style="margin-top:12px"><i data-ic="info"></i><span data-t="ch.note"></span></div>
     </div>
   </section>
 
-  <!-- ANALYSIS -->
-  <section class="sec view" id="analysis">
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.analysis">03 · วิเคราะห์</span><h2 data-i18n="t.analysis">ความเสี่ยงเทียบผลตอบแทน</h2><span class="sub" id="asub"></span></div>
-    <div class="two">
-      <div class="chartpanel">
-        <div class="sub" style="margin-bottom:8px" data-i18n="s.scatter">ผลตอบแทนต่อปีเทียบความผันผวน จากราคาปิดรายวัน · ซ้ายบนดีกว่า — ผลตอบแทนสูง ความเสี่ยงต่ำ</div>
-        <canvas id="scatter" style="height:320px"></canvas>
+  <!-- BACK-TEST -->
+  <section class="view" id="bt">
+    <div class="card">
+      <div class="cardhead"><h2><i data-ic="history"></i><span data-t="bt.title">ย้อนทดสอบ</span></h2></div>
+      <p class="note" data-t="bt.sub" style="margin:-6px 0 16px"></p>
+      <div class="btform">
+        <label class="field"><span data-t="bt.amt">จำนวนเงิน (บาท)</span><input id="btAmt" type="number" value="10000" min="1" step="1000"></label>
+        <label class="field"><span data-t="bt.asset">สินทรัพย์</span><select id="btSym"></select></label>
+        <label class="field"><span data-t="bt.date">ตั้งแต่วันที่</span><input id="btDate" type="date" value="2023-01-02"></label>
+        <button class="go" id="btGo" data-t="bt.go">คำนวณ</button>
       </div>
-      <div class="panel"><div class="tblwrap"><table id="perf">
-        <thead><tr><th data-i18n="th.asset">สินทรัพย์</th><th class="num" data-i18n="th.ret">ผลตอบแทน/ปี</th><th class="num" data-i18n="th.vol">ความผันผวน</th><th class="num" data-i18n="th.dd">ขาดทุนสูงสุด</th></tr></thead><tbody></tbody>
-      </table></div></div>
-    </div>
-    <div class="note" style="margin-top:14px"><span class="tag" data-i18n="tag.finding">ข้อค้นพบ</span><p id="finding"></p></div>
-  </section>
-
-  <!-- INVEST -->
-  <section class="sec view" id="invest">
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.invest">04 · เครื่องมือ</span><h2 data-i18n="t.invest">ถ้าลงทุนไปแล้วจะเป็นอย่างไร?</h2><span class="sub" data-i18n="s.invest">ย้อนทดสอบจากราคาปิดรายวันสดของ Binance</span></div>
-    <div class="chartpanel">
-      <div class="calc">
-        <label><span data-i18n="inv.amount">จำนวนเงิน (฿)</span><input type="number" id="calcAmt" value="30000" min="1" step="1000"></label>
-        <label><span data-i18n="inv.asset">สินทรัพย์</span><select id="calcSym"></select></label>
-        <label><span data-i18n="inv.date">วันที่เริ่ม</span><input type="date" id="calcDate" value="2021-01-01"></label>
-        <button class="go" id="calcGo" data-i18n="inv.calc">คำนวณ</button>
+      <div class="tiles" id="btOut" hidden>
+        <div class="tile"><div class="k" data-t="bt.in">เงินต้น (สมมติ)</div><div class="v" id="bIn"></div></div>
+        <div class="tile"><div class="k" data-t="bt.now">มูลค่าวันนี้</div><div class="v" id="bNow"></div></div>
+        <div class="tile"><div class="k" data-t="bt.ret">ผลตอบแทนรวม</div><div class="v num" id="bRet"></div></div>
+        <div class="tile"><div class="k" data-t="bt.cagr">เฉลี่ยต่อปี</div><div class="v num" id="bCagr"></div></div>
       </div>
-      <div class="calc-out" id="calcOut" hidden>
-        <div class="co"><span class="k" data-i18n="inv.in">เงินลงทุน</span><span class="v mono" id="coIn">—</span></div>
-        <div class="co"><span class="k" data-i18n="inv.now">มูลค่าวันนี้</span><span class="v mono" id="coNow">—</span></div>
-        <div class="co"><span class="k" data-i18n="inv.ret">ผลตอบแทนรวม</span><span class="v mono" id="coRet">—</span></div>
-        <div class="co"><span class="k" data-i18n="inv.cagr">ต่อปี</span><span class="v mono" id="coCagr">—</span></div>
-      </div>
-      <div class="sub" id="calcNote" style="margin-top:12px"></div>
+      <div class="btsay" id="btSay"></div>
+      <div class="notice"><i data-ic="shield"></i><span data-t="calconly">ใช้คำนวณเท่านั้น</span></div>
     </div>
   </section>
 
-  <!-- MOVERS -->
-  <section class="sec view" id="movers">
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.movers">05 · สด</span><h2 data-i18n="t.movers">ทั่วทุกตลาด USDT</h2><span class="sub" data-i18n="s.movers">รีเฟรชทุก 60 วินาที</span></div>
-    <div class="two">
-      <div class="panel"><div class="tblwrap"><table id="gainers">
-        <thead><tr><th data-i18n="th.gainers">ผู้ทำกำไรสูงสุด 24 ชม.</th><th class="num" data-i18n="th.price">ราคา</th><th class="num" data-i18n="th.24h">24 ชม.</th></tr></thead><tbody></tbody>
-      </table></div></div>
-      <div class="panel"><div class="tblwrap"><table id="volume">
-        <thead><tr><th data-i18n="th.traded">ซื้อขายมากสุด (24 ชม.)</th><th class="num" data-i18n="th.price">ราคา</th><th class="num" data-i18n="th.vol2">ปริมาณ</th></tr></thead><tbody></tbody>
-      </table></div></div>
+  <!-- REFERENCE -->
+  <section class="view" id="rf">
+    <div class="card">
+      <div class="cardhead"><h2><i data-ic="scale"></i><span data-t="rf.title">ตารางน้ำหนักและราคาทองคำ (ประเมิน)</span></h2></div>
+      <div class="tbl"><table id="tbl"></table></div>
+      <p class="notice soft"><i data-ic="info"></i><span data-t="rf.note"></span></p>
     </div>
   </section>
 
-  <!-- DATA SCANNED -->
-  <section class="sec view" id="data" data-count>
-    <div class="sec-h"><span class="eyebrow" data-i18n="eye.data">06 · ไปป์ไลน์</span><h2 data-i18n="t.data">สิ่งที่เราสแกน</h2><span class="sub" id="asof"></span></div>
-    <div class="tiles" id="tiles"></div>
-    <div class="panel" style="margin-top:16px"><div class="tblwrap">
-      <table id="ledger">
-        <thead><tr><th data-i18n="th.dataset">ชุดข้อมูล</th><th data-i18n="th.contents">เนื้อหา</th><th class="num" data-i18n="th.rows">แถว</th><th class="num" data-i18n="th.size">ขนาด</th><th style="width:130px" data-i18n="th.share">สัดส่วน</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div></div>
+  <!-- PROJECT DATA -->
+  <section class="view" id="dt">
+    <div class="card">
+      <div class="cardhead"><h2><i data-ic="trend"></i><span data-t="dt.stats">สถิติย้อนหลัง 1 ปี (ข้อมูลจริง)</span></h2></div>
+      <div class="tbl"><table id="stats"></table></div>
+      <p class="say" id="finding"></p>
+    </div>
+    <div class="twocol">
+      <div class="card">
+        <div class="cardhead"><h2><i data-ic="db"></i><span data-t="dt.scan">ข้อมูลที่โปรเจกต์สแกน</span></h2></div>
+        <div class="tbl"><table id="ledger"></table></div>
+      </div>
+      <div class="card">
+        <div class="cardhead"><h2><i data-ic="globe"></i><span data-t="dt.src">แหล่งข้อมูล</span></h2></div>
+        <div class="srcs" id="srcs"></div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <span data-i18n="foot.src">แหล่งข้อมูล:</span> <a href="https://binance-docs.github.io/apidocs/spot/en/" target="_blank" rel="noopener">Binance public API</a> <span data-i18n="foot.via">ผ่าน</span> <code>data-api.binance.vision</code> <span data-i18n="foot.note">— ไม่ต้องใช้คีย์ API, เฉพาะข้อมูลตลาด · ตัวเลขสแนปช็อตมาจาก data/raw/ · โปรเจกต์เพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน</span>
-  </footer>
-  </div></main>
-</div>
+  <p class="foot"><i data-ic="shield"></i><span data-t="foot"></span></p>
+</main>
 
 <script>
-const BASE='https://data-api.binance.vision';
-const SCAN={
-  asof:"scanned 2026-10-12, up to ~05:34 UTC",
-  totals:{rows:13847303, mb:734.9, datasets:6, pairs:3724},
-  datasets:[
-    {name:'prices_1h',       label:'Hourly OHLCV — all 506 USDT pairs', rows:13795748, mb:731.5},
-    {name:'prices_daily',    label:'Daily OHLCV — gold + crypto + fiat', rows:41066,    mb:3.0},
-    {name:'ticker_24h',      label:'24h market snapshot (all markets)',  rows:3727,     mb:0.3},
-    {name:'symbols',         label:'Tradable pair universe',             rows:3724,     mb:0.04},
-    {name:'orderbook',       label:'Order-book depth snapshot',          rows:2800,     mb:0.04},
-    {name:'prices_intraday', label:'Live 1-minute bars',                 rows:238,      mb:0.01},
-  ],
-  watchlist:[
-    {s:'PAXGUSDT',n:'Gold',t:'gold'},{s:'BTCUSDT',n:'Bitcoin',t:'crypto'},{s:'ETHUSDT',n:'Ethereum',t:'crypto'},
-    {s:'BNBUSDT',n:'BNB',t:'crypto'},{s:'SOLUSDT',n:'Solana',t:'crypto'},{s:'XRPUSDT',n:'XRP',t:'crypto'},
-    {s:'ADAUSDT',n:'Cardano',t:'crypto'},{s:'DOGEUSDT',n:'Dogecoin',t:'crypto'},{s:'TRXUSDT',n:'TRON',t:'crypto'},
-    {s:'LTCUSDT',n:'Litecoin',t:'crypto'},{s:'LINKUSDT',n:'Chainlink',t:'crypto'},
-    {s:'EURUSDT',n:'Euro',t:'fiat'},{s:'GBPUSDT',n:'Pound',t:'fiat'},
-  ]
-};
-// Results from analysis/analyze.py over the scanned data (annualised, from daily closes).
-const ANALYSIS={"goldBtcCorr":0.15,"totalBars":13795748,"pairs":506,"perf":[{"name":"BNB","sym":"BNBUSDT","ret":99.5,"vol":93.4,"dd":-80.0},{"name":"Solana","sym":"SOLUSDT","ret":76.9,"vol":113.4,"dd":-96.3},{"name":"ETH/EUR","sym":"ETHEUR","ret":54.3,"vol":80.0,"dd":-77.1},{"name":"Dogecoin","sym":"DOGEUSDT","ret":53.4,"vol":125.3,"dd":-92.3},{"name":"Chainlink","sym":"LINKUSDT","ret":53.3,"vol":106.7,"dd":-90.2},{"name":"BTC/EUR","sym":"BTCEUR","ret":43.1,"vol":59.6,"dd":-73.6},{"name":"Bitcoin","sym":"BTCUSDT","ret":38.3,"vol":67.4,"dd":-83.2},{"name":"Ethereum","sym":"ETHUSDT","ret":26.2,"vol":87.2,"dd":-94.0},{"name":"TRON","sym":"TRXUSDT","ret":26.0,"vol":84.7,"dd":-83.1},{"name":"Gold","sym":"PAXGUSDT","ret":13.1,"vol":18.7,"dd":-28.1},{"name":"XRP","sym":"XRPUSDT","ret":5.6,"vol":97.5,"dd":-85.0},{"name":"Cardano","sym":"ADAUSDT","ret":0.4,"vol":98.8,"dd":-95.2},{"name":"Euro","sym":"EURUSDT","ret":0.1,"vol":8.7,"dd":-23.8},{"name":"Pound","sym":"GBPUSDT","ret":-1.9,"vol":12.2,"dd":-27.9},{"name":"Litecoin","sym":"LTCUSDT","ret":-15.6,"vol":91.3,"dd":-93.4}],"topVol":[{"sym":"BTCUSDT","bn":5777.7},{"sym":"ETHUSDT","bn":2951.4},{"sym":"USDCUSDT","bn":1591.3},{"sym":"SOLUSDT","bn":853.4},{"sym":"XRPUSDT","bn":822.5}]};
+/* ===== constants ===== */
+const OZ=31.1035, BW=15.244, ORNW=15.16, PUR=0.965, KG_OZ=32.1507;
+const BIN='https://data-api.binance.vision', FXAPI='https://api.frankfurter.dev/v1',
+      CURAPI='https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api',
+      GAPI='https://api.gold-api.com/price',                    // real spot gold/silver (live)
+      THAPI='https://api.chnwt.dev/thai-gold-api/latest';       // Thai Gold Traders Association prices (unofficial mirror)
+const SYM={XAU:'PAXGUSDT',BTC:'BTCUSDT',ETH:'ETHUSDT'};
 
-/* ---------- helpers ---------- */
-const $=s=>document.querySelector(s);
-const fmtInt=n=>n.toLocaleString('en-US');
-const fmtPrice=p=>{p=+p;const d=p>=1000?2:p>=1?2:p>=0.01?4:p>=0.0001?6:8;
-  return p.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});};
-const fmtPct=x=>(x>=0?'+':'')+x.toFixed(2)+'%';
-const fmtAbbr=n=>{n=+n;if(n>=1e9)return (n/1e9).toFixed(1)+'B';if(n>=1e6)return (n/1e6).toFixed(1)+'M';
-  if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toFixed(0);};
-async function getJSON(path){const r=await fetch(BASE+path,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json();}
+/* ===== live state ===== */
+const S={px:{},pct:{},kl:{},fx:{},fxPrev:{},fxDate:'',thbHist:[],
+  ag:{usd:NaN,prev:NaN,date:'',weekly:[]},spot:{XAU:NaN,XAG:NaN},th:null,
+  ok:{bin:null,fx:null,ag:null,spot:null,th:null},upd:null};
+const ok=v=>Number.isFinite(v)&&v>0;
+const ymd=d=>d.toISOString().slice(0,10);
+async function J(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json();}
 
-/* ---------- i18n: Thai default, English toggle ---------- */
-let LANG='th';
-const ANAME={
-  PAXGUSDT:{th:'ทองคำ',en:'Gold'},BTCUSDT:{th:'บิตคอยน์',en:'Bitcoin'},ETHUSDT:{th:'อีเธอเรียม',en:'Ethereum'},
-  BNBUSDT:{th:'บีเอ็นบี',en:'BNB'},SOLUSDT:{th:'โซลานา',en:'Solana'},XRPUSDT:{th:'เอกซ์อาร์พี',en:'XRP'},
-  ADAUSDT:{th:'คาร์ดาโน',en:'Cardano'},DOGEUSDT:{th:'ดอจคอยน์',en:'Dogecoin'},TRXUSDT:{th:'ทรอน',en:'TRON'},
-  LTCUSDT:{th:'ไลต์คอยน์',en:'Litecoin'},LINKUSDT:{th:'เชนลิงก์',en:'Chainlink'},
-  EURUSDT:{th:'ยูโร',en:'Euro'},GBPUSDT:{th:'ปอนด์',en:'Pound'},
-  ETHEUR:{th:'ETH/EUR',en:'ETH/EUR'},BTCEUR:{th:'BTC/EUR',en:'BTC/EUR'},
-};
-const assetName=s=>ANAME[s]?ANAME[s][LANG]:s;
-const I18N={th:{
-  'brand.name':'ตลาดคริปโต·ทอง','brand.tag':'คริปโต · ทองคำ · เงินตรา · ฿',
-  'nav.market':'ตลาด','nav.chart':'กราฟและสัญญาณ','nav.analysis':'การวิเคราะห์','nav.invest':'การลงทุน','nav.movers':'ความเคลื่อนไหวเด่น','nav.data':'ข้อมูลที่สแกน',
-  'eye.market':'01 · สด','t.market':'กระดานตลาด','s.market':'รายการเฝ้าดู · อัปเดตทุก 5 วินาที',
-  'eye.chart':'02 · สด','t.chart':'ราคาและสัญญาณ','s.chart':'แท่งเทียน + อินดิเคเตอร์ · วาดใหม่ทุก 10 วินาที',
-  'ind.ma':'เส้นเฉลี่ย','ind.boll':'Bollinger','ind.fc':'พยากรณ์',
-  'eye.analysis':'03 · วิเคราะห์','t.analysis':'ความเสี่ยงเทียบผลตอบแทน','s.scatter':'ผลตอบแทนต่อปีเทียบความผันผวน จากราคาปิดรายวัน · ซ้ายบนดีกว่า — ผลตอบแทนสูง ความเสี่ยงต่ำ',
-  'th.asset':'สินทรัพย์','th.ret':'ผลตอบแทน/ปี','th.vol':'ความผันผวน','th.dd':'ขาดทุนสูงสุด','tag.finding':'ข้อค้นพบ',
-  'eye.invest':'04 · เครื่องมือ','t.invest':'ถ้าลงทุนไปแล้วจะเป็นอย่างไร?','s.invest':'ย้อนทดสอบจากราคาปิดรายวันสดของ Binance',
-  'inv.amount':'จำนวนเงิน (฿)','inv.asset':'สินทรัพย์','inv.date':'วันที่เริ่ม','inv.calc':'คำนวณ','inv.in':'เงินลงทุน','inv.now':'มูลค่าวันนี้','inv.ret':'ผลตอบแทนรวม','inv.cagr':'ต่อปี',
-  'eye.movers':'05 · สด','t.movers':'ทั่วทุกตลาด USDT','s.movers':'รีเฟรชทุก 60 วินาที','th.gainers':'ผู้ทำกำไรสูงสุด 24 ชม.','th.price':'ราคา','th.24h':'24 ชม.','th.traded':'ซื้อขายมากสุด (24 ชม.)','th.vol2':'ปริมาณ',
-  'eye.data':'06 · ไปป์ไลน์','t.data':'สิ่งที่เราสแกน','th.dataset':'ชุดข้อมูล','th.contents':'เนื้อหา','th.rows':'แถว','th.size':'ขนาด','th.share':'สัดส่วน',
-  'foot.src':'แหล่งข้อมูล:','foot.via':'ผ่าน','foot.note':'— ไม่ต้องใช้คีย์ API, เฉพาะข้อมูลตลาด · ตัวเลขสแนปช็อตมาจาก data/raw/ · โปรเจกต์เพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน',
-  'st.live':'สด','st.reconnect':'กำลังเชื่อมต่อใหม่…',
-  'tile.rows':'แถวทั้งหมด','u.million':'ล้าน','tile.disk':'บนดิสก์','u.mb':'MB Parquet','tile.datasets':'ชุดข้อมูล','u.tables':'ตาราง','tile.pairs':'คู่ที่พบ','u.markets':'ตลาด',
-  'ds.prices_1h':'OHLCV รายชั่วโมง — ครบ 506 คู่ USDT','ds.prices_daily':'OHLCV รายวัน — ทอง + คริปโต + เงินตรา','ds.ticker_24h':'สแนปช็อตตลาด 24 ชม. (ทุกตลาด)','ds.symbols':'จักรวาลคู่ที่ซื้อขายได้','ds.orderbook':'สแนปช็อตความลึกออเดอร์บุ๊ก','ds.prices_intraday':'แท่ง 1 นาทีแบบสด',
-  'asof':'สแกนเมื่อ 2026-10-12 ถึง ~05:34 UTC',
-  'rsi.ob':'ซื้อมากเกินไป','rsi.os':'ขายมากเกินไป','rsi.neu':'เป็นกลาง','trend.up':'↑ ขึ้น','trend.dn':'↓ ลง','chart.trend':'แนวโน้ม','chart.range':'ช่วง',
-  'chart.over':'· {n} แท่ง','leg.forecast':'พยากรณ์ ({n} แท่ง, แถบ 95%)',
-  'asub.live':'สด · คำนวณใหม่ {t} · จากราคาปิดรายวัน','asub.snap':'ประมวลผล {m} ล้านแถวรายชั่วโมง · {p} คู่',
-  'find':'<b>ทองคำ (PAXG)</b> ให้ผลตอบแทน <b>{ret}%/ปี</b> ที่ความผันผวนเพียง <b>{vol}%</b> (ขาดทุนสูงสุด {dd}%) — {calm} ผลตอบแทนรายวันสัมพันธ์กับบิตคอยน์เพียง <b>{corr}</b> จึงเคลื่อนไหวเป็นอิสระจากคริปโตเป็นส่วนใหญ่ เป็นตัวช่วยกระจายความเสี่ยงที่แท้จริง',
-  'find.calm':'ความผันผวนต่ำที่สุดในบรรดาสินทรัพย์เสี่ยงที่นี่','find.calm2':'สงบกว่าคริปโตมาก',
-  'calc.enter':'กรอกจำนวนเงินและวันที่เริ่ม','calc.fetch':'กำลังดึงข้อมูล…','calc.nodate':'ไม่มีข้อมูลสำหรับวันที่นั้น (คู่อาจยังไม่มีในตอนนั้น)','calc.err':'โหลดข้อมูลไม่ได้ ลองสินทรัพย์หรือวันที่อื่น',
-  'calc.note':'ซื้อ <b>{u}</b> {sym} ที่ {start} เมื่อ {date} ตอนนี้ {now} · ราคาปิดรายวัน Binance แปลงเป็น ฿ · ไม่ใช่คำแนะนำการลงทุน',
-  'chip.gold':'ทอง','chip.crypto':'คริปโต','chip.fiat':'เงินตรา',
-},en:{
-  'brand.name':'Crypto-Gold Market','brand.tag':'Crypto · Gold · FX · ฿',
-  'nav.market':'Market','nav.chart':'Chart & signals','nav.analysis':'Analysis','nav.invest':'Invest','nav.movers':'Top movers','nav.data':'Data scanned',
-  'eye.market':'01 · LIVE','t.market':'Market board','s.market':'your watchlist · updates every 5s',
-  'eye.chart':'02 · LIVE','t.chart':'Price & signals','s.chart':'candles + indicators · redraws every 10s',
-  'ind.ma':'MA','ind.boll':'Bollinger','ind.fc':'Forecast',
-  'eye.analysis':'03 · ANALYSIS','t.analysis':'Risk vs reward','s.scatter':'Annualised return vs volatility, from daily closes. Up-left is better — more return, less risk.',
-  'th.asset':'Asset','th.ret':'Ann. return','th.vol':'Volatility','th.dd':'Max drawdown','tag.finding':'FINDING',
-  'eye.invest':'04 · TOOL','t.invest':'What if I had invested?','s.invest':'backtest on live Binance daily closes',
-  'inv.amount':'Amount (฿)','inv.asset':'Asset','inv.date':'Start date','inv.calc':'Calculate','inv.in':'Invested','inv.now':'Worth today','inv.ret':'Total return','inv.cagr':'Per year',
-  'eye.movers':'05 · LIVE','t.movers':'Across all USDT markets','s.movers':'refreshes every 60s','th.gainers':'Top 24h gainers','th.price':'Price','th.24h':'24h','th.traded':'Most traded (24h)','th.vol2':'Volume',
-  'eye.data':'06 · PIPELINE','t.data':'What we scanned','th.dataset':'Dataset','th.contents':'Contents','th.rows':'Rows','th.size':'Size','th.share':'Share',
-  'foot.src':'Data source:','foot.via':'via','foot.note':'— no API key needed, market data only · snapshot figures from data/raw/ · education project, not trading advice',
-  'st.live':'LIVE','st.reconnect':'reconnecting…',
-  'tile.rows':'Total rows','u.million':'million','tile.disk':'On disk','u.mb':'MB Parquet','tile.datasets':'Datasets','u.tables':'tables','tile.pairs':'Pairs seen','u.markets':'markets',
-  'ds.prices_1h':'Hourly OHLCV — all 506 USDT pairs','ds.prices_daily':'Daily OHLCV — gold + crypto + fiat','ds.ticker_24h':'24h market snapshot (all markets)','ds.symbols':'Tradable pair universe','ds.orderbook':'Order-book depth snapshot','ds.prices_intraday':'Live 1-minute bars',
-  'asof':'scanned 2026-10-12, up to ~05:34 UTC',
-  'rsi.ob':'overbought','rsi.os':'oversold','rsi.neu':'neutral','trend.up':'↑ up','trend.dn':'↓ down','chart.trend':'trend','chart.range':'range',
-  'chart.over':'over {n} bars','leg.forecast':'Forecast ({n} bars, 95% band)',
-  'asub.live':'live · recomputed {t} · from daily closes','asub.snap':'{m}M hourly rows · {p} pairs processed',
-  'find':'<b>Gold (PAXG)</b> returned <b>{ret}%/yr</b> at just <b>{vol}%</b> volatility (worst drawdown {dd}%) — {calm}. Its daily returns correlate only <b>{corr}</b> with Bitcoin, so gold moves largely independently of crypto: a genuine diversifier.',
-  'find.calm':'the lowest volatility of any risk asset here','find.calm2':'far calmer than crypto',
-  'calc.enter':'Enter an amount and a start date.','calc.fetch':'Fetching…','calc.nodate':'No data for that date (the pair may not have existed yet).','calc.err':'Could not load that series. Try another asset or date.',
-  'calc.note':'Bought <b>{u}</b> {sym} at {start} on {date}, now {now}. Binance daily closes, converted to ฿ · not investment advice.',
-  'chip.gold':'gold','chip.crypto':'crypto','chip.fiat':'fiat',
-}};
-function t(k){const d=I18N[LANG]||I18N.th;return d[k]!=null?d[k]:k;}
-function tf(k,o){let s=t(k);for(const p in o)s=s.split('{'+p+'}').join(o[p]);return s;}
-function applyLang(){
-  document.documentElement.lang=LANG;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
-  const lb=$('#lang');if(lb)lb.textContent=LANG==='th'?'EN':'ไทย';
-  renderScan(); buildBoard(); buildChartControls(); buildCalc(); renderAnalysis();
-  if(CH.data.length)drawChart();
-  refreshBoard(); refreshMovers();
-  setStatus(Date.now()-lastOk<15000);
+async function loadTickers(){
+  try{const syms=JSON.stringify(Object.values(SYM));
+    const d=await J(BIN+'/api/v3/ticker/24hr?symbols='+encodeURIComponent(syms));
+    for(const k in SYM){const r=d.find(x=>x.symbol===SYM[k]);if(r){S.px[k]=+r.lastPrice;S.pct[k]=+r.priceChangePercent;}}
+    S.ok.bin=true;S.upd=new Date();
+  }catch(e){S.ok.bin=false;}
+  render();
 }
-
-/* ---------- currency: everything is shown in Thai Baht, converted live from USD ---------- */
-let FX=33.6; // USD -> THB, updated by loadFX()
-function fmtBaht(usd){const v=(+usd)*FX;const d=v>=1000?0:v>=100?1:v>=1?2:v>=0.01?3:5;
-  return '฿'+v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+async function loadKlines(){
+  await Promise.all(Object.keys(SYM).map(async k=>{
+    try{const d=await J(`${BIN}/api/v3/klines?symbol=${SYM[k]}&interval=1d&limit=365`);
+      S.kl[k]=d.map(r=>({d:ymd(new Date(r[0])),c:+r[4]}));}catch(e){/* keep previous */}}));
+  render();
+}
 async function loadFX(){
-  const grab=async u=>{const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('fx');return r.json();};
-  try{const j=await grab('https://api.frankfurter.dev/v1/latest?base=USD&symbols=THB');
-    if(j&&j.rates&&j.rates.THB)FX=j.rates.THB;}
-  catch(e){try{const j=await grab('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json');
-    if(j&&j.usd&&j.usd.thb)FX=j.usd.thb;}catch(e2){}}
-  const fp=$('#fxpill');if(fp)fp.textContent='฿'+FX.toFixed(2)+' / $1';
-  if($('#board').children.length)refreshBoard();
-  if(CH.data.length)drawChart();
-}
-
-/* ---------- math (indicators, forecast, stats) ---------- */
-function sma(a,n){return a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((s,x)=>s+x,0)/n);}
-function rollStd(a,n){return a.map((_,i)=>{if(i<n-1)return null;const w=a.slice(i-n+1,i+1),m=w.reduce((s,x)=>s+x,0)/n;
-  return Math.sqrt(w.reduce((s,x)=>s+(x-m)**2,0)/n);});}
-function rsi(a,n){
-  const out=new Array(a.length).fill(null);
-  let g=0,l=0;
-  for(let i=1;i<a.length;i++){
-    const d=a[i]-a[i-1];
-    if(i<=n){
-      g+=Math.max(d,0); l+=Math.max(-d,0);
-      if(i===n){ g/=n; l/=n; out[i]=l===0?100:100-100/(1+g/l); }
-    }else{
-      g=(g*(n-1)+Math.max(d,0))/n; l=(l*(n-1)+Math.max(-d,0))/n;
-      out[i]=l===0?100:100-100/(1+g/l);
-    }
+  try{
+    const now=new Date(), d10=new Date(now-12*864e5), d1y=new Date(now-370*864e5);
+    const [shortR,yearR]=await Promise.all([
+      J(`${FXAPI}/${ymd(d10)}..?base=USD&symbols=THB,EUR,GBP,JPY,CNY`),
+      J(`${FXAPI}/${ymd(d1y)}..?base=USD&symbols=THB`)]);
+    const days=Object.keys(shortR.rates).sort(), last=shortR.rates[days.at(-1)], prev=shortR.rates[days.at(-2)];
+    const conv=r=>({USD:r.THB,EUR:r.THB/r.EUR,GBP:r.THB/r.GBP,JPY:r.THB/r.JPY,CNY:r.THB/r.CNY});
+    S.fx=conv(last);S.fxPrev=conv(prev);S.fxDate=days.at(-1);
+    S.thbHist=Object.keys(yearR.rates).sort().map(d=>[d,yearR.rates[d].THB]);
+    S.ok.fx=true;
+  }catch(e){
+    try{const c=await J(`${CURAPI}@latest/v1/currencies/usd.json`),u=c.usd;   // fallback: daily reference rates
+      S.fx={USD:u.thb,EUR:u.thb/u.eur,GBP:u.thb/u.gbp,JPY:u.thb/u.jpy,CNY:u.thb/u.cny};S.fxDate=c.date;S.ok.fx=true;
+    }catch(e2){S.ok.fx=false;}
   }
-  return out;
+  render();
 }
-function linreg(ys){const n=ys.length,xm=(n-1)/2;let sxx=0,sxy=0;const ym=ys.reduce((s,y)=>s+y,0)/n;
-  for(let i=0;i<n;i++){sxx+=(i-xm)**2;sxy+=(i-xm)*(ys[i]-ym);}
-  const b=sxy/sxx,a=ym-b*xm;const res=ys.map((y,i)=>y-(a+b*i));
-  const sd=Math.sqrt(res.reduce((s,r)=>s+r*r,0)/n);return {a,b,sd};}
-function pearson(x,y){const n=x.length,mx=x.reduce((s,v)=>s+v,0)/n,my=y.reduce((s,v)=>s+v,0)/n;
-  let sxy=0,sxx=0,syy=0;for(let i=0;i<n;i++){sxy+=(x[i]-mx)*(y[i]-my);sxx+=(x[i]-mx)**2;syy+=(y[i]-my)**2;}
-  return sxy/Math.sqrt(sxx*syy||1);}
-const CHIND={ma:true,bb:false,fc:true};
-
-/* ---------- status ---------- */
-let lastOk=0;
-function setStatus(ok){
-  const el=$('#status');
-  if(ok){lastOk=Date.now();el.className='status live';$('#statusText').textContent=t('st.live');}
-  else{el.className='status down';$('#statusText').textContent=t('st.reconnect');}
-}
-
-/* ---------- scan summary (static) ---------- */
-function renderScan(){
-  $('#asof').textContent=t('asof');
-  const tot=SCAN.totals;
-  const tiles=[
-    {k:t('tile.rows'),v:(tot.rows/1e6).toFixed(2),u:t('u.million')},
-    {k:t('tile.disk'),v:tot.mb.toFixed(0),u:t('u.mb')},
-    {k:t('tile.datasets'),v:tot.datasets,u:t('u.tables')},
-    {k:t('tile.pairs'),v:fmtInt(tot.pairs),u:t('u.markets')},
-  ];
-  $('#tiles').innerHTML=tiles.map(x=>`<div class="tile"><div class="k">${x.k}</div><div class="v"><span class="cup" data-to="${x.v}">${x.v}</span> <small>${x.u}</small></div></div>`).join('');
-  const max=Math.max(...SCAN.datasets.map(d=>d.rows));
-  $('#ledger tbody').innerHTML=SCAN.datasets.map(d=>`<tr>
-    <td><span class="badge">${d.name}</span></td>
-    <td style="white-space:normal">${t('ds.'+d.name)}</td>
-    <td class="num">${fmtInt(d.rows)}</td>
-    <td class="num">${d.mb<0.1?'<0.1':d.mb.toFixed(1)} MB</td>
-    <td><div class="bar" style="width:${Math.max(3,d.rows/max*100)}%"></div></td></tr>`).join('');
-}
-
-/* ---------- live market board ---------- */
-const prev={};
-function buildBoard(){
-  $('#board').innerHTML=SCAN.watchlist.map(w=>`
-    <div class="card ${w.t==='gold'?'gold':''}" id="c-${w.s}">
-      <div class="sym"><div><div class="name">${assetName(w.s)}</div><div class="ticker">${w.s}</div></div>
-        <span class="chip ${w.t==='gold'?'gold':''}">${t('chip.'+w.t)}</span></div>
-      <div class="price skel">—</div><div class="chg skel">·····</div>
-      <div class="meta"><span class="lo">—</span><span class="hi">—</span></div>
-    </div>`).join('');
-}
-async function refreshBoard(){
-  const syms=JSON.stringify(SCAN.watchlist.map(w=>w.s));
+async function loadSilver(){
   try{
-    const data=await getJSON('/api/v3/ticker/24hr?symbols='+encodeURIComponent(syms));
-    data.forEach(d=>{
-      const c=$('#c-'+d.symbol); if(!c)return;
-      const price=+d.lastPrice, pct=+d.priceChangePercent, up=pct>=0;
-      const pe=c.querySelector('.price');
-      pe.textContent=fmtBaht(price); pe.classList.remove('skel');
-      if(prev[d.symbol]!==undefined && prev[d.symbol]!==price){pe.classList.remove('flash');void pe.offsetWidth;pe.classList.add('flash');}
-      prev[d.symbol]=price;
-      const ce=c.querySelector('.chg'); ce.classList.remove('skel');
-      ce.className='chg '+(up?'up':'down'); ce.textContent=(up?'▲ ':'▼ ')+fmtPct(pct);
-      c.querySelector('.lo').textContent='L '+fmtBaht(d.lowPrice);
-      c.querySelector('.hi').textContent='H '+fmtBaht(d.highPrice);
-    });
-    setStatus(true);
-  }catch(e){setStatus(false);}
+    const latest=await J(`${CURAPI}@latest/v1/currencies/usd.json`);
+    S.ag.usd=1/latest.usd.xag;S.ag.date=latest.date;
+    const base=new Date(latest.date+'T00:00:00Z');
+    const dates=[...Array(27)].map((_,i)=>ymd(new Date(base-(i*7)*864e5))).slice(1).reverse();
+    const yday=ymd(new Date(base-864e5));
+    const [py,...wk]=await Promise.all([yday,...dates].map(d=>J(`${CURAPI}@${d}/v1/currencies/usd.json`).then(j=>[d,1/j.usd.xag]).catch(()=>null)));
+    if(py)S.ag.prev=py[1];
+    S.ag.weekly=[...wk.filter(Boolean),[latest.date,S.ag.usd]];
+    S.ok.ag=true;
+  }catch(e){S.ok.ag=false;}
+  render();
 }
 
-/* ---------- live chart ---------- */
-let CH={sym:'PAXGUSDT',int:'1h',data:[]};
-function buildChartControls(){
-  $('#csym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${assetName(w.s)} · ${w.s}</option>`).join('');
-  $('#csym').value=CH.sym;
-  $('#csym').onchange=e=>{CH.sym=e.target.value;loadChart();};
-  $('#cint').querySelectorAll('button').forEach(b=>b.onclick=()=>{
-    CH.int=b.dataset.i; $('#cint').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-    loadChart();
-  });
-  $('#iMA').onchange=e=>{CHIND.ma=e.target.checked;drawChart();};
-  $('#iBB').onchange=e=>{CHIND.bb=e.target.checked;drawChart();};
-  $('#iFC').onchange=e=>{CHIND.fc=e.target.checked;drawChart();};
+async function loadSpot(){   // real world spot prices
+  try{const [g,s]=await Promise.all([J(GAPI+'/XAU'),J(GAPI+'/XAG')]);
+    S.spot.XAU=+g.price;S.spot.XAG=+s.price;S.ok.spot=ok(S.spot.XAU);
+  }catch(e){S.ok.spot=false;}
+  render();
 }
-async function loadChart(){
-  try{
-    const k=await getJSON(`/api/v3/klines?symbol=${CH.sym}&interval=${CH.int}&limit=200`);
-    CH.data=k.map(r=>({t:r[0],o:+r[1],h:+r[2],l:+r[3],c:+r[4]}));
-    drawChart(); setStatus(true);
-  }catch(e){setStatus(false);}
+const num=s=>+String(s).replace(/,/g,'');
+async function loadThai(){   // official Thai Gold Traders Association board
+  try{const j=await J(THAPI),r=j.response,p=r.price,m=/(\d{1,2}[:.]\d{2})\D+(\d+)/.exec(r.update_time||'');
+    S.th={barBuy:num(p.gold_bar.buy),barSell:num(p.gold_bar.sell),ornBuy:num(p.gold.buy),ornSell:num(p.gold.sell),
+      date:r.update_date,time:m?m[1]:'',round:m?m[2]:''};
+    S.ok.th=ok(S.th.barSell)&&ok(S.th.ornSell);
+  }catch(e){S.ok.th=false;}
+  render();
 }
-function cssvar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
-const MACOL={7:'#4f9df7',25:'#f4b740',99:'#b07cff'};
+
+/* ===== derived values (Baht per one unit) ===== */
+const FX=()=>S.fx.USD;
+const xauUsd=()=>ok(S.spot.XAU)?S.spot.XAU:S.px.XAU;   // real spot gold; PAXG only as fallback
+const xagUsd=()=>ok(S.spot.XAG)?S.spot.XAG:S.ag.usd;
+const goldG=()=>xauUsd()*FX()/OZ;
+const thOK=()=>S.ok.th===true;
+const barSell=()=>thOK()?S.th.barSell:goldG()*BW*PUR;  // association price; estimate if unavailable
+const ornSell=()=>thOK()?S.th.ornSell:goldG()*ORNW*PUR;
+const U={
+  BW:{g:'gold',thb:barSell,dec:4}, SL:{g:'gold',thb:()=>barSell()/4,dec:3},
+  ORN:{g:'gold',thb:ornSell,dec:4}, G:{g:'gold',thb:()=>goldG(),dec:2}, OZ:{g:'gold',thb:()=>xauUsd()*FX(),dec:4},
+  XAGOZ:{g:'silver',thb:()=>xagUsd()*FX(),dec:3}, XAGKG:{g:'silver',thb:()=>xagUsd()*FX()*KG_OZ,dec:4},
+  THB:{g:'cur',thb:()=>1,dec:2,sym:'฿'}, USD:{g:'cur',thb:()=>S.fx.USD,dec:2,sym:'$'}, EUR:{g:'cur',thb:()=>S.fx.EUR,dec:2,sym:'€'},
+  GBP:{g:'cur',thb:()=>S.fx.GBP,dec:2,sym:'£'}, JPY:{g:'cur',thb:()=>S.fx.JPY,dec:0,sym:'¥'}, CNY:{g:'cur',thb:()=>S.fx.CNY,dec:2,sym:'CN¥'},
+  BTC:{g:'crypto',thb:()=>S.px.BTC*FX(),dec:6}, ETH:{g:'crypto',thb:()=>S.px.ETH*FX(),dec:5},
+};
+function thbAt(d){const h=S.thbHist;if(!h.length)return FX();let v=h[0][1];for(const [dd,r] of h){if(dd>d)break;v=r;}return v;}
+function annVol(vals,perYear){if(vals.length<8)return NaN;const r=[];for(let i=1;i<vals.length;i++)r.push(Math.log(vals[i]/vals[i-1]));
+  const m=r.reduce((a,b)=>a+b,0)/r.length;return Math.sqrt(r.reduce((a,b)=>a+(b-m)**2,0)/(r.length-1))*Math.sqrt(perYear);}
+/* asset series in its display unit (Baht): gold per baht-weight, silver per oz, USD, BTC */
+const PER={XAU:365,BTC:365,ETH:365,USD:252,XAG:52};
+function hist(k){
+  if(k==='USD')return S.thbHist.map(([d,v])=>[d,v]);
+  let h;
+  if(k==='XAG')h=S.ag.weekly.map(([d,u])=>[d,u*thbAt(d)]);
+  else{const kl=S.kl[k]||[];const f=k==='XAU'?BW*PUR/OZ:1;h=kl.map(r=>[r.d,r.c*thbAt(r.d)*f]);}
+  // gold/silver history has the right shape but comes from a proxy: anchor its last point to today's real price
+  const now=k==='XAU'?barSell():k==='XAG'?U.XAGOZ.thb():NaN;
+  if(h.length&&ok(now)){const sc=now/h.at(-1)[1];h=h.map(([d,v])=>[d,v*sc]);}
+  return h;
+}
+function nowPrice(k){return k==='XAU'?U.BW.thb():k==='XAG'?U.XAGOZ.thb():k==='USD'?S.fx.USD:U[k].thb();}
+const vol=k=>annVol(hist(k).map(x=>x[1]),PER[k]);
+
+/* ===== i18n ===== */
+const L={th:{
+  brand:'ตลาดคริปโต·ทอง','tab.ov':'ภาพรวม','tab.ch':'กราฟ','tab.bt':'ย้อนทดสอบ','tab.rf':'ตารางอ้างอิง','tab.dt':'ข้อมูลโปรเจกต์',
+  live:'สด',off:'ออฟไลน์',upd:'อัปเดต','board.title':'ราคาทองคำวันนี้',in24:'ใน 24 ชั่วโมง',
+  buy:'รับซื้อ',est:'ค่าประเมินจากราคาทองคำโลก',live1:'ราคาทองคำโลกแบบสด',estnote:'ราคาทองแท่ง/รูปพรรณเป็นค่าประเมิน (โหลดประกาศสมาคมฯ ไม่ได้)',
+  'cv.title':'แปลงค่า',showas:'แสดงเป็น',eq:'เท่ากับหน่วยอื่น (แตะเพื่อเลือก)',calc:'คำนวณ: ',
+  calconly:'ใช้คำนวณเท่านั้น — ไม่มีการชำระเงิน ไม่มีการซื้อขาย และตัวเลขที่กรอกไม่ถูกส่งไปที่ใด',
+  'fc.title':'คาดการณ์ช่วงราคา',h7:'7 วัน',h30:'30 วัน',low:'ต่ำสุดที่น่าจะเป็น',high:'สูงสุดที่น่าจะเป็น',now:'ปัจจุบัน',
+  say:'มีโอกาสราว 95% ที่ราคา{a}จะอยู่ระหว่าง <b>{lo}</b> ถึง <b>{hi}</b> ภายใน {h} วัน',
+  method:'วิธีคำนวณ: ความผันผวนต่อปี {v}% จากข้อมูลจริงย้อนหลัง{p} · แถบเข้ม = โอกาสราว 68% · แถบอ่อน = ราว 95% · เป็นการประมาณการทางสถิติ ไม่ใช่การรับประกัน',
+  p1y:' 1 ปี (รายวัน)',p6m:' ~6 เดือน (รายสัปดาห์)',
+  'oth.title':'สินทรัพย์อื่น (บาท)',othnote:'อัตราแลกเปลี่ยน ณ {f} · ราคาเงิน ณ {s}',
+  grp:{gold:'ทองคำ',silver:'เงิน (Silver)',cur:'สกุลเงิน',crypto:'คริปโต'},
+  lgP:'ราคาย้อนหลัง (บาท)',lgPw:'ราคาย้อนหลัง ~6 เดือน รายสัปดาห์ (บาท)','lg.fc':'ช่วงคาดการณ์ 30 วัน (95%)',
+  'ch.note':'ประวัติราคาทองคำใช้ PAXG (โทเคนที่อ้างอิงทองคำจริง 1:1) แปลงเป็นบาทด้วยอัตราแลกเปลี่ยนของแต่ละวัน และปรับให้จุดล่าสุดตรงกับราคาประกาศสมาคมค้าทองคำ · ทองคำแสดงเป็นราคาทองคำแท่ง 96.5% ต่อ 1 บาท',
+  'bt.title':'ย้อนทดสอบ: ถ้าลงทุนไว้ตั้งแต่วันนั้น',
+  'bt.sub':'คำนวณย้อนหลังจากราคาปิดรายวันจริงและอัตราแลกเปลี่ยนของวันนั้น เพื่อดูว่าเงินจำนวนหนึ่งจะมีมูลค่าเท่าไรในวันนี้',
+  'bt.amt':'จำนวนเงิน (บาท)','bt.asset':'สินทรัพย์','bt.date':'ตั้งแต่วันที่','bt.go':'คำนวณ',
+  'bt.in':'เงินต้น (สมมติ)','bt.now':'มูลค่าวันนี้','bt.ret':'ผลตอบแทนรวม','bt.cagr':'เฉลี่ยต่อปี',
+  'bt.say':'ถ้าใช้เงิน {amt} ซื้อ{a}เมื่อ {d} (ราคา {p}) จะได้ <b>{q}</b> วันนี้มีมูลค่า <b>{w}</b>',
+  'bt.gold':'≈ {bw} บาททอง (ทองคำแท่ง 96.5%) หรือ {g} กรัม','bt.need':'กรุณากรอกจำนวนเงินและวันที่','bt.wait':'กำลังคำนวณ…',
+  'bt.none':'ไม่มีข้อมูลราคาในวันนั้น (สินทรัพย์อาจยังไม่เริ่มซื้อขาย — ทองคำมีข้อมูลตั้งแต่ ส.ค. 2563)','bt.err':'โหลดข้อมูลไม่ได้ ลองวันที่อื่น',
+  btA:[['XAU','ทองคำ'],['BTC','บิตคอยน์'],['ETH','อีเธอเรียม']],
+  'rf.title':'ตารางน้ำหนักและราคาทองคำ',
+  'rf.note':'ทองคำแท่ง 1 บาท = 15.244 กรัม · ทองรูปพรรณ 1 บาท = 15.16 กรัม · 1 สลึง = ¼ บาท · ราคาขายออกตามประกาศสมาคมค้าทองคำ · *ร้านค้าอาจบวกค่ากำเหน็จสำหรับทองรูปพรรณ',
+  tbl:['น้ำหนัก','กรัม (ทองแท่ง)','ทองคำแท่ง 96.5% (ขายออก)','ทองรูปพรรณ 96.5% (ขายออก)*'],
+  wts:[['1 สลึง',.25],['2 สลึง',.5],['1 บาท',1],['2 บาท',2],['5 บาท',5],['10 บาท',10]],
+  'dt.stats':'สถิติย้อนหลัง 1 ปี (ข้อมูลจริง)',st:['สินทรัพย์','ผลตอบแทน 1 ปี','ความผันผวนต่อปี','ลดลงสูงสุด'],
+  find:'ในรอบ 1 ปี ทองคำผันผวน <b>{gv}%</b> ต่อปี เทียบกับบิตคอยน์ <b>{bv}%</b> และผลตอบแทนรายวันของทั้งสอง{rel}',
+  rel:[' สัมพันธ์กันต่ำ (<b>{c}</b>) — ทองคำจึงช่วยกระจายความเสี่ยงจากคริปโตได้ดี',' สัมพันธ์กันปานกลาง (<b>{c}</b>) — ทองคำช่วยกระจายความเสี่ยงจากคริปโตได้บางส่วน',' สัมพันธ์กันค่อนข้างสูง (<b>{c}</b>) — ช่วงนี้ทองคำช่วยกระจายความเสี่ยงได้น้อย'],
+  'dt.scan':'ข้อมูลที่โปรเจกต์สแกน',led:['ชุดข้อมูล','จำนวนแถว','เนื้อหา'],
+  ds:[['prices_1h','13,795,748','ราคา OHLCV รายชั่วโมง 506 คู่'],['prices_daily','41,066','ราคารายวัน ทอง+คริปโต+เงินตรา'],['ticker_24h','3,727','สแนปช็อตตลาด 24 ชม.'],['symbols','3,724','รายชื่อคู่ซื้อขาย'],['orderbook','2,800','ความลึกออเดอร์บุ๊ก'],['prices_intraday','238','แท่ง 1 นาทีแบบสด'],['รวม','13,847,303','≈ 735 MB Parquet']],
+  'dt.src':'แหล่งข้อมูล',
+  srcs:['ราคาทองคำแท่ง/รูปพรรณ 96.5% — ประกาศสมาคมค้าทองคำ (goldtraders.or.th) ผ่าน api.chnwt.dev ซึ่งเป็นบริการรวบรวมข้อมูลที่ไม่เป็นทางการ',
+        'ราคาทองคำและเงินโลก (XAU / XAG) — gold-api.com (สด)',
+        'ประวัติราคาทองคำ — PAXG บน Binance (โทเคนที่อ้างอิงทองคำจริง 1:1) · บิตคอยน์ อีเธอเรียม — Binance public API',
+        'อัตราแลกเปลี่ยน — frankfurter.dev (อัตราอ้างอิง ECB รายวัน) · ประวัติราคาเงิน — currency-api'],
+  foot:'เว็บไซต์นี้แสดงข้อมูลและคำนวณเท่านั้น — ไม่รับชำระเงิน ไม่ซื้อขาย ไม่เก็บข้อมูลส่วนตัว · ราคาทองคำแท่ง/รูปพรรณตามประกาศสมาคมค้าทองคำ ราคาในร้านจริงอาจต่างเล็กน้อย และทองรูปพรรณอาจมีค่ากำเหน็จเพิ่ม · ไม่ใช่คำแนะนำการลงทุน',
+  u:{BW:'ทองคำแท่ง 96.5% (บาท)',SL:'ทองคำแท่ง 96.5% (สลึง)',ORN:'ทองรูปพรรณ 96.5% (บาท)',G:'ทองคำ 99.99% (กรัม)',OZ:'ทองคำ (ทรอยออนซ์)',
+     XAGOZ:'เงิน (ทรอยออนซ์)',XAGKG:'เงิน (กิโลกรัม)',THB:'เงินบาท',USD:'ดอลลาร์สหรัฐ',EUR:'ยูโร',GBP:'ปอนด์สเตอร์ลิง',JPY:'เยนญี่ปุ่น',CNY:'หยวนจีน',BTC:'บิตคอยน์',ETH:'อีเธอเรียม'},
+  sfx:{BW:'บาท (ทองแท่ง)',SL:'สลึง',ORN:'บาท (ทองรูปพรรณ)',G:'กรัม',OZ:'ออนซ์',XAGOZ:'ออนซ์ (เงิน)',XAGKG:'กก. (เงิน)',BTC:'BTC',ETH:'ETH'},
+  board:[['BW','ทองคำแท่ง 96.5%','ขายออก · 1 บาท (15.244 กรัม)','bar'],['ORN','ทองรูปพรรณ 96.5%','ขายออก · 1 บาท (15.16 กรัม)','orn'],['G','ทองคำ 99.99%','ราคาโลก · 1 กรัม','g'],['OZ','ทองคำโลก (XAU)','ราคาโลก · 1 ทรอยออนซ์','usd']],
+  peroz:' ต่อออนซ์',
+  chips:[['1 บาททอง',1,'BW','THB'],['1 สลึง',1,'SL','THB'],['1 กรัม',1,'G','THB'],['1 ออนซ์',1,'OZ','THB'],['฿10,000',10000,'THB','BW'],['$100',100,'USD','THB']],
+  fa:[['XAU','ทองคำแท่ง (บาท)'],['XAG','เงิน (ออนซ์)'],['USD','ดอลลาร์'],['BTC','บิตคอยน์']],
+},en:{
+  brand:'Crypto-Gold Market','tab.ov':'Overview','tab.ch':'Chart','tab.bt':'Back-test','tab.rf':'Reference','tab.dt':'Project data',
+  live:'Live',off:'Offline',upd:'Updated','board.title':"Today's gold prices",in24:'in 24 hours',
+  buy:'Buy-back',est:'estimated from world gold',live1:'live world price',estnote:'bar/ornament prices are estimates (association board unavailable)',
+  'cv.title':'Converter',showas:'Show as',eq:'Same amount in other units (tap to select)',calc:'Calculation: ',
+  calconly:'For calculation only — no payments, no trading, and the numbers you type are not sent anywhere',
+  'fc.title':'Price range outlook',h7:'7 days',h30:'30 days',low:'Likely low',high:'Likely high',now:'Now',
+  say:'About a 95% chance the {a} price stays between <b>{lo}</b> and <b>{hi}</b> within {h} days',
+  method:'Method: {v}% annual volatility from real data over{p} · dark band ≈ 68% chance · light band ≈ 95% · a statistical estimate, not a guarantee',
+  p1y:' 1 year (daily)',p6m:' ~6 months (weekly)',
+  'oth.title':'Other assets (THB)',othnote:'FX as of {f} · silver as of {s}',
+  grp:{gold:'Gold',silver:'Silver',cur:'Currencies',crypto:'Crypto'},
+  lgP:'Price history (THB)',lgPw:'~6-month weekly price history (THB)','lg.fc':'30-day outlook range (95%)',
+  'ch.note':'Gold history uses PAXG (a token backed 1:1 by real gold), converted to baht with each day\'s exchange rate and anchored so its latest point matches the association price · gold is shown as 96.5% bar price per baht-weight',
+  'bt.title':'Back-test: if you had invested since then',
+  'bt.sub':'Uses real daily closing prices and that day\'s exchange rate to show what an amount would be worth today',
+  'bt.amt':'Amount (THB)','bt.asset':'Asset','bt.date':'Start date','bt.go':'Calculate',
+  'bt.in':'Amount (hypothetical)','bt.now':'Worth today','bt.ret':'Total return','bt.cagr':'Per year',
+  'bt.say':'If {amt} had bought {a} on {d} (price {p}), you would hold <b>{q}</b>, worth <b>{w}</b> today',
+  'bt.gold':'≈ {bw} baht-weight (96.5% bar) or {g} g','bt.need':'Please enter an amount and a date','bt.wait':'Calculating…',
+  'bt.none':'No price data for that date (the asset may not have traded yet — gold data starts Aug 2020)','bt.err':'Could not load data; try another date',
+  btA:[['XAU','Gold'],['BTC','Bitcoin'],['ETH','Ethereum']],
+  'rf.title':'Gold weight & price table',
+  'rf.note':'Gold bar 1 baht = 15.244 g · ornament 1 baht = 15.16 g · 1 salueng = ¼ baht · sell prices from the Thai Gold Traders Association · *shops may add a making fee for ornaments',
+  tbl:['Weight','Grams (bar)','Gold bar 96.5% (sell)','Ornament 96.5% (sell)*'],
+  wts:[['1 salueng',.25],['2 salueng',.5],['1 baht',1],['2 baht',2],['5 baht',5],['10 baht',10]],
+  'dt.stats':'1-year statistics (real data)',st:['Asset','1-year return','Annual volatility','Max drawdown'],
+  find:'Over the past year gold moved <b>{gv}%</b> a year versus Bitcoin\'s <b>{bv}%</b>, and their daily returns {rel}',
+  rel:['correlate weakly (<b>{c}</b>), so gold diversifies crypto risk well.','are moderately correlated (<b>{c}</b>), so gold diversifies crypto risk only partly.','are fairly strongly correlated (<b>{c}</b>), so gold offers little diversification right now.'],
+  'dt.scan':'Data the project scanned',led:['Dataset','Rows','Contents'],
+  ds:[['prices_1h','13,795,748','Hourly OHLCV, 506 pairs'],['prices_daily','41,066','Daily prices, gold+crypto+FX'],['ticker_24h','3,727','24h market snapshot'],['symbols','3,724','Trading pair list'],['orderbook','2,800','Order-book depth'],['prices_intraday','238','Live 1-minute bars'],['Total','13,847,303','≈ 735 MB Parquet']],
+  'dt.src':'Data sources',
+  srcs:['96.5% gold bar / ornament prices — Thai Gold Traders Association (goldtraders.or.th) via api.chnwt.dev, an unofficial mirror',
+        'World gold & silver spot (XAU / XAG) — gold-api.com (live)',
+        'Gold price history — PAXG on Binance (a token backed 1:1 by real gold) · Bitcoin, Ethereum — Binance public API',
+        'Exchange rates — frankfurter.dev (ECB daily reference) · silver history — currency-api'],
+  foot:'This site only displays data and runs calculations — no payments, no trading, no personal data · gold bar/ornament prices follow the Thai Gold Traders Association board; shop prices may differ slightly and ornaments may carry a making fee · not investment advice',
+  u:{BW:'Gold bar 96.5% (baht)',SL:'Gold bar 96.5% (salueng)',ORN:'Gold ornament 96.5% (baht)',G:'Gold 99.99% (gram)',OZ:'Gold (troy oz)',
+     XAGOZ:'Silver (troy oz)',XAGKG:'Silver (kg)',THB:'Thai baht',USD:'US dollar',EUR:'Euro',GBP:'British pound',JPY:'Japanese yen',CNY:'Chinese yuan',BTC:'Bitcoin',ETH:'Ethereum'},
+  sfx:{BW:'baht (bar)',SL:'salueng',ORN:'baht (ornament)',G:'g',OZ:'oz',XAGOZ:'oz silver',XAGKG:'kg silver',BTC:'BTC',ETH:'ETH'},
+  board:[['BW','Gold bar 96.5%','Sell · 1 baht (15.244 g)','bar'],['ORN','Gold ornament 96.5%','Sell · 1 baht (15.16 g)','orn'],['G','Gold 99.99%','World price · 1 gram','g'],['OZ','World gold (XAU)','World price · 1 troy oz','usd']],
+  peroz:' per oz',
+  chips:[['1 baht gold',1,'BW','THB'],['1 salueng',1,'SL','THB'],['1 gram',1,'G','THB'],['1 ounce',1,'OZ','THB'],['฿10,000',10000,'THB','BW'],['$100',100,'USD','THB']],
+  fa:[['XAU','Gold bar (baht)'],['XAG','Silver (oz)'],['USD','US dollar'],['BTC','Bitcoin']],
+}};
+let LANG='th',FCA='XAU',FCH=7,CHA='XAU';
+try{const l=localStorage.getItem('gm-lang');if(l==='en'||l==='th')LANG=l;}catch(e){}
+const t=k=>L[LANG][k],$=s=>document.querySelector(s);
+const locale=()=>LANG==='th'?'th-TH':'en-GB';
+const fdate=d=>d?new Date(d+'T00:00:00').toLocaleDateString(locale(),{day:'numeric',month:'short',year:'numeric'}):'—';
+
+/* ===== formatting ===== */
+const B=s=>String(s).replace(/฿/g,'<span class="bsym">฿</span>');
+const thbFmt=v=>ok(v)?'฿'+v.toLocaleString('en-US',{minimumFractionDigits:v>=1000?0:2,maximumFractionDigits:v>=1000?0:2}):'—';
+function fmtUnit(v,id){if(!Number.isFinite(v))return '—';const u=U[id];if(id==='THB')return thbFmt(v);
+  const s=v.toLocaleString('en-US',{maximumFractionDigits:u.dec,minimumFractionDigits:u.g==='cur'?u.dec:0});return u.sym?u.sym+s:s;}
+const sfx=id=>U[id].sym?'':t('sfx')[id]||'';
+const pctTxt=p=>Number.isFinite(p)?`<span class="${p>=0?'up':'down'}">${arr(p>=0)} ${p>=0?'+':''}${p.toFixed(2)}%</span>`:'<span class="muted">—</span>';
+
+/* ===== icons ===== */
+const ICONS={
+  dash:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+  chart:'<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-6"/>',
+  table:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+  history:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/>',
+  db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  coins:'<circle cx="9" cy="9" r="6"/><path d="M15.5 9.4a6 6 0 1 1-6.1 6.1"/>',
+  swap:'<path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
+  trend:'<path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/>',
+  layers:'<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+  zap:'<path d="M13 3 4 14h7l-1 7 9-11h-7z"/>',
+  calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+  bar:'<path d="M3 20h18l-3-6H6z"/><path d="M8 14h8l-2-4h-4z"/>',
+  ring:'<circle cx="12" cy="15" r="6"/><path d="m9.5 6.5 2.5-3 2.5 3-2.5 2.5z"/>',
+  scale:'<path d="M12 4v16M8 20h8M5 8h14"/><path d="M5 8l-3 6h6zM19 8l-3 6h6z"/>',
+  coin:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+  note:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>',
+  btc:'<circle cx="12" cy="12" r="9"/><path d="M10 7.5h3a2 2 0 0 1 0 4h-3zM10 11.5h3.5a2 2 0 0 1 0 4H10zM10 7.5v8M11 6v1.5M11 15.5V17M13 6v1.5M13 15.5V17"/>',
+  up:'<path d="M12 19V5M5 12l7-7 7 7"/>', down:'<path d="M12 5v14M19 12l-7 7-7-7"/>',
+};
+const ic=(n,c)=>`<svg class="ic${c?' '+c:''}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]}</svg>`;
+const arr=up=>ic(up?'up':'down','arr');
+const UIC={BW:'bar',SL:'bar',ORN:'ring',G:'scale',OZ:'globe',XAGOZ:'coin',XAGKG:'coin',THB:'note',USD:'note',EUR:'note',GBP:'note',JPY:'note',CNY:'note',BTC:'btc',ETH:'btc'};
+const AIC={XAU:'bar',XAG:'coin',USD:'note',BTC:'btc',ETH:'btc'};
+const GIC={gold:'bar',silver:'coin',cur:'note',crypto:'btc'};
+function fillIcons(){document.querySelectorAll('i[data-ic]').forEach(e=>{e.outerHTML=ic(e.dataset.ic);});}
+const pts=(a,w,h,p)=>{const lo=Math.min(...a),hi=Math.max(...a);return a.map((v,i)=>(i/(a.length-1)*w).toFixed(1)+','+(p+(h-2*p)*(1-(v-lo)/((hi-lo)||1))).toFixed(1)).join(' ');};
+
+/* ===== renderers ===== */
+function status(){
+  const el=$('#live');el.className='live'+(S.ok.bin===true?' ok':S.ok.bin===false?' bad':'');
+  el.textContent=S.ok.bin===false?t('off'):t('live');
+  $('#upd').textContent=S.upd?t('upd')+' '+S.upd.toLocaleTimeString(locale()):'';
+}
+function board(){
+  $('#gchg').innerHTML=pctTxt(S.pct.XAU)+' '+t('in24')+' · '+(thOK()?assoc():t('estnote'));
+  const g30=hist('XAU').slice(-30).map(x=>x[1]);
+  $('#board').innerHTML=t('board').map(([id,k,w,s],i)=>{
+    const sub={bar:thOK()?t('buy')+' '+thbFmt(S.th.barBuy):t('est'),orn:thOK()?t('buy')+' '+thbFmt(S.th.ornBuy):t('est'),
+      g:ok(S.spot.XAU)?t('live1'):t('est'),usd:ok(xauUsd())?'$'+xauUsd().toLocaleString('en-US',{maximumFractionDigits:0})+t('peroz'):''}[s];
+    const v=U[id].thb();
+    const sp=i===0&&g30.length>3?`<svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="${pts(g30,200,44,5)}" fill="none" stroke="var(--gold-2)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`:'';
+    return `<div class="gcell${i===0?' main':''}"><span class="gic">${ic(UIC[id])}</span><div class="k">${k}</div><div class="w">${w}</div>
+      <div class="v">${ok(v)?B('฿')+v.toLocaleString('en-US',{maximumFractionDigits:0}):'—'}</div><div class="s">${B(sub||'&nbsp;')}</div>${sp}</div>`;}).join('');
+}
+function assoc(){
+  const th=S.th,d=LANG==='th'?th.date:th.date.replace(/(\d{4})$/,y=>String(+y-543));
+  return LANG==='th'?`ประกาศสมาคมค้าทองคำ ${d} เวลา ${th.time} น. (ครั้งที่ ${th.round})`
+                    :`Thai Gold Traders Association · ${d} ${th.time} (round ${th.round})`;
+}
+function fillUnits(){
+  const html=['gold','silver','cur','crypto'].map(g=>`<optgroup label="${t('grp')[g]}">`+Object.keys(U).filter(k=>U[k].g===g)
+    .map(k=>`<option value="${k}">${t('u')[k]}</option>`).join('')+'</optgroup>').join('');
+  const f=$('#from').value||'BW',to=$('#to').value||'THB';
+  $('#from').innerHTML=html;$('#to').innerHTML=html;$('#from').value=f;$('#to').value=to;
+  $('#chips').innerHTML=ic('zap')+t('chips').map((c,i)=>`<button data-i="${i}">${B(c[0])}</button>`).join('');
+  $('#chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{const c=t('chips')[+b.dataset.i];
+    $('#amt').value=c[1];$('#from').value=c[2];$('#to').value=c[3];convert();});
+}
+function convert(){
+  const a=parseFloat($('#amt').value)||0,f=$('#from').value,to=$('#to').value;
+  const val=x=>a*U[f].thb()/U[x].thb();
+  const af=a.toLocaleString('en-US',{maximumFractionDigits:6});
+  $('#q').textContent=(U[f].sym?U[f].sym+af:af+' ×')+' '+t('u')[f]+' =';
+  $('#a').innerHTML=B(fmtUnit(val(to),to))+(sfx(to)?`<span class="u">${sfx(to)}</span>`:'');
+  const pf=thbFmt(U[f].thb()),pt=thbFmt(U[to].thb());
+  const c=f==='THB'?`${thbFmt(a)} ÷ ${pt}`:to==='THB'?`${af} × ${pf}`:`${af} × ${pf} ÷ ${pt}`;
+  $('#how').innerHTML=ic('calc')+t('calc')+`<b>${c}</b>`;
+  const order=['THB','BW','SL','ORN','G','OZ','XAGOZ','USD','EUR','BTC'].filter(k=>k!==f&&k!==to).slice(0,6);
+  $('#eq').innerHTML=order.map(k=>`<button data-k="${k}"><span class="lab">${ic(UIC[k])}${t('u')[k]}</span><span class="val">${fmtUnit(val(k),k)} ${sfx(k)}</span></button>`).join('');
+  $('#eq').querySelectorAll('button').forEach(b=>b.onclick=()=>{$('#to').value=b.dataset.k;convert();});
+}
+function forecast(){
+  const P=nowPrice(FCA),v=vol(FCA);
+  if(!ok(P)||!Number.isFinite(v)){$('#say').textContent='';$('#method').textContent='';return;}
+  const sh=v*Math.sqrt(FCH/365);
+  const lo95=P*Math.exp(-1.96*sh),hi95=P*Math.exp(1.96*sh),lo68=P*Math.exp(-sh),hi68=P*Math.exp(sh);
+  const pad=(hi95-lo95)*.08,a=lo95-pad,z=hi95+pad,X=x=>((x-a)/(z-a)*100).toFixed(2)+'%';
+  $('#trk .b95').style.cssText=`left:${X(lo95)};width:calc(${X(hi95)} - ${X(lo95)})`;
+  $('#trk .b68').style.cssText=`left:${X(lo68)};width:calc(${X(hi68)} - ${X(lo68)})`;
+  $('#trk .now').style.left=X(P);$('#nowl').innerHTML=B(t('now')+' '+thbFmt(P));
+  $('#lo').textContent=thbFmt(lo95);$('#hi').textContent=thbFmt(hi95);
+  const name=t('fa').find(x=>x[0]===FCA)[1];
+  $('#say').innerHTML=B(t('say').replace('{a}',name).replace('{lo}',thbFmt(lo95)).replace('{hi}',thbFmt(hi95)).replace('{h}',FCH));
+  $('#method').textContent=t('method').replace('{v}',(v*100).toFixed(1)).replace('{p}',FCA==='XAG'?t('p6m'):t('p1y'));
+}
+function segs(){
+  const mk=(el,cur,on)=>{el.innerHTML=t('fa').map(([k,n])=>`<button data-a="${k}" aria-pressed="${k===cur}">${ic(AIC[k])}${n}</button>`).join('');
+    el.querySelectorAll('button').forEach(b=>b.onclick=()=>on(b.dataset.a));};
+  mk($('#fcA'),FCA,k=>{FCA=k;segs();forecast();});
+  mk($('#chA'),CHA,k=>{CHA=k;segs();drawChart();});
+}
+$('#fcH').querySelectorAll('button').forEach(b=>b.onclick=()=>{FCH=+b.dataset.h;$('#fcH').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));forecast();});
+function others(){
+  const agp=ok(S.ag.prev)?(S.ag.usd/S.ag.prev-1)*100:NaN, fp=k=>ok(S.fxPrev[k])?(S.fx[k]/S.fxPrev[k]-1)*100:NaN;
+  const G=[['silver',[['XAGOZ',agp],['XAGKG',agp]]],['cur',[['USD',fp('USD')],['EUR',fp('EUR')],['GBP',fp('GBP')],['JPY',fp('JPY')],['CNY',fp('CNY')]]],['crypto',[['BTC',S.pct.BTC],['ETH',S.pct.ETH]]]];
+  $('#others').innerHTML=G.map(([g,rows])=>`<div><h3>${ic(GIC[g])}${t('grp')[g]}</h3>`+rows.map(([k,p])=>{
+    const v=k==='JPY'?U.JPY.thb()*100:U[k].thb(),lbl=k==='JPY'?t('u')[k]+' <small>×100</small>':t('u')[k];
+    return `<div class="orow"><span>${lbl}</span><span class="p num">${thbFmt(v)}</span><span class="c num">${pctTxt(p)}</span></div>`;}).join('')+'</div>').join('');
+  $('#othnote').textContent=t('othnote').replace('{f}',fdate(S.fxDate)).replace('{s}',fdate(S.ag.date));
+}
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
 function drawChart(){
-  const cv=$('#chart'), d=CH.data; if(!d.length)return;
-  const dpr=Math.max(1,window.devicePixelRatio||1);
-  const W=cv.clientWidth, H=cv.clientHeight;
-  cv.width=W*dpr; cv.height=H*dpr;
-  const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
-  const padL=82,padR=14,padT=10,padB=24, xs=W-padL-padR, ys=H-padT-padB;
-  const n=d.length, closes=d.map(p=>p.c);
-  const muted=cssvar('--muted'),border=cssvar('--border');
-  const first=closes[0],last=closes[n-1],up=last>=first;
-  const col=up?cssvar('--up'):cssvar('--down');
-
-  // --- forecast: least-squares trend over recent closes, projected ahead with a band ---
-  let fN=0, fpts=null, fband=null;
-  if(CHIND.fc && n>=20){
-    fN=Math.min(40,Math.max(8,Math.round(n*0.12)));
-    const L=Math.min(60,n), win=closes.slice(n-L), {a,b,sd}=linreg(win);
-    fpts=[]; fband=[];
-    for(let j=1;j<=fN;j++){const v=a+b*(L-1+j), w=1.96*sd*Math.sqrt(j);
-      fpts.push(v); fband.push([v-w,v+w]);}
+  const cv=$('#cv');if(!cv.clientWidth)return;
+  const h=hist(CHA),s=(CHA==='XAG'?h:h.slice(CHA==='USD'?-65:-90));
+  $('#lgP').textContent=CHA==='XAG'?t('lgPw'):t('lgP');
+  const dpr=Math.max(1,devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  if(s.length<3){g.fillStyle=css('--muted');g.font='14px Sarabun';g.fillText('…',W/2,H/2);return;}
+  const v=vol(CHA),per=PER[CHA],F=Math.max(1,Math.round(30/365*per)),sdStep=v/Math.sqrt(per),P=s.at(-1)[1];
+  const band=Array.from({length:F},(_,j)=>{const sh=sdStep*Math.sqrt(j+1);return[P*Math.exp(-1.96*sh),P*Math.exp(1.96*sh)];});
+  const vals=s.map(x=>x[1]);
+  const pl=84,pr=12,pt=10,pb=26,xs=W-pl-pr,ys=H-pt-pb,N=s.length+F-1;
+  let lo=Math.min(...vals,...band.map(b=>b[0])),hi=Math.max(...vals,...band.map(b=>b[1]));const pd=(hi-lo)*.06;lo-=pd;hi+=pd;
+  const X=i=>pl+xs*i/N,Y=y=>pt+ys*(1-(y-lo)/(hi-lo));
+  g.font='11px "IBM Plex Mono",monospace';g.textBaseline='middle';
+  for(let i=0;i<=4;i++){const y=lo+(hi-lo)*i/4;g.strokeStyle=css('--line');g.beginPath();g.moveTo(pl,Y(y));g.lineTo(W-pr,Y(y));g.stroke();
+    g.fillStyle=css('--muted');g.textAlign='right';g.fillText(thbFmt(y),pl-8,Y(y));}
+  g.textAlign='center';g.textBaseline='top';g.fillStyle=css('--muted');
+  [[0,s[0][0]],[s.length-1,s.at(-1)[0]]].forEach(([i,d])=>g.fillText(fdate(d),Math.min(Math.max(X(i),pl+30),W-pr-30),H-pb+8));
+  if(Number.isFinite(v)){
+    g.fillStyle=css('--gold-2');g.globalAlpha=.22;g.beginPath();g.moveTo(X(s.length-1),Y(P));
+    band.forEach((b,j)=>{g.lineTo(X(s.length+j),Y(b[1]));});
+    for(let j=F-1;j>=0;j--){g.lineTo(X(s.length+j),Y(band[j][0]));}
+    g.closePath();g.fill();g.globalAlpha=1;
   }
-  const denom=(n-1)+fN;
-  const X=i=>padL+xs*i/denom;
-
-  // --- indicator series ---
-  const ma=CHIND.ma?{7:sma(closes,7),25:sma(closes,25),99:sma(closes,99)}:null;
-  let bbU,bbL;
-  if(CHIND.bb){const m=sma(closes,20),s=rollStd(closes,20);
-    bbU=m.map((v,i)=>v==null?null:v+2*s[i]); bbL=m.map((v,i)=>v==null?null:v-2*s[i]);}
-
-  // --- y range covers price + visible overlays + forecast band ---
-  let lo=Math.min(...d.map(p=>p.l)), hi=Math.max(...d.map(p=>p.h));
-  if(bbU){bbU.forEach(v=>v!=null&&(hi=Math.max(hi,v)));bbL.forEach(v=>v!=null&&(lo=Math.min(lo,v)));}
-  if(fband){fband.forEach(([l,u])=>{lo=Math.min(lo,l);hi=Math.max(hi,u);});}
-  const padv=(hi-lo)*0.08||hi*0.01; lo-=padv; hi+=padv;
-  const Y=v=>padT+ys*(1-(v-lo)/(hi-lo));
-  const line=(arr,color,width,dash)=>{g.beginPath();let started=false;
-    arr.forEach((v,i)=>{if(v==null){started=false;return;}const x=X(i),y=Y(v);
-      if(!started){g.moveTo(x,y);started=true;}else g.lineTo(x,y);});
-    g.setLineDash(dash||[]);g.strokeStyle=color;g.lineWidth=width;g.lineJoin='round';g.stroke();g.setLineDash([]);};
-
-  // grid + y labels
-  g.font='11px "IBM Plex Mono",monospace'; g.textBaseline='middle';
-  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=Y(v);
-    g.strokeStyle=border;g.globalAlpha=.6;g.beginPath();g.moveTo(padL,y);g.lineTo(W-padR,y);g.stroke();g.globalAlpha=1;
-    g.fillStyle=muted;g.textAlign='right';g.fillText(fmtBaht(v),padL-8,y);}
-  // divider where forecast begins
-  if(fN){const xd=X(n-1);g.strokeStyle=muted;g.globalAlpha=.4;g.setLineDash([3,3]);
-    g.beginPath();g.moveTo(xd,padT);g.lineTo(xd,padT+ys);g.stroke();g.setLineDash([]);g.globalAlpha=1;}
-  // x labels
-  g.textAlign='center';g.textBaseline='top';
-  const fmtT=t=>{const dt=new Date(t);return (CH.int==='1d'||CH.int==='1w')
-    ?(dt.getMonth()+1)+'/'+dt.getDate():String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');};
-  for(let i=0;i<=4;i++){const idx=Math.round((n-1)*i/4);g.fillStyle=muted;g.fillText(fmtT(d[idx].t),X(idx),H-padB+6);}
-
-  // bollinger band fill
-  if(CHIND.bb){g.beginPath();let st=false;
-    for(let i=0;i<n;i++){if(bbU[i]==null)continue;const x=X(i),y=Y(bbU[i]);if(!st){g.moveTo(x,y);st=true;}else g.lineTo(x,y);}
-    for(let i=n-1;i>=0;i--){if(bbL[i]==null)continue;g.lineTo(X(i),Y(bbL[i]));}
-    g.closePath();g.fillStyle=muted+'22';g.fill();
-    line(bbU,muted,1,[4,3]);line(bbL,muted,1,[4,3]);}
-
-  // price area + line
-  const grad=g.createLinearGradient(0,padT,0,padT+ys);grad.addColorStop(0,col+'44');grad.addColorStop(1,col+'00');
-  g.beginPath();g.moveTo(X(0),Y(closes[0]));d.forEach((p,i)=>g.lineTo(X(i),Y(p.c)));
-  g.lineTo(X(n-1),padT+ys);g.lineTo(X(0),padT+ys);g.closePath();g.fillStyle=grad;g.fill();
-  line(closes,col,1.8);
-
-  // moving averages
-  if(ma){[7,25,99].forEach(k=>{if(closes.length>=k)line(ma[k],MACOL[k],1.3);});}
-
-  // forecast band + dashed projection line
-  if(fpts){
-    const accent=cssvar('--accent');
-    g.beginPath();g.moveTo(X(n-1),Y(last));
-    fband.forEach(([,u],j)=>g.lineTo(X(n-1+ (j+1)),Y(u)));
-    for(let j=fN-1;j>=0;j--)g.lineTo(X(n-1+(j+1)),Y(fband[j][0]));
-    g.lineTo(X(n-1),Y(last));g.closePath();g.fillStyle=accent+'1f';g.fill();
-    g.beginPath();g.moveTo(X(n-1),Y(last));fpts.forEach((v,j)=>g.lineTo(X(n-1+(j+1)),Y(v)));
-    g.setLineDash([5,4]);g.strokeStyle=accent;g.lineWidth=1.6;g.stroke();g.setLineDash([]);
-    g.fillStyle=accent;g.beginPath();g.arc(X(denom),Y(fpts[fN-1]),3,0,7);g.fill();
+  g.strokeStyle=css('--ink');g.lineWidth=1.6;g.beginPath();
+  vals.forEach((y,i)=>{if(i)g.lineTo(X(i),Y(y));else g.moveTo(X(i),Y(y));});g.stroke();
+  g.fillStyle=css('--ink');g.beginPath();g.arc(X(s.length-1),Y(P),3.5,0,7);g.fill();
+}
+function refTable(){
+  $('#tbl').innerHTML=`<thead><tr>${t('tbl').map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>`+
+    t('wts').map(([n,w])=>`<tr><td>${n}</td><td class="num">${(BW*w).toFixed(3)}</td><td class="num">${thbFmt(U.BW.thb()*w)}</td><td class="num">${thbFmt(U.ORN.thb()*w)}</td></tr>`).join('')+'</tbody>';
+}
+function stats(){
+  const row=k=>{const h=hist(k);if(h.length<30)return null;const v=h.map(x=>x[1]);
+    let pk=v[0],dd=0;v.forEach(x=>{pk=Math.max(pk,x);dd=Math.min(dd,x/pk-1);});
+    return {r:(v.at(-1)/v[0]-1)*100,vol:annVol(v,PER[k])*100,dd:dd*100};};
+  const names={XAU:t('fa')[0][1],BTC:t('btA')[1][1],ETH:t('btA')[2][1]};
+  const rows=['XAU','BTC','ETH'].map(k=>[k,row(k)]).filter(x=>x[1]);
+  $('#stats').innerHTML=`<thead><tr>${t('st').map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>`+rows.map(([k,r])=>
+    `<tr><td>${ic(AIC[k])} ${names[k]}</td><td class="num ${r.r>=0?'up':'down'}">${r.r>=0?'+':''}${r.r.toFixed(1)}%</td><td class="num">${r.vol.toFixed(1)}%</td><td class="num down">${r.dd.toFixed(1)}%</td></tr>`).join('')+'</tbody>';
+  const a=S.kl.XAU||[],b=S.kl.BTC||[];
+  if(a.length>30&&b.length>30){
+    const mb=Object.fromEntries(b.map((x,i)=>[x.d,i?Math.log(x.c/b[i-1].c):null]));
+    const pairs=a.map((x,i)=>i?[Math.log(x.c/a[i-1].c),mb[x.d]]:null).filter(p=>p&&p[1]!=null);
+    const n=pairs.length,mx=pairs.reduce((s,p)=>s+p[0],0)/n,my=pairs.reduce((s,p)=>s+p[1],0)/n;
+    let sxy=0,sxx=0,syy=0;pairs.forEach(([x,y])=>{sxy+=(x-mx)*(y-my);sxx+=(x-mx)**2;syy+=(y-my)**2;});
+    const c=sxy/Math.sqrt(sxx*syy),gr=row('XAU'),br=row('BTC');
+    const rel=t('rel')[c<0.3?0:c<0.6?1:2].replace('{c}',c.toFixed(2));
+    if(gr&&br)$('#finding').innerHTML=t('find').replace('{gv}',gr.vol.toFixed(1)).replace('{bv}',br.vol.toFixed(1)).replace('{rel}',rel);
   }
-  // last actual dot
-  g.fillStyle=col;g.beginPath();g.arc(X(n-1),Y(last),3.5,0,7);g.fill();
-
-  // head readout + signal
-  $('#cprice').textContent=fmtBaht(last);
-  $('#cprice').className='big '+(up?'up':'down');
-  const chg=(last-first)/first*100;
-  $('#cmeta').innerHTML=`${CH.sym} · ${CH.int} · <span class="${up?'up':'down'}">${fmtPct(chg)}</span> ${tf('chart.over',{n})}`;
-  $('#crange').textContent=t('chart.range')+' '+fmtBaht(Math.min(...d.map(p=>p.l)))+' – '+fmtBaht(Math.max(...d.map(p=>p.h)));
-  // RSI(14) signal
-  const r=rsi(closes,14).filter(v=>v!=null), rv=r.length?r[r.length-1]:null;
-  const sig=$('#csignal');
-  if(rv!=null){const z=rv>70?[t('rsi.ob'),'var(--down)']:rv<30?[t('rsi.os'),'var(--up)']:[t('rsi.neu'),'var(--muted)'];
-    const trend=CHIND.fc&&fpts?(fpts[fN-1]>=last?t('trend.up'):t('trend.dn')):'';
-    sig.innerHTML=`RSI ${rv.toFixed(0)} · <span style="color:${z[1]}">${z[0]}</span>`+(trend?` · ${t('chart.trend')} <b>${trend}</b>`:'');}
-  else sig.textContent='';
-  // legend
-  const lg=[];if(ma){[7,25,99].forEach(k=>closes.length>=k&&lg.push(`<span><i style="background:${MACOL[k]}"></i>MA${k}</span>`));}
-  if(CHIND.bb)lg.push(`<span><i style="background:${muted}"></i>Bollinger 20,2</span>`);
-  if(fpts)lg.push(`<span><i style="background:${cssvar('--accent')}"></i>${tf('leg.forecast',{n:fN})}</span>`);
-  $('#clegend').innerHTML=lg.join('');
 }
-
-/* ---------- movers ---------- */
-async function refreshMovers(){
+function staticTabs(){
+  $('#ledger').innerHTML=`<thead><tr>${t('led').map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>`+
+    t('ds').map(([n,r,c],i,arr)=>`<tr${i===arr.length-1?' style="font-weight:600"':''}><td>${n}</td><td class="num">${r}</td><td style="text-align:left;white-space:normal">${c}</td></tr>`).join('')+'</tbody>';
+  $('#srcs').innerHTML=t('srcs').map(s=>`<div>${ic('info')}<span>${s}</span></div>`).join('');
+  $('#btSym').innerHTML=t('btA').map(([k,n])=>`<option value="${k}">${n}</option>`).join('');
+}
+async function backtest(){
+  const amt=+$('#btAmt').value,k=$('#btSym').value,date=$('#btDate').value,say=$('#btSay'),out=$('#btOut');
+  if(!(amt>0)||!date){say.textContent=t('bt.need');return;}
+  say.textContent=t('bt.wait');
   try{
-    const all=await getJSON('/api/v3/ticker/24hr');
-    const usdt=all.filter(d=>d.symbol.endsWith('USDT')&&!/(UP|DOWN|BULL|BEAR)USDT$/.test(d.symbol)&&+d.quoteVolume>2e6);
-    const gain=[...usdt].sort((a,b)=>b.priceChangePercent-a.priceChangePercent).slice(0,8);
-    const vol=[...usdt].sort((a,b)=>b.quoteVolume-a.quoteVolume).slice(0,8);
-    $('#gainers tbody').innerHTML=gain.map(d=>`<tr><td><span class="badge">${d.symbol.replace('USDT','')}</span></td>
-      <td class="num">${fmtBaht(d.lastPrice)}</td><td class="num up">${fmtPct(+d.priceChangePercent)}</td></tr>`).join('');
-    $('#volume tbody').innerHTML=vol.map(d=>{
-      return `<tr><td><span class="badge">${d.symbol.replace('USDT','')}</span></td>
-      <td class="num">${fmtBaht(d.lastPrice)}</td><td class="num">฿${fmtAbbr(d.quoteVolume*FX)}</td></tr>`;}).join('');
-    setStatus(true);
-  }catch(e){setStatus(false);}
+    const st=await J(`${BIN}/api/v3/klines?symbol=${SYM[k]}&interval=1d&startTime=${Date.parse(date)}&limit=1`);
+    if(!st.length){out.hidden=true;say.textContent=t('bt.none');return;}
+    const d0=ymd(new Date(st[0][0])),c0=+st[0][4];
+    const fx0=(await J(`${FXAPI}/${d0}?base=USD&symbols=THB`)).rates.THB;
+    const nowUsd=k==='XAU'?xauUsd():S.px[k];                 // gold is valued at today's real spot price
+    if(!ok(nowUsd)||!ok(FX()))throw new Error('no live price');
+    const units=amt/(c0*fx0),worth=units*nowUsd*FX(),ret=(worth/amt-1)*100;
+    const yrs=Math.max(.01,(Date.now()-st[0][0])/(365*864e5)),cagr=((worth/amt)**(1/yrs)-1)*100;
+    $('#bIn').innerHTML=B(thbFmt(amt));$('#bNow').innerHTML=B(thbFmt(worth));
+    $('#bRet').innerHTML=pctTxt(ret);$('#bCagr').innerHTML=pctTxt(cagr);out.hidden=false;
+    const name=t('btA').find(x=>x[0]===k)[1];
+    const q=k==='XAU'?t('bt.gold').replace('{bw}',(units*OZ/(BW*PUR)).toFixed(3)).replace('{g}',(units*OZ).toFixed(2))
+                    :units.toLocaleString('en-US',{maximumFractionDigits:6})+' '+k;
+    say.innerHTML=B(t('bt.say').replace('{amt}',thbFmt(amt)).replace('{a}',name).replace('{d}',fdate(d0))
+      .replace('{p}',thbFmt(c0*fx0*(k==='XAU'?BW*PUR/OZ:1))).replace('{q}',q).replace('{w}',thbFmt(worth)));
+  }catch(e){out.hidden=true;say.textContent=t('bt.err');}
 }
+$('#btGo').onclick=backtest;
 
-/* ---------- analysis ---------- */
-function renderAnalysis(){
-  const a=ANALYSIS;
-  $('#asub').textContent=tf('asub.snap',{m:(a.totalBars/1e6).toFixed(1),p:a.pairs});
-  $('#perf tbody').innerHTML=a.perf.map(r=>`<tr>
-    <td>${r.sym==='PAXGUSDT'?'★ ':''}${assetName(r.sym)}</td>
-    <td class="num" style="color:${r.ret>=0?'var(--up)':'var(--down)'}">${r.ret>=0?'+':''}${r.ret}%</td>
-    <td class="num">${r.vol}%</td><td class="num down">${r.dd}%</td></tr>`).join('');
-  const gold=a.perf.find(r=>r.sym==='PAXGUSDT');
-  const others=a.perf.filter(r=>r.sym!=='PAXGUSDT'&&r.sym!=='EURUSDT'&&r.sym!=='GBPUSDT');
-  const calmest=gold&&others.every(r=>gold.vol<r.vol);
-  $('#finding').innerHTML=gold
-    ? tf('find',{ret:(gold.ret>=0?'+':'')+gold.ret,vol:gold.vol,dd:gold.dd,corr:a.goldBtcCorr,
-        calm:calmest?t('find.calm'):t('find.calm2')})
-    : '';
-  drawScatter();
+/* ===== wiring ===== */
+function show(v){
+  document.querySelectorAll('.tabs button').forEach(b=>b.toggleAttribute('aria-current',false));
+  const b=document.querySelector(`.tabs button[data-v="${v}"]`);if(b)b.setAttribute('aria-current','page');
+  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id===v));
+  if(v==='ch')drawChart();
+  try{localStorage.setItem('gm-view',v);}catch(e){}
 }
-function drawScatter(){
-  const cv=$('#scatter'), a=ANALYSIS.perf; if(!cv)return;
-  const dpr=Math.max(1,window.devicePixelRatio||1), W=cv.clientWidth, H=cv.clientHeight;
-  cv.width=W*dpr; cv.height=H*dpr; const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
-  const padL=46,padR=14,padT=12,padB=34, xs=W-padL-padR, ys=H-padT-padB;
-  const maxV=Math.ceil(Math.max(...a.map(d=>d.vol))/20)*20;
-  const rLo=Math.min(...a.map(d=>d.ret)), rHi=Math.max(...a.map(d=>d.ret));
-  const lo=Math.floor((rLo-10)/20)*20, hi=Math.ceil((rHi+10)/20)*20;
-  const X=v=>padL+xs*v/maxV, Y=r=>padT+ys*(1-(r-lo)/(hi-lo));
-  const muted=cssvar('--muted'),border=cssvar('--border');
-  g.font='10px "IBM Plex Mono",monospace';
-  g.textBaseline='middle';g.textAlign='right';
-  for(let r=lo;r<=hi;r+=20){const y=Y(r);g.strokeStyle=border;g.globalAlpha=.55;g.beginPath();g.moveTo(padL,y);g.lineTo(W-padR,y);g.stroke();g.globalAlpha=1;g.fillStyle=muted;g.fillText(r+'%',padL-6,y);}
-  g.textBaseline='top';g.textAlign='center';
-  for(let v=0;v<=maxV;v+=40){const x=X(v);g.fillStyle=muted;g.fillText(v+'%',x,H-padB+8);}
-  g.fillStyle=muted;g.fillText('volatility →',W/2,H-12);
-  if(lo<0&&hi>0){g.strokeStyle=muted;g.globalAlpha=.5;g.beginPath();g.moveTo(padL,Y(0));g.lineTo(W-padR,Y(0));g.stroke();g.globalAlpha=1;}
-  a.forEach(d=>{const x=X(d.vol),y=Y(d.ret),gold=d.sym==='PAXGUSDT';
-    g.fillStyle=gold?cssvar('--accent'):(d.ret>=0?cssvar('--up'):cssvar('--down'));
-    g.beginPath();g.arc(x,y,gold?6:4.5,0,7);g.fill();
-    g.fillStyle=cssvar('--fg');g.textAlign='left';g.textBaseline='middle';g.font=(gold?'600 ':'')+'10px "IBM Plex Mono",monospace';
-    g.fillText(gold?'GOLD':d.name,x+8,y);});
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+function render(){status();board();convert();forecast();others();refTable();stats();drawChart();}
+function lang(){
+  document.documentElement.lang=LANG;
+  document.querySelectorAll('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v;});
+  $('#langT').textContent=LANG==='th'?'EN':'ไทย';
+  fillUnits();segs();staticTabs();render();
 }
+$('#lang').onclick=()=>{LANG=LANG==='th'?'en':'th';try{localStorage.setItem('gm-lang',LANG);}catch(e){}lang();};
+['amt','from','to'].forEach(id=>$('#'+id).addEventListener('input',convert));
+addEventListener('resize',()=>{clearTimeout(window._r);window._r=setTimeout(drawChart,150);});
 
-/* ---------- live analysis: recompute from fresh daily data ---------- */
-function dailyMetrics(kl){
-  const closes=kl.map(r=>+r[4]), t0=kl[0][0], t1=kl[kl.length-1][0];
-  const days=Math.max(1,(t1-t0)/864e5);
-  const rets=[]; for(let i=1;i<closes.length;i++)rets.push(Math.log(closes[i]/closes[i-1]));
-  const m=rets.reduce((s,x)=>s+x,0)/rets.length;
-  const sd=Math.sqrt(rets.reduce((s,x)=>s+(x-m)**2,0)/(rets.length-1));
-  let peak=closes[0],dd=0; closes.forEach(c=>{peak=Math.max(peak,c);dd=Math.min(dd,c/peak-1);});
-  return {ret:(closes[closes.length-1]/closes[0])**(365/days)-1, vol:sd*Math.sqrt(365), dd,
-          byDate:kl.map((r,i)=>[new Date(r[0]).toISOString().slice(0,10), i?Math.log(+r[4]/+kl[i-1][4]):null])};
-}
-async function loadAnalysisLive(){
-  try{
-    const wl=SCAN.watchlist;
-    const res=await Promise.all(wl.map(w=>getJSON(`/api/v3/klines?symbol=${w.s}&interval=1d&limit=1000`).catch(()=>null)));
-    const perf=[], retMap={};
-    res.forEach((kl,i)=>{ if(!kl||kl.length<30)return; const w=wl[i], mt=dailyMetrics(kl);
-      perf.push({sym:w.s,ret:+(mt.ret*100).toFixed(1),vol:+(mt.vol*100).toFixed(1),dd:+(mt.dd*100).toFixed(1)});
-      retMap[w.s]=Object.fromEntries(mt.byDate.filter(x=>x[1]!=null)); });
-    if(perf.length<5)throw new Error('thin');
-    perf.sort((a,b)=>b.ret-a.ret);
-    const g=retMap['PAXGUSDT']||{}, b=retMap['BTCUSDT']||{};
-    const keys=Object.keys(g).filter(k=>k in b);
-    if(keys.length>30){ANALYSIS.goldBtcCorr=+pearson(keys.map(k=>g[k]),keys.map(k=>b[k])).toFixed(2);}
-    ANALYSIS.perf=perf; ANALYSIS.live=true;
-    renderAnalysis();
-    $('#asub').textContent=tf('asub.live',{t:new Date().toLocaleTimeString()});
-    setStatus(true);
-  }catch(e){ /* keep the embedded snapshot numbers */ }
-}
-
-/* ---------- "what if I invested" calculator ---------- */
-function buildCalc(){
-  $('#calcSym').innerHTML=SCAN.watchlist.map(w=>`<option value="${w.s}">${assetName(w.s)} · ${w.s}</option>`).join('');
-  $('#calcSym').value='BTCUSDT';
-  $('#calcGo').onclick=calcRun;
-}
-async function calcRun(){
-  const amt=+$('#calcAmt').value, sym=$('#calcSym').value, date=$('#calcDate').value;
-  const note=$('#calcNote'), out=$('#calcOut');
-  if(!(amt>0)||!date){note.textContent=t('calc.enter');return;}
-  note.textContent=t('calc.fetch');
-  try{
-    const start=await getJSON(`/api/v3/klines?symbol=${sym}&interval=1d&startTime=${Date.parse(date)}&limit=1`);
-    if(!start.length){note.textContent=t('calc.nodate');out.hidden=true;return;}
-    const now=await getJSON(`/api/v3/ticker/price?symbol=${sym}`);
-    const startClose=+start[0][4], startUsed=new Date(start[0][0]), nowPrice=+now.price;
-    const ratio=nowPrice/startClose;              // currency-agnostic growth
-    const worth=amt*ratio, ret=(ratio-1)*100;     // amt is in Baht -> worth in Baht
-    const units=(amt/FX)/startClose;              // asset quantity bought
-    const years=Math.max(0.01,(Date.now()-start[0][0])/(365*864e5));
-    const cagr=(ratio**(1/years)-1)*100;
-    $('#coIn').textContent='฿'+fmtInt(Math.round(amt));
-    $('#coNow').textContent='฿'+fmtInt(Math.round(worth));
-    $('#coNow').style.color=worth>=amt?'var(--up)':'var(--down)';
-    $('#coRet').textContent=fmtPct(ret); $('#coRet').style.color=ret>=0?'var(--up)':'var(--down)';
-    $('#coCagr').textContent=fmtPct(cagr); $('#coCagr').style.color=cagr>=0?'var(--up)':'var(--down)';
-    out.hidden=false;
-    note.innerHTML=tf('calc.note',{u:units.toLocaleString('en-US',{maximumFractionDigits:6}),
-      sym:sym.replace('USDT',''),start:fmtBaht(startClose),date:startUsed.toISOString().slice(0,10),now:fmtBaht(nowPrice)});
-    setStatus(true);
-  }catch(e){note.textContent=t('calc.err');}
-}
-
-/* ---------- theme ---------- */
-(function(){
-  try{const sv=localStorage.getItem('bms-theme');if(sv)document.documentElement.setAttribute('data-theme',sv);}catch(e){}
-  $('#theme').onclick=()=>{
-    const cur=document.documentElement.getAttribute('data-theme')
-      ||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-    const next=cur==='dark'?'light':'dark';
-    document.documentElement.setAttribute('data-theme',next);
-    try{localStorage.setItem('bms-theme',next);}catch(e){}
-    drawChart(); drawScatter();
-  };
-})();
-
-/* ---------- design palette picker (multiple designs to choose from) ---------- */
-(function(){
-  try{const p=localStorage.getItem('bms-palette');if(p)document.documentElement.setAttribute('data-palette',p);}catch(e){}
-  const btns=[...document.querySelectorAll('#palettes button')];
-  const mark=()=>{const cur=document.documentElement.getAttribute('data-palette')||'';
-    btns.forEach(b=>b.classList.toggle('sel',(b.dataset.p||'')===cur));};
-  btns.forEach(b=>b.onclick=()=>{
-    const p=b.dataset.p;
-    if(p)document.documentElement.setAttribute('data-palette',p);
-    else document.documentElement.removeAttribute('data-palette');
-    try{localStorage.setItem('bms-palette',p);}catch(e){}
-    mark(); drawChart(); drawScatter();
-  });
-  mark();
-})();
-
-/* ---------- UX: count-up numbers, active-nav highlight ---------- */
-const REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
-function animateCount(el){
-  const raw=el.dataset.to||'0', to=parseFloat(raw.replace(/,/g,''))||0;
-  const dec=raw.includes('.')?raw.split('.')[1].length:0;
-  if(REDUCE){el.textContent=to.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});return;}
-  const t0=performance.now(), dur=1100;
-  function step(t){const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
-    el.textContent=(to*e).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
-    if(p<1)requestAnimationFrame(step);}
-  requestAnimationFrame(step);
-}
-(function(){
-  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){
-    en.target.querySelectorAll('.cup').forEach(animateCount);io.unobserve(en.target);}}),{threshold:.3});
-  document.querySelectorAll('[data-count]').forEach(s=>io.observe(s));
-})();
-/* ---------- sidebar view switching ---------- */
-function showView(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  document.querySelectorAll('.side-nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id));
-  try{localStorage.setItem('bms-view',id);}catch(e){}
-  if(id==='chartsec')drawChart();
-  if(id==='analysis')drawScatter();
-  window.scrollTo(0,0);
-}
-document.querySelectorAll('.side-nav button').forEach(b=>b.onclick=()=>showView(b.dataset.v));
-(function(){let v='market';try{v=localStorage.getItem('bms-view')||'market';}catch(e){}
-  if(!document.getElementById(v))v='market'; showView(v);})();
-
-/* ---------- language toggle + boot ---------- */
-(function(){try{const l=localStorage.getItem('bms-lang');if(l==='en'||l==='th')LANG=l;}catch(e){}})();
-$('#lang').onclick=()=>{LANG=LANG==='th'?'en':'th';try{localStorage.setItem('bms-lang',LANG);}catch(e){}applyLang();};
-applyLang();   // renders scan / board / chart controls / calc / analysis in the current language
-loadFX(); loadChart(); loadAnalysisLive();
-setInterval(loadFX,3600000);
-setInterval(refreshBoard,5000);
-setInterval(loadChart,10000);
-setInterval(refreshMovers,60000);
-setInterval(loadAnalysisLive,300000);
-setInterval(()=>{ if(Date.now()-lastOk>15000) setStatus(false); },5000);
-let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawChart();drawScatter();},120);});
+fillIcons();lang();
+try{const v=localStorage.getItem('gm-view');if(v&&document.getElementById(v))show(v);}catch(e){}
+loadTickers();loadKlines();loadFX();loadSilver();loadSpot();loadThai();
+setInterval(loadSpot,60000);             // real spot gold & silver
+setInterval(loadThai,10*60*1000);        // association board (updated several times a day)
+setInterval(loadTickers,15000);          // live prices
+setInterval(loadKlines,15*60*1000);      // daily history
+setInterval(loadFX,60*60*1000);          // daily reference FX
+setInterval(loadSilver,60*60*1000);      // daily silver
 </script>
 </body>
 </html>
