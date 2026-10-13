@@ -1,0 +1,82 @@
+table prices_daily
+	lineageTag: 64b4e21f-bac7-477b-985a-62db4e461035
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 9d1fe4b0-2c3d-442e-8f4b-b269310d8d90
+		summarizeBy: none
+		sourceColumn: date
+
+	column symbol
+		dataType: string
+		lineageTag: 5511f8ff-802d-4db0-b422-aeb87a79f18c
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column open
+		dataType: double
+		formatString: #,0.00
+		lineageTag: ef8d638f-81c6-4e7a-a918-6be6725ef10a
+		summarizeBy: sum
+		sourceColumn: open
+
+	column high
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c77016f2-2298-4872-87a7-0a51b207f8b2
+		summarizeBy: sum
+		sourceColumn: high
+
+	column low
+		dataType: double
+		formatString: #,0.00
+		lineageTag: fb2fd6b1-8439-4de6-862e-66d1808e1468
+		summarizeBy: sum
+		sourceColumn: low
+
+	column close
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 36f5407b-3654-404c-aef2-367d0f5c9024
+		summarizeBy: sum
+		sourceColumn: close
+
+	column ma200
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 903b87ed-01dd-48dc-8bf2-09731f52d35a
+		summarizeBy: sum
+		sourceColumn: ma200
+
+	column volume
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3633e1f4-2b3c-4ecd-b757-32e9e51e613c
+		summarizeBy: sum
+		sourceColumn: volume
+
+	column quote_volume
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f248bcb4-6384-454d-a9d2-250f01d50028
+		summarizeBy: sum
+		sourceColumn: quote_volume
+
+	column trades
+		dataType: int64
+		formatString: #,0
+		lineageTag: 8c194fe5-9ff3-4796-8ec2-212e8c2f16ed
+		summarizeBy: sum
+		sourceColumn: trades
+
+	partition prices_daily = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "prices_daily.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"date", type date}, {"symbol", type text}, {"open", type number}, {"high", type number}, {"low", type number}, {"close", type number}, {"ma200", type number}, {"volume", type number}, {"quote_volume", type number}, {"trades", Int64.Type}}, "en-US")
+				in
+				    Typed

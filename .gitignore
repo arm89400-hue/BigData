@@ -2,3 +2,7 @@
 __pycache__/
 data/raw/
 airflow/logs/
+
+# Power BI Desktop local cache / per-user settings
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

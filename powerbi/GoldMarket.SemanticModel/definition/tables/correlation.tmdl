@@ -1,0 +1,32 @@
+table correlation
+	lineageTag: 9fc3bf14-efdc-4b60-b5e1-1f0194398c1d
+
+	column asset_a
+		dataType: string
+		lineageTag: 30563f89-84de-47ed-8f41-10ea33244529
+		summarizeBy: none
+		sourceColumn: asset_a
+
+	column asset_b
+		dataType: string
+		lineageTag: b00dace9-5da2-4177-9f9b-212253ed42af
+		summarizeBy: none
+		sourceColumn: asset_b
+
+	column corr
+		dataType: double
+		formatString: #,0.00
+		lineageTag: dfef6956-38dc-42a5-b752-bb653e5a022c
+		summarizeBy: sum
+		sourceColumn: corr
+
+	partition correlation = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "correlation.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"asset_a", type text}, {"asset_b", type text}, {"corr", type number}}, "en-US")
+				in
+				    Typed

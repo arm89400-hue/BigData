@@ -1,0 +1,47 @@
+table prices_monthly
+	lineageTag: 09c902aa-6e89-4f6d-a3ad-4ff41a7f052e
+
+	column symbol
+		dataType: string
+		lineageTag: 74f69f00-6c7c-4ce8-a455-6fea384c4603
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column month
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 11ed83d0-cf17-427a-99a1-cef8aaa6dc4c
+		summarizeBy: none
+		sourceColumn: month
+
+	column close
+		dataType: double
+		formatString: #,0.00
+		lineageTag: faf1d584-c36b-4cd6-8aaa-85283d0660a4
+		summarizeBy: sum
+		sourceColumn: close
+
+	column change_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 34fec8b2-1125-48e1-b3e8-96def966b2d6
+		summarizeBy: sum
+		sourceColumn: change_pct
+
+	column index_2566
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c92b0c1d-f56c-4aa5-a4a4-f64214bcf53d
+		summarizeBy: sum
+		sourceColumn: index_2566
+
+	partition prices_monthly = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "prices_monthly.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"symbol", type text}, {"month", type date}, {"close", type number}, {"change_pct", type number}, {"index_2566", type number}}, "en-US")
+				in
+				    Typed

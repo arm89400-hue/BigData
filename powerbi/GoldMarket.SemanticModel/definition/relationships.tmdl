@@ -1,0 +1,19 @@
+relationship 4260bcb0-c5ac-4083-a5a1-33ab3b86d3a0
+	fromColumn: prices_daily.symbol
+	toColumn: assets.symbol
+
+relationship 834ed95a-80e8-4b5f-b081-d1dfc7f482ed
+	fromColumn: prices_monthly.symbol
+	toColumn: assets.symbol
+
+relationship 384de2ea-8656-4679-bba3-67c0b24bff49
+	fromColumn: asset_performance.symbol
+	toColumn: assets.symbol
+
+relationship 99a75681-06db-45b8-bb1f-4071f45ed462
+	fromColumn: forecast.symbol
+	toColumn: assets.symbol
+
+relationship f2314c67-ba4c-4d6f-b382-7e0fa5cf5f6c
+	fromColumn: forecast_backtest.symbol
+	toColumn: assets.symbol

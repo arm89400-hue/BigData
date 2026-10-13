@@ -1,6 +1,6 @@
 # Analysis results
 
-Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass processed **13,805,362 rows** across **506 USDT pairs**.
+Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass processed **13,805,856 rows** across **506 USDT pairs**.
 
 ## Headline figures (daily series)
 
@@ -28,7 +28,7 @@ Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass proces
 - **Bitcoin** returned **37.9%/yr** at **67.4%** volatility (drawdown -83.2%).
 - **Gold vs Bitcoin** daily-return correlation is **0.15** — weakly related, so gold is a genuine diversifier.
 - Most volatile asset studied: **Dogecoin** (125.3%); calmest: **Euro** (8.7%).
-- By traded value over the hourly set, the top pair is **BTCUSDT** ($5778.67B across 80,125 bars).
+- By traded value over the hourly set, the top pair is **BTCUSDT** ($5778.72B across 80,126 bars).
 
 ## Output files
 

@@ -1,0 +1,16 @@
+symbol,name_th,name_en,asset_class
+PAXGUSDT,ทองคำ (PAXG),Gold,ทองคำ
+BTCUSDT,Bitcoin,Bitcoin,คริปโต
+ETHUSDT,Ethereum,Ethereum,คริปโต
+BNBUSDT,BNB,BNB,คริปโต
+SOLUSDT,Solana,Solana,คริปโต
+XRPUSDT,XRP,XRP,คริปโต
+ADAUSDT,Cardano,Cardano,คริปโต
+DOGEUSDT,Dogecoin,Dogecoin,คริปโต
+TRXUSDT,TRON,TRON,คริปโต
+LTCUSDT,Litecoin,Litecoin,คริปโต
+LINKUSDT,Chainlink,Chainlink,คริปโต
+EURUSDT,ยูโร (EUR),Euro,สกุลเงิน
+GBPUSDT,ปอนด์ (GBP),Pound,สกุลเงิน
+BTCEUR,BTC/EUR,BTC/EUR,สกุลเงิน
+ETHEUR,ETH/EUR,ETH/EUR,สกุลเงิน

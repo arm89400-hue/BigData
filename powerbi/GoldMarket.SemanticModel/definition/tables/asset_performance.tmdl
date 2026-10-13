@@ -1,0 +1,116 @@
+table asset_performance
+	lineageTag: d4d23c1e-843f-4fe1-8c68-ca40deff1a82
+
+	column symbol
+		dataType: string
+		lineageTag: be8f6179-a9b1-40b5-a2ad-87a230dd4de6
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column name
+		dataType: string
+		lineageTag: a6b8093e-d00d-4de7-8ff3-ceb52d0d1ae9
+		summarizeBy: none
+		sourceColumn: name
+
+	column start
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 76eefd31-ef3a-41c9-a9ea-e78aeb3c3676
+		summarizeBy: none
+		sourceColumn: start
+
+	column end
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 7991b16e-6b01-41cc-b4d3-3da62065c305
+		summarizeBy: none
+		sourceColumn: end
+
+	column days
+		dataType: int64
+		formatString: #,0
+		lineageTag: f07efa29-659a-41a7-ab14-99a6a023ca44
+		summarizeBy: sum
+		sourceColumn: days
+
+	column last_close
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 9802a49f-6cb9-4bb2-80bc-1683f0f1b875
+		summarizeBy: sum
+		sourceColumn: last_close
+
+	column total_return_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: df79b651-9d67-43a4-b0fa-aff67b5ecd5f
+		summarizeBy: sum
+		sourceColumn: total_return_pct
+
+	column ann_return_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a70a11de-d5a8-44a9-aeb2-1a7d7955909c
+		summarizeBy: sum
+		sourceColumn: ann_return_pct
+
+	column ann_volatility_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 9c75be35-5040-497e-81bc-f12d846b6fd6
+		summarizeBy: sum
+		sourceColumn: ann_volatility_pct
+
+	column return_vol_ratio
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 41b1af31-6ecb-49b9-ad7b-c495870aa45e
+		summarizeBy: sum
+		sourceColumn: return_vol_ratio
+
+	column max_drawdown_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 18230b9b-ea7b-470c-a336-7e811b0e9be7
+		summarizeBy: sum
+		sourceColumn: max_drawdown_pct
+
+	column close_1y_ago
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 6dc65fad-0865-4778-b635-42ff77240728
+		summarizeBy: sum
+		sourceColumn: close_1y_ago
+
+	column close_latest
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 9cd87f36-0282-4a2e-abdf-fdc82d2f9801
+		summarizeBy: sum
+		sourceColumn: close_latest
+
+	column change_1y_pct
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 99ec4c1e-01b9-4352-a646-ddac5d14d770
+		summarizeBy: sum
+		sourceColumn: change_1y_pct
+
+	column latest_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: ed0d16ad-a503-4ad7-9667-498280bc6d1b
+		summarizeBy: none
+		sourceColumn: latest_date
+
+	partition asset_performance = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "asset_performance.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"symbol", type text}, {"name", type text}, {"start", type date}, {"end", type date}, {"days", Int64.Type}, {"last_close", type number}, {"total_return_pct", type number}, {"ann_return_pct", type number}, {"ann_volatility_pct", type number}, {"return_vol_ratio", type number}, {"max_drawdown_pct", type number}, {"close_1y_ago", type number}, {"close_latest", type number}, {"change_1y_pct", type number}, {"latest_date", type date}}, "en-US")
+				in
+				    Typed

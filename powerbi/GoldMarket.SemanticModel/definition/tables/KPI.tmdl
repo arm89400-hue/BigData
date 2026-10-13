@@ -1,0 +1,67 @@
+table KPI
+	lineageTag: 9bf2b712-c505-4468-b5c8-21c75968cecb
+
+	measure 'ราคาทองคำล่าสุด (USD/ออนซ์)' = CALCULATE(SUM(asset_performance[close_latest]), asset_performance[symbol] = "PAXGUSDT")
+		formatString: $#,0
+		lineageTag: be557446-853d-4f5f-825f-667c5bb2e16c
+
+	measure 'ทองคำ เทียบปีก่อน (%)' = CALCULATE(SUM(asset_performance[change_1y_pct]), asset_performance[symbol] = "PAXGUSDT")
+		formatString: 0.00
+		lineageTag: 71267d56-4918-4520-b0ac-c84ebb1a6d67
+
+	measure 'ข้อมูลล่าสุด' = FORMAT(MAX(prices_daily[date]), "MMM yyyy")
+		lineageTag: b43228bb-abe0-41e0-bd36-e7c2e6e216c4
+
+	measure 'ข้อมูลในระบบ (แถว)' = SUM(datasets[rows])
+		formatString: #,0.0,,"M"
+		lineageTag: f9e1a5f3-a27a-4d5e-8f24-297f08584fbf
+
+	measure 'คาดการณ์ทองคำเดือนหน้า (%)' = CALCULATE(SUM(forecast[predicted_pct]), forecast[symbol] = "PAXGUSDT")
+		formatString: 0.00
+		lineageTag: e715a74d-55de-40f8-8234-88c9e9373052
+
+	measure 'เดือนที่ทาย' = FORMAT(MAX(forecast[target_month]), "MMM yyyy")
+		lineageTag: 614368ed-f552-4d39-9724-dcced2d74f2f
+
+	measure 'คาดการณ์ (%)' = SUM(forecast[predicted_pct])
+		formatString: 0.00
+		lineageTag: 4b8f7121-845e-444b-aa14-1e58aa5a3836
+
+	measure 'ทายไว้ (%)' = SUM(forecast_backtest[predicted_pct])
+		formatString: 0.00
+		lineageTag: 1586183e-bafc-4661-858a-28e89e2abaf6
+
+	measure 'เกิดจริง (%)' = SUM(forecast_backtest[actual_pct])
+		formatString: 0.00
+		lineageTag: 75ccde20-a1d2-49b4-99c0-d19bf8a2019e
+
+	measure 'ผลตอบแทน 1 ปี (%)' = VAR s = IF(HASONEVALUE(assets[symbol]), VALUES(assets[symbol]), "PAXGUSDT") RETURN CALCULATE(SUM(asset_performance[change_1y_pct]), REMOVEFILTERS(assets), asset_performance[symbol] = s)
+		formatString: 0.00
+		lineageTag: 1ce88f7d-b073-4297-b4c2-4282f8e08b44
+
+	measure 'ลดลงมากสุดจากจุดสูงสุด (%)' = VAR s = IF(HASONEVALUE(assets[symbol]), VALUES(assets[symbol]), "PAXGUSDT") RETURN CALCULATE(SUM(asset_performance[max_drawdown_pct]), REMOVEFILTERS(assets), asset_performance[symbol] = s)
+		formatString: 0.00
+		lineageTag: 6805be10-bf0e-4d91-8664-19577662b7d3
+
+	measure 'ราคาปิด (USD)' = VAR s = IF(HASONEVALUE(assets[symbol]), VALUES(assets[symbol]), "PAXGUSDT") RETURN CALCULATE(AVERAGE(prices_daily[close]), REMOVEFILTERS(assets), prices_daily[symbol] = s)
+		formatString: #,0.00
+		lineageTag: 3ca690fe-3b93-4459-9f00-a522c9bbd465
+
+	measure 'ค่าเฉลี่ย 200 วัน (USD)' = VAR s = IF(HASONEVALUE(assets[symbol]), VALUES(assets[symbol]), "PAXGUSDT") RETURN CALCULATE(AVERAGE(prices_daily[ma200]), REMOVEFILTERS(assets), prices_daily[symbol] = s)
+		formatString: #,0.00
+		lineageTag: 3a4da1c3-b97b-4103-8f88-cbeb0c530cc9
+
+	measure 'สินทรัพย์ที่เลือก' = VAR s = IF(HASONEVALUE(assets[symbol]), VALUES(assets[symbol]), "PAXGUSDT") RETURN LOOKUPVALUE(assets[name_th], assets[symbol], s)
+		lineageTag: 98fd1f3a-ca1f-4999-963f-3110cfb96e0d
+
+	column Value
+		isHidden
+		dataType: string
+		lineageTag: 698014fa-df5d-47a1-8902-69f31292d75c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition KPI = calculated
+		mode: import
+		source = ROW("Value", BLANK())

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.0.0/schema.json",
+  "name": "v039ad0d0d5933849",
+  "position": {
+    "x": 640,
+    "y": 16,
+    "z": 2000,
+    "width": 624,
+    "height": 112,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "วิธีคาดการณ์: แบบจำลองสถิติ AR(1) จาก % เปลี่ยนแปลงรายเดือนย้อนหลัง 36 เดือน ของแต่ละสินทรัพย์ (ข้อมูลจริงจาก Binance) · เป็นการประมาณทางสถิติ ไม่ใช่คำแนะนำการลงทุน",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#605E5C"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

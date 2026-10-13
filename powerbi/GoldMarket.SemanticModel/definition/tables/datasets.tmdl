@@ -1,0 +1,39 @@
+table datasets
+	lineageTag: f657eff8-2183-4719-8e3b-5fed96c942da
+
+	column dataset_th
+		dataType: string
+		lineageTag: 8a9702d3-05b3-48d8-8ae5-28b6deb6f46c
+		summarizeBy: none
+		sourceColumn: dataset_th
+
+	column rows
+		dataType: int64
+		formatString: #,0
+		lineageTag: cca4515f-2310-4d50-a4f4-fa8655b8a0b8
+		summarizeBy: sum
+		sourceColumn: rows
+
+	column pairs
+		dataType: int64
+		formatString: #,0
+		lineageTag: af92abf1-4724-4e0f-adc8-9a027ed993f1
+		summarizeBy: sum
+		sourceColumn: pairs
+
+	column source
+		dataType: string
+		lineageTag: e9db7287-9775-400b-a4bd-b5dd5083fa48
+		summarizeBy: none
+		sourceColumn: source
+
+	partition datasets = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "datasets.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"dataset_th", type text}, {"rows", Int64.Type}, {"pairs", Int64.Type}, {"source", type text}}, "en-US")
+				in
+				    Typed

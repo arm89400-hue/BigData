@@ -1,0 +1,173 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.0.0/schema.json",
+  "name": "v0688e0b33ba90c4c",
+  "position": {
+    "x": 788,
+    "y": 142,
+    "z": 5000,
+    "width": 476,
+    "height": 562,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assets"
+                    }
+                  },
+                  "Property": "name_th"
+                }
+              },
+              "queryRef": "assets.name_th",
+              "nativeQueryRef": "name_th",
+              "displayName": "สินทรัพย์"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "asset_performance"
+                        }
+                      },
+                      "Property": "close_1y_ago"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(asset_performance.close_1y_ago)",
+              "nativeQueryRef": "close_1y_ago",
+              "displayName": "ราคา 1 ปีก่อน (USD)"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "asset_performance"
+                        }
+                      },
+                      "Property": "close_latest"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(asset_performance.close_latest)",
+              "nativeQueryRef": "close_latest",
+              "displayName": "ราคาล่าสุด (USD)"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "asset_performance"
+                        }
+                      },
+                      "Property": "change_1y_pct"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(asset_performance.change_1y_pct)",
+              "nativeQueryRef": "change_1y_pct",
+              "displayName": "เปลี่ยนแปลง (%)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "asset_performance"
+                      }
+                    },
+                    "Property": "change_1y_pct"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ราคาตอนนี้ vs 1 ปีก่อน'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+ref table assets
+ref table prices_daily
+ref table prices_monthly
+ref table asset_performance
+ref table correlation
+ref table forecast
+ref table forecast_backtest
+ref table datasets
+ref table hourly_scale
+ref table KPI
+
+ref expression DataFolder
