@@ -1,0 +1,49 @@
+# Local Airflow for the Gold Market pipeline.
+#   cd airflow && docker compose up -d --build     -> UI at http://localhost:8080
+#   docker compose down                            -> stop (data and run history are kept)
+#
+# Postgres holds Airflow's metadata; one Airflow container runs in "standalone" mode
+# (UI + scheduler + DAG processor + triggerer). The whole project is mounted at
+# /opt/airflow/project, so DAGs run the existing ingest/ and analysis/ code and write to data/.
+# Local development only: the UI is bound to 127.0.0.1 and login is disabled.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow   # local dev only; postgres is not exposed outside Docker
+      POSTGRES_DB: airflow
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 12
+    restart: unless-stopped
+
+  airflow:
+    build:
+      context: ..
+      dockerfile: airflow/Dockerfile
+    command: standalone
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/project/airflow/dags
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"   # no login prompt (local only)
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Bangkok
+      PROJECT_DIR: /opt/airflow/project
+      PYTHONPATH: /opt/airflow/project
+    volumes:
+      - ..:/opt/airflow/project
+      - ./logs:/opt/airflow/logs
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

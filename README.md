@@ -48,6 +48,28 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m ingest.prices_intraday --once            # one poll, for testing
 ```
 
+## Orchestration (Apache Airflow)
+
+The pipeline is scheduled with **Airflow 3.3.2**, running in Docker (Airflow needs Linux; on
+Windows it runs inside Docker Desktop). The project folder is mounted into the container, so
+the DAGs run the same `ingest/`, `analysis/` and `catalog.py` code and write to `data/`.
+
+```powershell
+cd airflow
+docker compose up -d --build     # first time builds the image (~1 GB download)
+# open http://localhost:8080      (local only, no login)
+docker compose down              # stop; run history and data are kept
+```
+
+| DAG | Schedule | Steps |
+|---|---|---|
+| `gold_market_daily` | every day 08:00 Bangkok | symbols → [daily prices, 24h snapshot, order book] → analysis → catalog |
+| `gold_market_full_scan` | manual trigger | symbols → 24h snapshot → hourly prices for all ~506 USDT pairs (`ingest/prices_hourly.py`, memory-safe) → analysis → catalog |
+
+Each task retries twice (5 min apart) and only one run of a DAG can be active at a time.
+Files: `airflow/docker-compose.yaml` (Postgres + one Airflow container in standalone mode),
+`airflow/Dockerfile` (Airflow image + `requirements.txt`), `airflow/dags/gold_market_pipeline.py`.
+
 ## Dashboard (live)
 
 `dashboard.html` is a self-contained, **gold-first** web page in Thai (EN toggle), priced in

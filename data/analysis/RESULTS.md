@@ -6,26 +6,26 @@ Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass proces
 
 | Asset | Ann. return | Ann. volatility | Max drawdown | History |
 |---|--:|--:|--:|--:|
-| BNB (BNBUSDT) | 99.5% | 93.4% | -80.0% | 3262d |
-| Solana (SOLUSDT) | 76.9% | 113.4% | -96.3% | 2253d |
-| ETH/EUR (ETHEUR) | 54.3% | 80.0% | -77.1% | 2474d |
-| Dogecoin (DOGEUSDT) | 53.4% | 125.3% | -92.3% | 2656d |
-| Chainlink (LINKUSDT) | 53.3% | 106.7% | -90.2% | 2826d |
-| BTC/EUR (BTCEUR) | 43.1% | 59.6% | -73.6% | 2474d |
-| Bitcoin (BTCUSDT) | 38.3% | 67.4% | -83.2% | 3343d |
-| Ethereum (ETHUSDT) | 26.2% | 87.2% | -94.0% | 3343d |
-| TRON (TRXUSDT) | 26.0% | 84.7% | -83.1% | 3045d |
-| Gold (PAXGUSDT) | 13.1% | 18.7% | -28.1% | 2236d |
-| XRP (XRPUSDT) | 5.6% | 97.5% | -85.0% | 3083d |
-| Cardano (ADAUSDT) | 0.4% | 98.8% | -95.2% | 3100d |
-| Euro (EURUSDT) | 0.1% | 8.7% | -23.8% | 2474d |
+| BNB (BNBUSDT) | 98.7% | 93.4% | -80.0% | 3263d |
+| Solana (SOLUSDT) | 74.9% | 113.4% | -96.3% | 2254d |
+| ETH/EUR (ETHEUR) | 53.2% | 80.0% | -77.1% | 2475d |
+| Dogecoin (DOGEUSDT) | 52.1% | 125.3% | -92.3% | 2657d |
+| Chainlink (LINKUSDT) | 51.9% | 106.7% | -90.2% | 2827d |
+| BTC/EUR (BTCEUR) | 42.6% | 59.6% | -73.6% | 2475d |
+| Bitcoin (BTCUSDT) | 37.9% | 67.4% | -83.2% | 3344d |
+| TRON (TRXUSDT) | 25.8% | 84.7% | -83.1% | 3046d |
+| Ethereum (ETHUSDT) | 25.5% | 87.2% | -94.0% | 3344d |
+| Gold (PAXGUSDT) | 12.9% | 18.7% | -28.1% | 2237d |
+| XRP (XRPUSDT) | 4.9% | 97.5% | -85.0% | 3084d |
+| Euro (EURUSDT) | 0.0% | 8.7% | -23.8% | 2475d |
+| Cardano (ADAUSDT) | -0.6% | 98.8% | -95.2% | 3101d |
 | Pound (GBPUSDT) | -1.9% | 12.2% | -27.9% | 1257d |
-| Litecoin (LTCUSDT) | -15.6% | 91.3% | -93.4% | 3225d |
+| Litecoin (LTCUSDT) | -16.2% | 91.3% | -93.4% | 3226d |
 
 ## Key findings
 
-- **Gold (PAXG)** returned **13.1%/yr** with only **18.7%** volatility and a **-28.1%** worst drawdown — far calmer than crypto.
-- **Bitcoin** returned **38.3%/yr** at **67.4%** volatility (drawdown -83.2%).
+- **Gold (PAXG)** returned **12.9%/yr** with only **18.7%** volatility and a **-28.1%** worst drawdown — far calmer than crypto.
+- **Bitcoin** returned **37.9%/yr** at **67.4%** volatility (drawdown -83.2%).
 - **Gold vs Bitcoin** daily-return correlation is **0.15** — weakly related, so gold is a genuine diversifier.
 - Most volatile asset studied: **Dogecoin** (125.3%); calmest: **Euro** (8.7%).
 - By traded value over the hourly set, the top pair is **BTCUSDT** ($5777.69B across 80,106 bars).
