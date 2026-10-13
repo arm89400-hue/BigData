@@ -4,6 +4,7 @@ Everything is pulled from Binance's public REST API (https://api.binance.com) - 
 needs no API key. Timestamps from Binance are UTC milliseconds; we keep everything in UTC.
 """
 import shutil
+import sys
 import time
 from pathlib import Path
 
@@ -24,6 +25,12 @@ CRYPTO = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "SOLUSDT", "ADAUSDT",
           "DOGEUSDT", "TRXUSDT", "LTCUSDT", "LINKUSDT"]
 FIAT = ["EURUSDT", "GBPUSDT", "BTCEUR", "ETHEUR"]
 WATCHLIST = GOLD + CRYPTO + FIAT
+
+
+# Some Binance symbols are non-ASCII (e.g. Chinese meme coins); the Windows console/redirect
+# codepage (cp874 on Thai Windows) can't encode them, so always print UTF-8.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
 def log(msg: str) -> None:
