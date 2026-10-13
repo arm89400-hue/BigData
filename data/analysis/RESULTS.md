@@ -1,26 +1,26 @@
 # Analysis results
 
-Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass processed **13,795,748 rows** across **506 USDT pairs**.
+Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass processed **13,805,362 rows** across **506 USDT pairs**.
 
 ## Headline figures (daily series)
 
 | Asset | Ann. return | Ann. volatility | Max drawdown | History |
 |---|--:|--:|--:|--:|
-| BNB (BNBUSDT) | 98.7% | 93.4% | -80.0% | 3263d |
-| Solana (SOLUSDT) | 74.9% | 113.4% | -96.3% | 2254d |
+| BNB (BNBUSDT) | 98.6% | 93.4% | -80.0% | 3263d |
+| Solana (SOLUSDT) | 74.6% | 113.4% | -96.3% | 2254d |
 | ETH/EUR (ETHEUR) | 53.2% | 80.0% | -77.1% | 2475d |
-| Dogecoin (DOGEUSDT) | 52.1% | 125.3% | -92.3% | 2657d |
-| Chainlink (LINKUSDT) | 51.9% | 106.7% | -90.2% | 2827d |
+| Dogecoin (DOGEUSDT) | 51.9% | 125.3% | -92.3% | 2657d |
+| Chainlink (LINKUSDT) | 51.7% | 106.7% | -90.2% | 2827d |
 | BTC/EUR (BTCEUR) | 42.6% | 59.6% | -73.6% | 2475d |
 | Bitcoin (BTCUSDT) | 37.9% | 67.4% | -83.2% | 3344d |
 | TRON (TRXUSDT) | 25.8% | 84.7% | -83.1% | 3046d |
 | Ethereum (ETHUSDT) | 25.5% | 87.2% | -94.0% | 3344d |
 | Gold (PAXGUSDT) | 12.9% | 18.7% | -28.1% | 2237d |
-| XRP (XRPUSDT) | 4.9% | 97.5% | -85.0% | 3084d |
+| XRP (XRPUSDT) | 4.8% | 97.5% | -85.0% | 3084d |
 | Euro (EURUSDT) | 0.0% | 8.7% | -23.8% | 2475d |
-| Cardano (ADAUSDT) | -0.6% | 98.8% | -95.2% | 3101d |
+| Cardano (ADAUSDT) | -0.8% | 98.8% | -95.2% | 3101d |
 | Pound (GBPUSDT) | -1.9% | 12.2% | -27.9% | 1257d |
-| Litecoin (LTCUSDT) | -16.2% | 91.3% | -93.4% | 3226d |
+| Litecoin (LTCUSDT) | -16.4% | 91.3% | -93.4% | 3226d |
 
 ## Key findings
 
@@ -28,7 +28,7 @@ Generated from `data/raw/` by `analysis/analyze.py`. Hourly big-data pass proces
 - **Bitcoin** returned **37.9%/yr** at **67.4%** volatility (drawdown -83.2%).
 - **Gold vs Bitcoin** daily-return correlation is **0.15** — weakly related, so gold is a genuine diversifier.
 - Most volatile asset studied: **Dogecoin** (125.3%); calmest: **Euro** (8.7%).
-- By traded value over the hourly set, the top pair is **BTCUSDT** ($5777.69B across 80,106 bars).
+- By traded value over the hourly set, the top pair is **BTCUSDT** ($5778.67B across 80,125 bars).
 
 ## Output files
 
