@@ -13,9 +13,17 @@ Tasks call the project's own code (ingest/, analysis/, catalog.py), mounted at P
 import os
 import subprocess
 import sys
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-from airflow.sdk import dag, task
+import pendulum
+
+try:                                    # Airflow 3
+    from airflow.sdk import dag, task
+except ImportError:                     # Airflow 2.x (e.g. the airflow-docker setup)
+    from airflow.decorators import dag, task
+
+# Pin the timezone here so "08:00" means Bangkok whatever the server's default timezone is
+START = pendulum.datetime(2026, 10, 1, tz="Asia/Bangkok")
 
 PROJECT = os.environ.get("PROJECT_DIR", "/opt/airflow/project")
 if PROJECT not in sys.path:
@@ -51,7 +59,7 @@ def catalog():
 
 
 # ---- daily refresh ------------------------------------------------------------------------
-@dag(dag_id="gold_market_daily", schedule="0 8 * * *", start_date=datetime(2026, 10, 1),
+@dag(dag_id="gold_market_daily", schedule="0 8 * * *", start_date=START,
      catchup=False, max_active_runs=ONE_AT_A_TIME, default_args=DEFAULTS, tags=["gold-market"], doc_md=__doc__)
 def gold_market_daily():
     @task
@@ -69,7 +77,7 @@ def gold_market_daily():
 
 
 # ---- full hourly scan (manual) ------------------------------------------------------------
-@dag(dag_id="gold_market_full_scan", schedule=None, start_date=datetime(2026, 10, 1),
+@dag(dag_id="gold_market_full_scan", schedule=None, start_date=START,
      catchup=False, max_active_runs=ONE_AT_A_TIME, default_args=DEFAULTS, tags=["gold-market"], doc_md=__doc__)
 def gold_market_full_scan():
     @task(execution_timeout=timedelta(hours=2))

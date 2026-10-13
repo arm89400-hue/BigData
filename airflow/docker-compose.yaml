@@ -1,49 +1,161 @@
-# Local Airflow for the Gold Market pipeline.
-#   cd airflow && docker compose up -d --build     -> UI at http://localhost:8080
-#   docker compose down                            -> stop (data and run history are kept)
+# Local Airflow for the Gold Market pipeline (same layout as the class airflow-docker setup:
+# Airflow 2.10.4, CeleryExecutor, Postgres metadata DB, Redis broker).
 #
-# Postgres holds Airflow's metadata; one Airflow container runs in "standalone" mode
-# (UI + scheduler + DAG processor + triggerer). The whole project is mounted at
-# /opt/airflow/project, so DAGs run the existing ingest/ and analysis/ code and write to data/.
-# Local development only: the UI is bound to 127.0.0.1 and login is disabled.
+#   cd airflow
+#   docker compose up airflow-init         -> first time only: migrate DB, create login
+#   docker compose up -d --build           -> UI at http://localhost:8080  (airflow / airflow)
+#   docker compose down                    -> stop (run history is kept in the pgdata volume)
+#
+# The whole project is mounted at /opt/airflow/project, so the DAGs run the existing ingest/
+# and analysis/ code and read/write this project's data/ folder directly.
+# Local development only: the UI is bound to 127.0.0.1.
+
+x-airflow-common:
+  &airflow-common
+  build:
+    context: ..
+    dockerfile: airflow/Dockerfile
+  image: gold-market-airflow:2.10.4
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/project/airflow/dags
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Bangkok
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: Asia/Bangkok
+    AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
+    PROJECT_DIR: /opt/airflow/project
+  volumes:
+    - ..:/opt/airflow/project
+    - ./logs:/opt/airflow/logs
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    &airflow-common-depends-on
+    redis:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
+
 services:
+  # Airflow's own metadata DB (not exposed outside Docker)
   postgres:
     image: postgres:16
     environment:
       POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow   # local dev only; postgres is not exposed outside Docker
+      POSTGRES_PASSWORD: airflow   # local dev only
       POSTGRES_DB: airflow
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata210:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
-      interval: 5s
-      retries: 12
-    restart: unless-stopped
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
 
-  airflow:
-    build:
-      context: ..
-      dockerfile: airflow/Dockerfile
-    command: standalone
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/project/airflow/dags
-      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"   # no login prompt (local only)
-      AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Bangkok
-      PROJECT_DIR: /opt/airflow/project
-      PYTHONPATH: /opt/airflow/project
-    volumes:
-      - ..:/opt/airflow/project
-      - ./logs:/opt/airflow/logs
+  redis:
+    image: redis:7.2-bookworm
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: always
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
     ports:
       - "127.0.0.1:8080:8080"
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-worker:
+    <<: *airflow-common
+    command: celery worker
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'celery --app airflow.providers.celery.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    environment:
+      <<: *airflow-common-env
+      DUMB_INIT_SETSID: "0"
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-triggerer:
+    <<: *airflow-common
+    command: triggerer
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  # One-shot: migrate the metadata DB and create the airflow / airflow login
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        mkdir -p /opt/airflow/logs
+        chown -R "${AIRFLOW_UID:-50000}:0" /opt/airflow/logs
+        exec /entrypoint airflow version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    user: "0:0"
 
 volumes:
-  pgdata:
+  # new name: the Airflow 3 metadata in the old "pgdata" volume can't be downgraded to 2.10
+  pgdata210:
